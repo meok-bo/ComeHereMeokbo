@@ -1,0 +1,81 @@
+legend{
+  display: none;
+}
+
+#content {
+  padding: 0 0 150px;
+}
+
+.sec_add_recipe{
+  width:1024px;
+  margin:100px auto 0;
+}
+
+.sec_add_recipe h1{
+  font-size: 36px;
+    font-family: 'NST';
+    color: #3b3b3b;
+    margin-bottom: 67px;
+}
+
+.sec_add_recipe dl{
+  width: 100%;
+}
+
+.sec_add_recipe dt{
+  width: 187px;
+    float: left;
+    clear: left
+}
+
+.sec_add_recipe h2{
+  font-size: 24px;
+font-family: 'NST';
+color: #3b3b3b;
+}
+
+.sec_add_recipe dd{
+  margin-bottom: 100px;
+    padding-left: 210px;
+}
+
+.sec_add_recipe dd .dd-chunk {
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.sec_add_recipe input{
+  color:#313131;
+  width: 790px;
+    height: 45px;
+    border: 1px solid #e1e1e1;
+    background-color: #f5f5f5;
+    text-indent: 20px;
+    font-family: 'NST';
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.sec_add_recipe h3{
+  font-size: 18px;
+  font-family: 'NSL';
+color: #505050;
+}
+
+.lst_mate .food_info{
+  font-size: 16px;
+    color: #b7b7b7;
+    font-family: 'NSL';
+}
+
+.lst_mate .lft{
+      width: 550px;
+}
+
+.lst_mate .rgt{
+  width: 202px;
+}
+
+.lst_mate li{
+  text-align: left;
+}
