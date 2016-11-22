@@ -1,3 +1,7 @@
+dd{
+  width: 100%;
+  height: auto;
+}
 
 .main_banner_img {
   width: 100%;
@@ -37,8 +41,157 @@
 
 .sec_main_recipe .orange{
   background-color: orange;
-  opacity: 0.3;
   width: 100%;
   height: 500px;
   border: 1px solid black;
+}
+
+
+.sec_main_recipe .inner{
+  position: relative;
+  width: 1024px;
+  margin: auto;
+  padding-top: 50px;
+}
+
+.sec_main_recipe .inner>dt {
+  padding-top :35px;
+  position : relative;
+  font-family: 'NSL';
+  padding-bottom: 3px;
+}
+
+.sec_main_recipe h3{
+  font-family: 'NST';
+  font-size: 17px;
+  color: #888;
+  margin-bottom: 7px;
+  line-height: 26px;
+}
+
+.sec_main_recipe h3 strong{
+  font-size: 34px;
+  color: #474747;
+  font-family: 'NST';
+}
+
+.sec_main_recipe .btn_area{
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
+
+.sec_main_recipe a.btn_more{
+  display: block;
+  float: right;
+  color: #b0a69f;
+  font-size: 14px;
+  background: url(http://d1hk7gw6lgygff.cloudfront.net/assets/_img/main/btn_more-42c3e45b11a55c0314b0e04b64217261.png) right center no-repeat;
+  box-sizing: border-box;
+  font-family: 'NS';
+  padding: 1px 20px 0 0;
+}
+
+.oreange .inner {
+  padding-top: 50px;
+}
+
+.oreange .inner>dt {
+  padding-top :35px;
+  position : relative;
+  font-family: 'NSL';
+  padding-bottom: 3px;
+}
+
+.main_recipe{
+  margin-bottom: 0;
+  padding-bottom: 59px;
+  overflow: hidden;
+  width: 1040px;
+  position: relative;
+  left: -16px;
+}
+
+.main_recipe li .tumb {
+  display: block;
+  margin: 4px;
+  position: relative;
+}
+
+.main_recipe>li {
+  width: 244px;
+  height: 371px;
+  margin: 0 0 16px 16px;
+  position: relative;
+  border: 1px solid #e1e1e1;
+  box-sizing: border-box;
+  float: left;
+  background-color: #fff;
+}
+
+.main_recipe li .tumb img {
+  width: 234px;
+  height: 234px;
+  display: block;
+}
+
+.main_recipe li .tumb img {
+  width: 234px;
+  height: 234px;
+  display: block;
+}
+
+.main_recipe li .difficulty {
+  position: absolute;
+  top: 177px;
+  right: 10px;
+  color: #eee;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1;
+  z-index: 5;
+}
+
+.main_recipe li .difficulty strong{
+  font-size: 25px;
+  color: #fff;
+  display: block;
+  font-family: 'NSB';
+}
+
+
+.main_recipe li .flavor {
+  position: absolute;
+  top: 137px;
+  right: 10px;
+  color: #eee;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1;
+  z-index: 5;
+}
+
+.main_recipe li .flavor strong{
+  font-size: 25px;
+  color: #fff;
+  display: block;
+  font-family: 'NSB';
+}
+
+.main_recipe li .author{
+  text-align: center;
+  width: 100%;
+  z-index: 5;
+  display: block;
+  margin-top: -40px;
+  position: relative
+}
+
+.main_recipe li .author img{
+  width: 61px;
+  height: 61px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: block;
+  margin: 0 auto 5px;
 }
