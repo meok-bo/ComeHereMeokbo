@@ -1,0 +1,81 @@
+<header id="header">
+	<div class="bar_top">
+	  <div class="inner">
+	    <!-- 레시피 검색 -->
+	    <form class="box_search" accept-charset="UTF-8" method="get">
+	      <input name="utf8" type="hidden" value="✓">
+	      <fieldset>
+	        <legend>레시피 검색</legend>
+	        <input type="text" name="name" placeholder="음식명, 재료명으로 검색해주세요." autocomplete="off">
+	        <button type="submit">검색</button>
+	      </fieldset>
+	    </form>
+	    <!-- 사용자계정 영역 -->
+	    <div class="account_area">
+	      <ul>
+	        <li>
+	          <% if(session) { %>
+	          <a href="/users/<%=session.id%>">
+	            <em class="ico_user"></em>
+	            <span class="user">
+	              "로그인"
+	              ::after
+	            </span>
+	          </a>
+	          <% } else { %>
+	          <a href="/login">
+	            <em class="ico_user"></em>
+	            <span class="user">
+	              "로그인"
+	              ::after
+	            </span>
+	          </a>
+	          <% } %>
+	        </li>
+	        <li>
+	          <a class="btn_add_recipe">
+	            <em class="ico_plus"></em>
+	            <span class="plus">
+	              "내 레시피 등록하기"
+	              ::after
+	            </span>
+	          </a>
+	        </li>
+	        <li>
+	          <a calss="btn_add_meeting">
+	            <em class="ico_map"></em>
+	            <span class="map">
+	              "모임 등록하기"
+	              ::after == $0
+	            </span>
+	          </a>
+	        </li>
+	      </ul>
+	    </div>
+	  </div>
+	</div>
+	<!-- 메뉴 버튼 바 -->
+	<div class="bar_gnb">
+	  <div class="inner">
+	    <h1 class="logo">
+	      <a href="/">먹보야 어서와</a>
+	    </h1>
+	    <div class="line_map">
+	      <ul class="menu_btn">
+	        <li>
+	          <a href="">맛</a>
+	        </li>
+	        <li>
+	          <a href="">쉽게</a>
+	        </li>
+	        <li>
+	          <a href="">검색</a>
+	        </li>
+	        <li>
+	          <a href="">모임</a>
+	        </li>
+	      </ul>
+	    </div>
+	  </div>
+	</div>
+</header>

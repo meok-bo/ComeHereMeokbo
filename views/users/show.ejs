@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <% include ../header.ejs %>
+  </head>
+  <body>
+    <% include ../body.ejs %>
+    <br><br><br><br><br><br><br><br>
+    <h1>회원정보</h1>
+  	<label>이메일</label><br>
+    <label><%=session.email%></label><br>
+    <label>이름</label><br>
+    <label><%=session.name%></label><br><br>
+    <a href="/users/<%=session.id%>/edit"><button>수정</button></a>
+    <a href="/logout"><button>로그아웃</button></a>
+  </body>
+</html>

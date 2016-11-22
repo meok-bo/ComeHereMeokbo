@@ -1,0 +1,74 @@
+.login_container{
+  position: relative;
+  left: 0;
+  top: 0;
+  margin: 130px auto 50px;
+  z-index: 0;
+}
+
+.login_container form{
+
+}
+
+.login_container dl{
+  width: 344px;
+  margin: auto;
+  background: #f3f3f3;
+  padding-bottom: 21px;
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+}
+
+.login_container dt{
+  background: #fff;
+  box-sizing: border-box;
+  color: #3b3b3b;
+  width: 344px;
+  height: 56px;
+  text-align: center;
+  font-size: 18px;
+  padding-top: 15px;
+  margin-bottom: 24px;
+  font-family: 'NSB';
+}
+
+.login_container dd{
+  color: #a9a9a9;
+  font-family: 'NSL';
+}
+
+.login_container dd input{
+  width: 267px;
+  height: 52px;
+  border: 1px solid #e1e1e1;
+  color: #777;
+  font-size: 16px;
+  text-indent: 18px;
+  margin:auto;
+  font-family: 'NSL';
+}
+
+.login_container dd input[type=submit]{
+  display: inline-block;
+  cursor: pointer;
+  width: 267px;
+  height: 52px;
+  border: none;
+  background-color: #ff6d00;
+  border-radius: 4px;
+  text-align: center;
+  text-indent: 0;
+  color: #fff;
+  font-size: 16px;
+  font-family: 'NS';
+}
+
+.login_container dd a{
+  color: #686868;
+  font-family: 'NS';
+  font-size:15px;
+  display:block;
+  text-align: center;
+  margin-top:15px;
+  padding-right:40px;
+
+}

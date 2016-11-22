@@ -1,0 +1,44 @@
+
+.main_banner_img {
+  width: 100%;
+  height: 500px;
+}
+
+.main_banner_img ul li{
+  display: block;
+  float: left;
+  margin-left: 0px;
+  margin-top: 45px;
+}
+
+.main_banner_img ul .img1{
+  background-image: url("../imgs/page/투모로우에세이음식스토리3.jpg");
+  background-size: cover;
+  opacity: 0.3!important; filter:alpha(opacity=30);
+  width: 40%;
+  height: 500px;
+}
+
+.main_banner_img ul .img2{
+  background-image: url("../imgs/page/hj1.gif");
+  background-size: cover;
+  opacity: 0.3!important; filter:alpha(opacity=30);
+  width: 40%;
+  height: 500px;
+}
+
+.main_banner_img ul .img3{
+  background-image: url("../imgs/page/sendwith.jpg");
+  opacity: 0.3!important; filter:alpha(opacity=30);
+  background-size: cover;
+  width: 20%;
+  height: 500px;
+}
+
+.sec_main_recipe .orange{
+  background-color: orange;
+  opacity: 0.3;
+  width: 100%;
+  height: 500px;
+  border: 1px solid black;
+}

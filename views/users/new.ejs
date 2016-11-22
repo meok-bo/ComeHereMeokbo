@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <% include ../header.ejs %>
+  </head>
+  <body>
+    <% include ../body.ejs %>
+    <div class="join_container">
+      <form class="new_user_join" action="/users/new" method="post">
+        <fieldset>
+          <dl>
+            <dt>회원가입</dt>
+            <dd>
+              <input placeholder="이메일주소" type="email" class="email" name="email" value="<%=email%>">
+            </dd>
+            <dd><span class='err_msg'><%=err_id%></span></dd>
+            <dd class="text-danger email"></dd>
+            <dd>
+              <input placeholder="이름" type="text" class="name" name="name" value="<%=name%>">
+            </dd>
+            <dd><span class='err_msg'><%=err_name%></span></dd>
+            <dd>
+              <input placeholder="비밀번호" type="password" class="password" name="password">
+            </dd>
+            <dd><span class='err_msg'><%=err_pw%></span></dd>
+            <dd>
+              <input placeholder="비밀번호 확인" type="password" class="password_confirm" name="password_confirm">
+            </dd>
+            </dd>
+            <dd><span class='err_msg'><%=err_pw_confirm%></span></dd>
+            <dd>
+            </dd>
+            <dd><span class='err_msg'><%=err_db%></span></dd>
+            <dd>
+            <dd>
+              <input type="submit" name="join_commit" value="회원가입">
+              <a href="/login">로그인</a>
+            </dd>
+          </dl>
+        </fieldset>
+      </div>
+  </body>
+</html>

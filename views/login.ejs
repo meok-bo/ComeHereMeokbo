@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <% include ./header.ejs %>
+  </head>
+  <body>
+    <% include ./body.ejs %>
+    <div class="login_container">
+    <form class="new_user" method="post" action="/login">
+      <fieldset>
+        <dl>
+          <dt>로그인</dt>
+          <dd>
+            <input placeholder="이메일주소" type="text" class="email" name="email" value="<%=email%>">
+          </dd>
+          <dd class="text-danger email"></dd>
+          <dd>
+            <input placeholder="비밀번호" type="password" class="password" name="password">
+          </dd>
+          <dd>
+            <span class='err_msg'><%=err%></span><br>
+          </dd>
+          <dd>
+            <input type="submit" name="commit" value="로그인">
+          </dd>
+          <dd>
+            <a href="/users/new">회원가입</a>
+          </dd>
+        </dl>
+      </fieldset>
+    </form>
+    </div>
+  </body>
+</html>
