@@ -33,13 +33,23 @@
 	          <% } %>
 	        </li>
 	        <li>
-	          <a class="btn_add_recipe">
+	        	<% if(session) { %>
+	          <a href="/posts/new" class="btn_add_recipe">
 	            <em class="ico_plus"></em>
 	            <span class="plus">
 	              "내 레시피 등록하기"
 	              ::after
 	            </span>
 	          </a>
+	          <% } else { %>
+	          <a href="/login" class="btn_add_recipe">
+	            <em class="ico_plus"></em>
+	            <span class="plus">
+	              "내 레시피 등록하기"
+	              ::after
+	            </span>
+	          </a>
+	          <% } %>
 	        </li>
 	        <li>
 	          <a calss="btn_add_meeting">

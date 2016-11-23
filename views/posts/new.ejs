@@ -1,48 +1,48 @@
 <html>
 <head>
     <% include ../header.ejs %>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/post.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            var fileTarget = $('.lst_mate .upload-hidden');
+
+            fileTarget.on('change', function(){  // 값이 변경되면
+                if(window.FileReader){  // modern browser
+                    var filename = $(this)[0].files[0].name;
+                }
+                else {  // old IE
+                    var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
+                }
+
+                // 추출한 파일명 삽입
+                $(this).siblings('.upload-name').val(filename);
+            });
+        });
+
+        function addIngredient(){
+            var i = <li class="ui-sortable-handle">
+                    <input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">
+                    <input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">
+                    <button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>
+                    </li>
+                    $("#ingredients").append(i);
+        }
+
+
+    </script>
 </head>
 <body>
 <% include ../body.ejs %>
-<link rel="stylesheet" type="text/css" href="stylesheets/post.css">
-<script
-        src="https://code.jquery.com/jquery-3.1.1.js"
-        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-        crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function(){
-        var fileTarget = $('.lst_mate .upload-hidden');
-
-        fileTarget.on('change', function(){  // 값이 변경되면
-            if(window.FileReader){  // modern browser
-                var filename = $(this)[0].files[0].name;
-            }
-            else {  // old IE
-                var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
-            }
-
-            // 추출한 파일명 삽입
-            $(this).siblings('.upload-name').val(filename);
-        });
-    });
-
-    function addIngredient(){
-        var i = <li class="ui-sortable-handle">
-                <input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">
-                <input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">
-                <button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>
-                </li>
-                $("#ingredients").append(i);
-    }
-
-
-</script>
     <div id="container">
         <div id="content">
             <section class="sec_add_recipe">
                 <h1>레시피 등록하기</h1>
                 <div>
-                    <form class="simple_form_new_recipe" id="new_recipe" accept-charset="UTF-8" method="post">
+                    <form class="simple_form_new_recipe" id="new_recipe" accept-charset="UTF-8" method="post" action="/posts/new" enctype="multipart/form-data">
                         <fieldset>
                             <dl>
                                 <dt>
@@ -50,9 +50,10 @@
                                 </dt>
                                 <dd>
                                     <div class="dd-chunk">
-                                        <input placeholder="레시피의 제목을 입력해주세요" type="text" name="title">
+                                        <input placeholder="레시피의 제목을 입력해주세요" type="text" name="title" value="<%=title%>">
                                         <div class="input-error"></div>
                                     </div>
+                                    <span class="err_msg"><%=err_title%></span>
                                 </dd>
                                 <dt class="mate">
                                 <h2>음식정보</h2>
@@ -61,7 +62,7 @@
                                     <div class="dd-chunk">
                                         <ul class="lst_mate">
                                             <li class="food-info">
-                                                <input class="rgt" placeholder="조리분량" type="text" name="cookAmount">인분
+                                                <input class="rgt" placeholder="조리분량" type="text" name="cookAmount" value="<%=cookAmount%>">인분
                                             </li>
                                         </ul>
                                     </div>
@@ -70,7 +71,8 @@
                                             <li class="food-info">
                             <span class="time">
                               조리시간 총
-                            <input class="rgt" placeholder="조리시간" type="text" name="cookTime">분 소요
+                            <input class="rgt" placeholder="조리시간" type="text" name="cookTime" value="<%=cookTime%>">분 소요
+                            <span class="err_msg"><%=err_cookTime%></span>
                           </span>
                                             </li>
                                         </ul>
@@ -95,13 +97,17 @@
                                     <div class="dd-chunk">
                                         <ul class="lst_mate">
                                             <li class="recipe-info">
-                                                <input type="text" class="lft" name="comant" placeholder="조리과정을 순서대로 입력해 주세요">
+                                                <input type="text" class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요">
                                                 <input type="file" class="rgt upload-hidden" name="userPhoto">
                                                 <input class="rgt upload-name" value="파일선택" disabled="disabled">
                                             </li>
                                         </ul>
                                     </div>
+                                    <span class="err_msg"><%=err_recipe%></span><% if(err_recipe) { %><br><% } %>
                                     <button class="btn_add" onclick="">추가하기</button>
+                                </dd>
+                                <dd>
+                                  <input type="submit" value="완료">
                                 </dd>
                             </dl>
                         </fieldset>
