@@ -52,6 +52,9 @@ router.post('/new',function(req,res){
 	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,session:null};
 	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[];
 	var temp_cnt=0;
+	var name_cnt=0;
+	var amount_cnt=0;
+	var comment_cnt=0;
 
 	if(!req.session.email) res.redirect('/');
 	else{
@@ -77,35 +80,35 @@ router.post('/new',function(req,res){
 				data.cookAmount=_cookAmount;
 			}
 			else if(name=="name"){
-				for(j=0;j<value.length;j++){
-					if(_ingredient[j]){
-						_ingredient[j].name=value[j];
+				if(value){
+					if(_ingredient[name_cnt]){
+						_ingredient[name_cnt].name=value;
 					}
 					else{
-						_ingredient[j]={name:value[j],amount:null};
+						_ingredient[name_cnt]={name:value,amount:null};
 					}
+					name_cnt++;
 				}
 			}
 			else if(name=="amount"){
-				for(j=0;j<value.length;j++){
-					if(_ingredient[j]){
-						_ingredient[j].amount=value[j];
+				if(value){
+					if(_ingredient[amount_cnt]){
+						_ingredient[amount_cnt].amount=value;
 					}
 					else{
-						_ingredient[j]={name:null,amount:value[j]};
+						_ingredient[amount_cnt]={name:null,amount:value};
 					}
-					
+					amount_cnt++;
 				}
 			}
 			else if(name="comment"){
-				for(j=0;j<value.length;j++){
-					if(_recipe[j]){
-						_recipe[j].comment=value[j];
-					}
-					else{
-						_recipe[j]={comment:value[j],img:null};
-					}
+				if(_recipe[comment_cnt]){
+					_recipe[j].comment=value;
 				}
+				else{
+					_recipe[comment_cnt]={comment:value,img:null};
+				}
+				comment_cnt++;
 			}
 		});
 
@@ -114,7 +117,6 @@ router.post('/new',function(req,res){
 				part.resume();
 			}
 			else{
-				console.log(part);
 				var ext1=part.filename.split('.');
 				var ext2=ext1[ext1.length-1];
 				var filePath = './public/imgs/user/';
@@ -173,17 +175,22 @@ router.post('/new',function(req,res){
 							else{
 								Post.findOne({title:_title},function(err,post){
 									var temp_path='./public/imgs/user/';
-
+									var temp_recipe=[];
 									for(j=0;j<post.recipe.length;j++){
 										var temp_ext1=post.recipe[j].img.split('.');
 										var temp_ext2=temp_ext1[temp_ext1.length-1];
 										var fileName1=temp_path+post.recipe[j].img;
-										var fileName2=temp_path+post._id+'_'+j+'.'+temp_ext2
-										fs.rename(fileName1,fileName2,function(err){
-
-										});
+										var fileName2=temp_path+post._id+'_'+j+'.'+temp_ext2;
+										var fileName3=post._id+'_'+j+'.'+temp_ext2;
+										fs.rename(fileName1,fileName2);
+										temp_recipe[j]={comment:post.recipe[j].comment,img:fileName3};
+										console.log(temp_recipe[j]);
 									}
-									res.redirect('/');
+									post.recipe=temp_recipe;
+									post.save(function(err){
+										if(err) res.send(err);
+										else res.redirect('/');
+									});
 								});
 							}
 						})
