@@ -74,13 +74,17 @@ router.post('/new',function(req,res){
 router.get('/:id',function(req,res){
 	var data={session:null};
 	if(!req.session.email) res.redirect('/');
-	if(req.params.id!=req.session.id) res.redirect('/');
-	data.session={
-		email:req.session.email,
-		name:req.session.name,
-		id:req.session.id
-	};
-	res.render('users/show',data);
+	else{
+		if(req.params.id!=req.session.id) res.redirect('/');
+		else{
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+			res.render('users/show',data);
+		}
+	}
 });
 
 router.get('/:id/edit',function(req,res){
@@ -124,23 +128,24 @@ router.put('/:id',function(req,res){
 				res.render('users/edit',data);
 			}
 			else{
-				var path='/users/'+req.session.id;
-				console.log(_name);
-				if(_pw){
-					User.findByIdAndUpdate(req.session.id,{$set:{name:_name,password:_pw}});
-					//User.findOneAndUpdate({email:req.session.email},{$set:{name:_name,password:_pw}});
-					data.session.name=_name;
-					req.session.name=_name;
-					res.redirect(path);
-				}
-				else{
-					User.findByIdAndUpdate(req.session.id,{$set:{name:_name}},function(err,user){
-						data.session.name=_name;
-						req.session.name=_name;
-						res.redirect(path);
-					});
-					//User.findOneAndUpdate({email:req.session.email},{$set:{name:_name}});
-				}
+				User.findOne({name:req.session.name},function(err,user){
+					var path='/users/'+req.session.id;
+					user.name=_name;
+					if(_pw){
+						user.password=_pw;
+						user.save(function(err){
+							req.session.name=_name;
+							res.redirect(path);
+						});
+					}
+					else{
+						user.save(function(err){
+							req.session.name=_name;
+							res.redirect(path);
+						});
+					}
+				});
+				
 			}
 		});
 	}

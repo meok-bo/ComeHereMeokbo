@@ -33,13 +33,20 @@
         });
 
         function addIngredient(){
-            var i = <li class="ui-sortable-handle">;
-            i+=<input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">;
-            i+=<input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">;
-            i+=<button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>;
-            i+=</li>;
-
-                    $("#ingredients").append(i);
+            var liTag=document.createElement('li');
+            liTag.setAttribute('class','ui-sortable-handle');
+            liTag.innerHTML="<input type='text' class='lft input-infred' name='name' placeholder='재료명 (예. 묵은김치)'>";
+            liTag.innerHTML+="<input type='text' class='rgt input-amount ui-autocomplete-input' name='amount' placeholder='분량'>";
+            liTag.innerHTML+="<button type='botton' class='btn_del' onclick='delete_infredient(this)'>삭제</button>";
+            document.getElementById('ingredients').appendChild(liTag);
+        }
+        function addRecipe(){
+            var liTag=document.createElement('li');
+            liTag.setAttribute('class','recipe-info');
+            liTag.innerHTML="<input type='text' class='lft' name='comment' placeholder='조리과정을 순서대로 입력해 주세요'>";
+            liTag.innerHTML+="<input type='file' class='rgt upload-hidden' name='userPhoto'>";
+            liTag.innerHTML+="<input class='rgt upload-name' value='파일선택' disabled='disabled'>";
+            document.getElementById('recipe').appendChild(liTag);
         }
 
 
@@ -98,14 +105,15 @@
                                         </ul>
 
                                     </div>
-                                    <button type="botton" id="btn_add" class="btn_add">추가하기</button>
+
+                                    <span class="btn_add" onclick="addIngredient()">추가하기</span>
                                 </dd>
                                 <dt>
                                 <h2>레시피 정보</h2>
                                 </dt>
                                 <dd>
                                     <div class="dd-chunk">
-                                        <ul class="lst_mate">
+                                        <ul class="lst_mate" id="recipe">
                                             <li class="recipe-info">
                                                 <input type="text" class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요">
                                                 <input type="file" class="rgt upload-hidden" name="userPhoto">
@@ -114,7 +122,7 @@
                                         </ul>
                                     </div>
                                     <span class="err_msg"><%=err_recipe%></span><% if(err_recipe) { %><br><% } %>
-                                    <button class="btn_add" onclick="">추가하기</button>
+                                    <span class="btn_add" onclick="addRecipe()">추가하기</span>
                                 </dd>
                                 <dd>
                                   <input type="submit" value="완료">
