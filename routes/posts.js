@@ -5,26 +5,7 @@ var multer=require('multer');
 var multiparty=require('multiparty');
 var mongoose=require('mongoose');
 var fs=require('fs');
-
-var i = 0; //첨부파일명 구분용 숫자 : 첨부파일이 여러개일 때 첨부파일명을 각각 구분하기 위한 용도로 사용
-var maxFileCount = 20; //첨부파일 허용 갯수 
-var filePath = __dirname+'/public/imgs/user';
-var storage = multer.diskStorage({ destination : function (req, file, callback) {
-                                    callback(null, filePath);
-                                },
-                                filename : function (req, file, callback) {
-                                    i ++; //첨부파일이 2개면, userPhoto1-시간, userPhoto2-시간와 같이 번호가 붙는다.    
-                                    var ext1=file.originalname.split(".");
-                                    var ext2=ext1[ext1.length-1];
-                                    callback(null, 'user_recipe_'+req.session.post_id+'_'+i+'.'+ext2); //file.fieldname = 'file' 타입태그의 field 명이다.
-                                    // i 값을 초기화 시키지 않으면 계속해서 증가하므로 아래와 같은 초기화 로직을 추가한다.
-                                    if( maxFileCount == i ){ //첨부파일명 구분용 숫자(=i) 가 maxFileCount에 도달하면 
-                                        i = 0; //0으로 초기화( 다른 함수에서는 초기화가 않되서 이곳에 설정함!)
-                                    }
-                                 }
-});
-
-var upload = multer({ storage : storage}).array('userPhoto', maxFileCount );
+var User=require('../models/User');
 
 router.get('/',function(req,res){
 	Post.find({},function(err,posts){
@@ -205,4 +186,213 @@ router.post('/new',function(req,res){
 
 });
 
+//검색 route
+router.get('/search/title',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:{$regex:req.query.value}}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+});
+
+router.get('/search/author',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+	
+});
+
+router.get('/search/ingredient',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{ingredient:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		res.render('posts/list',data);
+	});
+});
+
 module.exports=router;
+/*
+router.get('/search/author',function(req,res){
+	var data={now_page:0,total_page:0,list:null,session:null};
+	var page;
+	if(req.session.email) {
+		data.session={
+			email:req.session.email,
+			name:req.session.name,
+			id:req.session.id
+		};
+	};
+
+	if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+	else page=1;
+
+	User.find({name:{$regex:req.query.value}},function(err,users){
+		if(users==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+			res.render('posts/list',data)
+		}else if(users.length==1){
+			Post.find({author:users[0].email},function(err,posts){
+				if(posts==null){
+					data.now_page=0;
+					data.total_page=0;
+					data.list=null;
+				}else {
+					if((posts.length%12)==0){
+						data.now_page=page;
+						data.total_page=posts.length/12;
+						data.list=posts;
+					}else{
+						data.now_page=page;
+						data.total_page=(posts.length/12)+1;
+						data.list=posts;
+					}
+				}
+				res.render('posts/list',data);
+			});
+		}else{
+			var condition=[];
+			for(i in users){
+				condition[i]={author:users[i].email};
+			}
+			Post.find({$or:condition},function(err,posts){
+				if(posts==null){
+					data.now_page=0;
+					data.total_page=0;
+					data.list=null;
+				}else {
+					if((posts.length%12)==0){
+						data.now_page=page;
+						data.total_page=posts.length/12;
+						data.list=posts;
+					}else{
+						data.now_page=page;
+						data.total_page=(posts.length/12)+1;
+						data.list=posts;
+					}
+				}
+				res.render('posts/list',data);
+			});
+		}
+	});
+	
+});
+*/
+/*
+router.get('/search/ingredient',function(req,res){
+	Post.find({ingredient:{$elemMatch:{name:{$regex:req.query.value}}}},function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		res.render('posts/list',data);
+	});
+});
+*/
