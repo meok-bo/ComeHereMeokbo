@@ -21,14 +21,24 @@
                 // 추출한 파일명 삽입
                 $(this).siblings('.upload-name').val(filename);
             });
+
+            $("#btn_add").click(function () {
+                var i = <li class="ui-sortable-handle">;
+                i+=<input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">;
+                i+=<input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">;
+                i+=<button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>;
+                i+=</li>;
+                $("#ingredients").append(i);
+            });
         });
 
         function addIngredient(){
-            var i = <li class="ui-sortable-handle">
-                    <input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">
-                    <input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">
-                    <button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>
-                    </li>
+            var i = <li class="ui-sortable-handle">;
+            i+=<input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">;
+            i+=<input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">;
+            i+=<button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>;
+            i+=</li>;
+
                     $("#ingredients").append(i);
         }
 
@@ -88,7 +98,7 @@
                                         </ul>
 
                                     </div>
-                                    <button type="botton" class="btn_add" onclick="addIngredient()">추가하기</button>
+                                    <button type="botton" id="btn_add" class="btn_add">추가하기</button>
                                 </dd>
                                 <dt>
                                 <h2>레시피 정보</h2>

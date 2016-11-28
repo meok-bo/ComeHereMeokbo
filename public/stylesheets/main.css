@@ -75,6 +75,12 @@ dd{
   font-family: 'NST';
 }
 
+.sec_main_recipe h3 bold{
+  font-size: 20px;
+  color: #FFBF00;
+  font-family: 'NST';
+}
+
 .sec_main_recipe .btn_area{
   position: absolute;
   right: 0;
