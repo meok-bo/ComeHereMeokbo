@@ -1,6 +1,15 @@
 var express=require('express');
 var router=express.Router();
 var User=require('../models/User');
+var multiparty=require('multiparty');
+var fs=require('fs');
+var mongoose=require('mongoose');
+
+router.get('/',function(req,res){
+	User.find({},function(err,users){
+		res.send(users);
+	});
+});
 
 router.get('/new',function(req,res){
 	var data={email:null,name:null,err_pw:null,err_name:null,err_id:null,err_pw_confirm:null,err_db:null,session:null};
@@ -56,6 +65,7 @@ router.post('/new',function(req,res){
 						_User.email=_email;
 						_User.name=_name;
 						_User.password=_pw;
+						_User.img=null;
 
 						_User.save(function(err){
 							if(err){
@@ -80,7 +90,8 @@ router.get('/:id',function(req,res){
 			data.session={
 				email:req.session.email,
 				name:req.session.name,
-				id:req.session.id
+				id:req.session.id,
+				img:req.session.img
 			};
 			res.render('users/show',data);
 		}
@@ -100,54 +111,142 @@ router.get('/:id/edit',function(req,res){
 });
 
 router.put('/:id',function(req,res){
+	var form=new multiparty.Form();
 	var data={err_pw:null,err_name:null,err_id:null,err_pw_confirm:null,err_db:null,session:null};
-	var _name=req.body.name;
-	var _pw=req.body.password;
-	var _pw_confirm=req.body.password_confirm;
+	var _name, _pw, _pw_confirm, _img;
+	var path='/users/'+req.session.id;
 	if(!req.session.email) res.redirect('/');
-	if(req.params.id!=req.session.id) res.redirect('/');
+	else if(req.params.id!=req.session.id) res.redirect('/');
+	else{
 
-	data.session={
-		email:req.session.email,
-		name:req.session.name,
-		id:req.session.id
-	};
+		data.session={
+			email:req.session.email,
+			name:req.session.name,
+			id:req.session.id,
+			img:req.session.img
+		};
 
-	if(_pw && !_pw_confirm){
-		data.err_pw_confirm="비밀번호를 한번 더 입력해주세요";
-		res.render('users/edit',data);
-	}
-	if(_pw && _pw!=_pw_confirm){
-		data.err_pw="비밀번호가 다릅니다";
-		res.render('users/edit',data);
-	}
-	if(_name!=req.session.name){
-		User.findOne({name:_name},function(err,user){
-			if(user){
-				data.err_name="중복된 이름입니다"
+		form.on('field',function(name,value){
+			if(name=="name"){
+				_name=value;
+			}
+			else if(name=="password"){
+				_pw=value;
+			}
+			else if(name=="password_confirm"){
+				_pw_confirm=value;
+			}
+		});
+
+		form.on('part',function(part){
+			if(!part.filename){
+				part.resume();
+			}
+			else{
+				var ext1=part.filename.split('.');
+				var ext2=ext1[ext1.length-1];
+				var filePath = './public/imgs/user/';
+				var fileName=req.session.id+'.'+ext2;
+				
+				var writeStream = fs.createWriteStream(filePath+fileName);
+				writeStream.filename = fileName;
+				part.pipe(writeStream);
+
+				part.on('end',function(){
+					_img=fileName;
+	                writeStream.end();
+	           });
+			}
+		});
+
+		form.on('close',function(){
+			if(_pw && !_pw_confirm){
+				data.err_pw_confirm="비밀번호를 한번 더 입력해주세요";
+				res.render('users/edit',data);
+			}
+			else if(_pw && _pw!=_pw_confirm){
+				data.err_pw="비밀번호가 다릅니다";
 				res.render('users/edit',data);
 			}
 			else{
-				User.findOne({name:req.session.name},function(err,user){
-					var path='/users/'+req.session.id;
-					user.name=_name;
-					if(_pw){
-						user.password=_pw;
+				if(_name==req.session.name){
+					User.findOne({name:req.session.name},function(err,user){
+						if(_img){
+							user.img=_img;
+							req.session.img=_img;
+						}
+						if(_pw){
+							user.password=_pw;
+						}
 						user.save(function(err){
-							req.session.name=_name;
 							res.redirect(path);
 						});
-					}
-					else{
-						user.save(function(err){
-							req.session.name=_name;
-							res.redirect(path);
-						});
-					}
-				});
-				
+					});
+				}else{
+					User.findOne({name:_name},function(err,user){
+						if(user){
+							data.err_name="중복된 이름입니다"
+							res.render('users/edit',data);
+						}
+						else{
+							User.findOne({name:req.session.name},function(err,user){
+								user.name=_name;
+								req.session.name=_name;
+								if(_img){
+									user.img=_img;
+									req.session.img=_img;
+								}
+								if(_pw){
+									user.password=_pw;
+								}
+								user.save(function(err){
+									res.redirect(path);
+								});
+							});
+							
+						}
+					});
+				}
 			}
 		});
+
+		form.parse(req);
+		/*
+		if(_pw && !_pw_confirm){
+			data.err_pw_confirm="비밀번호를 한번 더 입력해주세요";
+			res.render('users/edit',data);
+		}
+		if(_pw && _pw!=_pw_confirm){
+			data.err_pw="비밀번호가 다릅니다";
+			res.render('users/edit',data);
+		}
+		if(_name!=req.session.name){
+			User.findOne({name:_name},function(err,user){
+				if(user){
+					data.err_name="중복된 이름입니다"
+					res.render('users/edit',data);
+				}
+				else{
+					User.findOne({name:req.session.name},function(err,user){
+						user.name=_name;
+						if(_pw){
+							user.password=_pw;
+							user.save(function(err){
+								req.session.name=_name;
+								res.redirect(path);
+							});
+						}
+						else{
+							user.save(function(err){
+								req.session.name=_name;
+								res.redirect(path);
+							});
+						}
+					});
+					
+				}
+			});
+		}*/
 	}
 });
 

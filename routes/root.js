@@ -8,7 +8,8 @@ router.get('/',function(req,res){
 		data.session={
 			email:req.session.email,
 			name:req.session.name,
-			id:req.session.id
+			id:req.session.id,
+			img:req.session.img
 		};
 	};
     res.render('index',data);
@@ -49,6 +50,7 @@ router.post('/login',function(req,res){
 				req.session.email=user.email;
 				req.session.name=user.name;
 				req.session.id=user._id;
+				req.session.img=user.img;
 				res.redirect('/');
 			}
 		});

@@ -1,7 +1,7 @@
 <html>
 <head>
 	<% include ../header.ejs %>
-	<link rel="stylesheet" type="text/css" href="../stylesheets/list.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/list.css">
 </head>
 <body>
 <% include ../body.ejs %>
@@ -17,7 +17,7 @@
                 <dd>
                     <ol class="main_recipe">
 
-
+                    <% if(list) { %>
                     <% for(var i in list) { %>
 
 
@@ -35,7 +35,7 @@
                     </span>
                             <span class="author">
                       <a herf="">
-                        <img src="/imgs/user/회원1.jpg">
+                        <img src="/imgs/user/<%=list[i].user[0].img %>">
                       </a>
                       <strong>
                         <a><%=list[i].user[0].name %></a>
@@ -45,6 +45,10 @@
                                 <a class="call_recipe"> <%=list[i].title %> </a>
                             </p>
                         </li>
+                    	<%if(i==11){break;}%>
+                    <% } %>
+                    <% } else { %>
+
                     <% } %>
 
                         
@@ -61,16 +65,16 @@
         </div>
     </section>
     <section class="list-bottom">
-        <form class="list_search" accept-charset="UTF-8" method="get">
+        <form class="list_search" accept-charset="UTF-8" method="get" action="/posts/search/title">
             <input name="utf8" type="hidden" value="✓">
             <fieldset>
                 <legend>레시피 검색</legend>
                 <select name="search_opt">
-                    <option value="">11</option>
-                    <option value="">22</option>
-                    <option value="">33</option>
+                    <option value="title" selected="selected">음식명</option>
+                    <option value="author">작성자</option>
+                    <option value="ingredient">재료</option>
                 </select>
-                <input type="text" name="value" placeholder="음식명, 재료명으로 검색해주세요." autocomplete="off">
+                <input type="text" name="value" placeholder="검색해주세요." autocomplete="off">
                 <button type="submit">검색</button>
             </fieldset>
         </form>
