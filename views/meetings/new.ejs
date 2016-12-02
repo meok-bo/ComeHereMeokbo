@@ -78,10 +78,10 @@
 		<label>모임 내용</label><input type="textarea" name="text" id="text"><br>
 		<label>모임 날짜</label><input type="date" name="date" id="date" value="<%=date%>"><br>
 		<label>모임 시간</label><input type="time" name="time" id="time" value="<%=time%>"><br>
-		<label>모임 장소</label><span id="err_msg"><%=err_address%></span><input type="text" name="address" id="address"><input type="button" id="search_address" value="검색">
+		<label>모임 장소</label><span id="err_msg"><%=err_address%></span><input type="text" name="address" id="address"><input type="button" id="search_address" value="검색"><br>
+		<label>사진 첨부</label><span id="err_msg"><%=err_img%></span><input type="file" name="userPhoto">
 		<div id="map"></div><br>
 		<input type="hidden" id="latlng" name="latlng">
-		<span id="err_msg"><%=err_img%></span>
 		<input type="submit" value="완료">
 	</form>
 

@@ -30,7 +30,7 @@ router.get('/',function(req,res){
 });
 
 router.get('/new',function(req,res){
-	var data={session:null,date:null,time:null};
+	var data={session:null,date:null,time:null,err_title:null,err_address:null,err_img:null};
 	var now_date=new Date();
 
 	if(!req.session.email) res.redirect('/login');
@@ -59,8 +59,10 @@ router.get('/new',function(req,res){
 });
 
 router.post('/new',function(req,res){
-	var data={session:null,err_title:null,err_address:null,err_img:null};
+	var form=new multiparty.Form();
+	var data={session:null,date:null,time:null,err_title:null,err_address:null,err_img:null};
 	var _title,_author,_text,_latlng,_address,_date,_time,_img;
+	var now_date=new Date();
 
 	if(!req.session.email) res.redirect('/login');
 	else{
@@ -70,26 +72,18 @@ router.post('/new',function(req,res){
 			id:req.session.id,
 			img:req.session.img
 		};
-		var _Meeting=new Meeting();
-		_Meeting.title=req.body.title;
-		_Meeting.author=req.session.email;
-		_Meeting.text=req.body.text;
-		_Meeting.latlng=req.body.latlng;
-		_Meeting.address=req.body.address;
-		_Meeting.date=req.body.date;
-		_Meeting.time=req.body.time;
-		_Meeting.join=null;
-		_Meeting.save(function(err){
-			if(err){
-				res.send(err);
-			}
-			else{
-				res.redirect('/meetings')
-			}
-		})
-	}
+		data.date=now_date.getFullYear()+"-";
+		if(now_date.getMonth()<10) data.date+="0";
+		data.date+=now_date.getMonth()+"-";
+		if(now_date.getDate()<10) data.date+="0";
+		data.date+=now_date.getDate();
 
-	form.on('field',function(name,value){
+		data.time="";
+		if(now_date.getHours()<10) data.time+="0";
+		data.time+=now_date.getHours()+":";
+		if(now_date.getMinutes()<10) data.time+="0";
+		data.time+=now_date.getMinutes()+":00";
+		form.on('field',function(name,value){
 			if(name=="title") _title=value;
 			else if(name=="author") _author=value;
 			else if(name=="text") _text=value;
@@ -162,10 +156,10 @@ router.post('/new',function(req,res){
 									var temp_ext2=temp_ext1[temp_ext1.length-1];
 									var fileName1=temp_path+meeting.img;
 									var fileName2=temp_path+meeting._id+'.'+temp_ext2;
-									var fileName3=meeting._id+'_'+j+'.'+temp_ext2;
+									var fileName3=meeting._id+'.'+temp_ext2;
 									fs.rename(fileName1,fileName2);
 									meeting.img=fileName3;
-									post.save(function(err){
+									meeting.save(function(err){
 										if(err) res.send(err);
 										else res.redirect('/meetings');
 									});
@@ -178,6 +172,8 @@ router.post('/new',function(req,res){
 		});
 
 		form.parse(req);
+	}
+
 });
 
 module.exports=router;
