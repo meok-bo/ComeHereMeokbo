@@ -1,0 +1,88 @@
+<html>
+<head>
+	<% include ../header.ejs %>
+	<style type="text/css">
+      #map { width:500px; height: 300px; }
+    </style>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    	var marker;
+    	function initMap() {
+	        var map = new google.maps.Map(document.getElementById('map'), {
+		        center: {lat: 37.56641923090, lng: 126.9778741551},
+		        zoom: 13
+	        });
+	        marker = new google.maps.Marker({
+		        position: {lat: 37.56641923090, lng: 126.9778741551},
+		        draggable:true,
+		        map:map
+			});
+			marker.addListener('dragend',function(){
+				$('#latlng').attr("value",marker.getPosition());
+			})
+	        var geocoder = new google.maps.Geocoder();
+	        $('#search_address').click(function() {
+				geocodeAddress(geocoder, map, marker);
+			});
+    	}
+
+		function geocodeAddress(geocoder, resultsMap, marker) {
+			var address = $('#address').val();
+			geocoder.geocode({'address': address}, function(results, status) {
+			    if (status === google.maps.GeocoderStatus.OK) {
+			      	resultsMap.setCenter(results[0].geometry.location);
+			      	resultsMap.setZoom(17);
+			      	marker.setPosition(results[0].geometry.location);
+			    } else {
+			    	alert('주소 확인 후 다시 입력해주세요');
+			    }
+			});
+		}
+
+		/*
+		$('#meeting_form').submit(function(event){
+			event.preventDefault();
+			var data={
+				title:$('#title').val(),
+				name:$('#text').val(),
+				date:$('#date').val(),
+				time:$('#time').val(),
+				address:$('#search_address').val(),
+				latlng:marker.getPosition()
+			};
+			//console.log(data.latlng);
+			$.ajax({
+				url:'/meetings/new',
+				type:'post',
+				data:data,
+				success:function(result){
+					//$('#latlng').attr("value",result.latlng);
+				}
+			});
+		});*/
+
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8bk04KxVxc0fnprYkxr-NqfVGDY3SxgI&callback=initMap">
+    </script>
+</head>
+<body>
+<% include ../body.ejs %>
+	<br><br><br><br>
+	<h1>모임 만들기</h1>
+	<form id="meeting_form" action="/meetings/new" method="post">
+		<label>모임 제목</label><input type="text" name="title" id="title"><br>
+		<label>모임 내용</label><input type="textarea" name="text" id="text"><br>
+		<label>모임 날짜</label><input type="date" name="date" id="date" value="<%=date%>"><br>
+		<label>모임 시간</label><input type="time" name="time" id="time" value="<%=time%>"><br>
+		<label>모임 장소</label><input type="text" name="address" id="address"><input type="button" id="search_address" value="검색">
+		<div id="map"></div><br>
+		<input type="hidden" id="latlng" name="latlng">
+		<input type="submit" value="완료">
+	</form>
+
+</body>
+</html>

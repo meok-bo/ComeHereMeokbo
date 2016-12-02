@@ -1,0 +1,77 @@
+<html>
+<head>
+	<% include ../header.ejs %>
+	<style type="text/css">
+      #map { width:500px; height: 300px; }
+    </style>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    var map;
+   	var markers=[];
+    var infowindows=[];
+    function initMap() {
+	        map = new google.maps.Map(document.getElementById('map'), {
+	          center: {lat: 37.56641923090, lng: 126.9778741551},
+	          zoom: 9
+        });
+
+	    
+        var contentStr="<img src='./abc.gif' width='50' height='50'>탕슈육";
+        var infowindow=new google.maps.InfoWindow({
+          content:contentStr
+        });
+        var maker1=new google.maps.Marker({
+          position:{lat: 37.56641923090, lng: 126.9778741551},
+          map:map,
+          animation: google.maps.Animation.DROP
+        });
+        maker1.addListener('click',function(){
+          infowindow.open(map,maker1);
+        })
+
+        $('#temp').text("<%=location.length%>");
+
+      
+
+
+		var temp_content;
+		var _lat,_lng;
+		var location= <%-JSON.stringify(location)%>;
+    	for(i=0;i<location.length ;i++){
+    		temp_content="<img src='/imgs/user/"+ location[i].user[0].img +"' width='50' height='50'>"+location[i].user[0].name;
+    		infowindows[i]=new google.maps.InfoWindow({
+	          content:temp_content
+	        });
+
+    		_lat=Number(String(location[i].latlng).split(",")[0].split("(")[1].trim());
+    		_lng=Number(String(location[i].latlng).split(",")[1].split(")")[0].trim());
+
+    		markers[i]=new google.maps.Marker({
+	          position:{lat: _lat, lng: _lng},
+	          map:map,
+	          animation: google.maps.Animation.DROP
+	        });
+	        google.maps.event.addListener(markers[i], 'click', (function(marker, i) {
+			  return function() {
+			    infowindows[i].open(map, markers[i]);
+			  }
+			})(markers[i], i));
+    	}
+      }
+
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8bk04KxVxc0fnprYkxr-NqfVGDY3SxgI&callback=initMap">
+    </script>
+</head>
+<body>
+<% include ../body.ejs %>
+	<br><br><br><br><br><br>
+	<div id="map"></div><br>
+	<a href="/meetings/new"><button id='create_meeting_btn'>모임 만들기</button></a>
+	<div id="temp"></div>
+</body>
+</html>
