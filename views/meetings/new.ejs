@@ -73,14 +73,15 @@
 <% include ../body.ejs %>
 	<br><br><br><br>
 	<h1>모임 만들기</h1>
-	<form id="meeting_form" action="/meetings/new" method="post">
-		<label>모임 제목</label><input type="text" name="title" id="title"><br>
+	<form id="meeting_form" action="/meetings/new" method="post" enctype="multipart/form-data">
+		<label>모임 제목</label><span id="err_msg"><%=err_title%></span><input type="text" name="title" id="title"><br>
 		<label>모임 내용</label><input type="textarea" name="text" id="text"><br>
 		<label>모임 날짜</label><input type="date" name="date" id="date" value="<%=date%>"><br>
 		<label>모임 시간</label><input type="time" name="time" id="time" value="<%=time%>"><br>
-		<label>모임 장소</label><input type="text" name="address" id="address"><input type="button" id="search_address" value="검색">
+		<label>모임 장소</label><span id="err_msg"><%=err_address%></span><input type="text" name="address" id="address"><input type="button" id="search_address" value="검색">
 		<div id="map"></div><br>
 		<input type="hidden" id="latlng" name="latlng">
+		<span id="err_msg"><%=err_img%></span>
 		<input type="submit" value="완료">
 	</form>
 
