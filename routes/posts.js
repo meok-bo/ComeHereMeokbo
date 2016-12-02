@@ -267,6 +267,42 @@ router.get('/search/author',function(req,res){
 	
 });
 
+router.get('/search/author/:id',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:req.params.id}}}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+	
+});
+
 router.get('/search/ingredient',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{ingredient:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,posts){
 		var data={now_page:0,total_page:0,list:null,session:null};
