@@ -1,0 +1,97 @@
+<html>
+<head>
+    <% include ../header.ejs %>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/post_show.css">
+</head>
+<body>
+<% include ../body.ejs %>
+<div id="container">
+    <div class="inner">
+        <section class="post_header">
+
+            <h1>레시피제목</h1>
+            <label><i class="fa fa-clock-o" aria-hidden="true"></i>조리시간</label>
+            <span class="time">min</span>
+            <label><i class="fa fa-check-square-o" aria-hidden="true"></i>재료리스트</label>
+            <span class="ingredient">재룟,재룟</span>
+        </section>
+        <section class="">
+
+        </section>
+    </div>
+    <section class="sec_post_recipe">
+        <div style="width:100%;">
+            <dl class="inner">
+                <dt>
+                <h3>
+                    해당하는 레시피가 <bold><%=list.length%></bold>개 있습니다.
+                </h3>
+                </dt>
+                <dd>
+                    <ol class="main_recipe">
+
+                        <% if(list) { %>
+                        <% for(var i in list) { %>
+
+
+                        <li>
+                            <a class="recipe tumb">
+                                <img src="/imgs/user/<%=list[i].recipe[0].img %>">
+                            </a>
+                            <span class="difficulty">
+                      난이도
+                      <strong>3</strong>
+                    </span>
+                            <span class="flavor">
+                      맛
+                      <strong>3</strong>
+                    </span>
+                            <span class="author">
+                      <a herf="">
+                        <img src="/imgs/user/<%=list[i].user[0].img %>">
+                      </a>
+                      <strong>
+                        <a><%=list[i].user[0].name %></a>
+                      </strong>
+                    </span>
+                            <p>
+                                <a class="call_recipe"> <%=list[i].title %> </a>
+                            </p>
+                        </li>
+                        <%if(i==11){break;}%>
+                        <% } %>
+                        <% } else { %>
+
+                        <% } %>
+
+
+                    </ol>
+                    <div class="paging">
+                        <a class="currnet" href="">1</a>
+                        <a rel="next" href="">2</a>
+                        <a href="">3</a>
+                        <a href="">4</a>
+                        <a href="">5</a>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </section>
+    <section class="list-bottom">
+        <form class="list_search" accept-charset="UTF-8" method="get" action="/posts/search/title">
+            <input name="utf8" type="hidden" value="✓">
+            <fieldset>
+                <legend>레시피 검색</legend>
+                <select name="search_opt">
+                    <option value="title" selected="selected">음식명</option>
+                    <option value="author">작성자</option>
+                    <option value="ingredient">재료</option>
+                </select>
+                <input id="select_input" type="text" name="value" placeholder="검색해주세요." autocomplete="off">
+                <button type="submit">검색</button>
+            </fieldset>
+        </form>
+    </section>
+</div>
+</body>
+</html>
