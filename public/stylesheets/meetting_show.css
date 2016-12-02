@@ -3,38 +3,17 @@
     margin: auto;
 }
 
-.item {
-    position: relative;
-    width: 900px;
-    height: 300px;
-    margin: auto;
-    border: 1px solid #cbcbcb;
-}
-.item img{
-    position: absolute;
-    height: 280px;
-    width: 280px;
-    left: 10px;
-    top: 10px;
-    border-radius: 10%;
-}
-
-.item .info{
-    padding-left: 320px;
-}
-
-.item .text{
-    border-top : 1px solid #cbcbcb;
-    border-bottom : 1px solid #cbcbcb;
-    width: 500px;
-    height: 130px;
-    display: block;
-    padding: 20px 0 20px 0;
-}
-
-.item .info label{
+.date{
     display: inline-block;
-    padding-top: 20px;
+    float: left;
+    padding-left: 10px;
 }
 
-.item
+.spot{
+    display: inline-block;
+    float: right;
+    width: 130px;
+    height: 20px;
+    padding-right: 10px;
+    overflow: hidden;
+}

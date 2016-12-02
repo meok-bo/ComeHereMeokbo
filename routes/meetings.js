@@ -24,7 +24,7 @@ router.get('/',function(req,res){
 		};
 		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}}],function(err,meetings){
 			data.location=meetings;
-			res.render('meetings/show',data);
+			res.render('meetings/main',data);
 		});
 	}
 });
