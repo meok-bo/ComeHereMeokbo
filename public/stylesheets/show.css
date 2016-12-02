@@ -1,0 +1,50 @@
+.header{
+    padding: 80px 0 30px 0;
+    width: 1024px;
+    margin: auto;
+}
+
+h1{
+    font-size: 40px;
+    margin: ;
+}
+
+.info_top{
+    background: #f5f5f5;
+}
+
+.info_top label{
+    display: block;
+    float: none;
+    vertical-align: middle;
+}
+
+.info_top .inner{
+    position:relative;
+    min-height: 190px;
+    padding : 60px 0 40px 200px;
+    box-sizing: border-box;
+    font-size: 40px;
+}
+
+.info_top .inner img{
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    left: 30px;
+    top: 30px
+
+}
+
+.info_top .btn_area{
+    position: absolute;
+    right: 50px;
+    bottom: 20px
+}
+
+h2{
+    color:#A4A4A4;
+}

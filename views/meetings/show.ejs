@@ -1,9 +1,7 @@
 <html>
 <head>
 	<% include ../header.ejs %>
-	<style type="text/css">
-      #map { width:500px; height: 300px; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/meetting_show.css">
     <script src="//code.jquery.com/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -66,12 +64,36 @@
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8bk04KxVxc0fnprYkxr-NqfVGDY3SxgI&callback=initMap">
     </script>
+
 </head>
 <body>
 <% include ../body.ejs %>
 	<br><br><br><br><br><br>
-	<div id="map"></div><br>
+<div class="meeting_header">
+    <div class="inner">
+        <div id="map"></div>
+    </div>
+</div>
 	<a href="/meetings/new"><button id='create_meeting_btn'>모임 만들기</button></a>
 	<div id="temp"></div>
+<div class="meeting_content">
+    <div class="inner">
+        <div class="item">
+            <img src="/imgs/user/음식1.jpg">
+            <div class="info">
+                <h2>모임제목</h2>
+                <span class="text">모임내용 블라블라블라</span>
+                <label>모임 날짜</label>
+                <span class="date">
+                    2016-12-12
+                </span>
+                <label>모임장소</label>
+                <span class="spot">
+                    과기대
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

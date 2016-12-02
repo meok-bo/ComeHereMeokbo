@@ -1,23 +1,26 @@
 <html>
   <head>
     <% include ../header.ejs %>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/edit.css">
   </head>
   <body>
     <% include ../body.ejs %>
     <br><br><br><br><br><br><br><br>
     <h1>회원정보수정</h1>
-    <form action="/users/<%=session.id%>?_method=put" method="post" enctype="multipart/form-data">
-    	<label>이메일</label><span class='err_msg'><%=err_id%></span><br>
-      <input type="text" class="email" name="email" value="<%=session.email%>" disabled><br>
-      <label>이름</label><span class='err_msg'><%=err_name%></span><br>
-      <input type="text" class="name" name="name" value="<%=session.name%>"><br>
-    	<label>비밀번호 변경</label><span class='err_msg'><%=err_pw%></span><br>
-      <input type="text" class="password" name="password" value=""><br>
-      <label>비밀번호 확인</label><span class='err_msg'><%=err_pw_confirm%></span><br>
-      <input type="text" class="password_confirm" name="password_confirm" value=""><br>
-      <label>프로필사진 변경</label><br>
-      <input type="file" class="rgt upload-hidden" name="userPhoto"><br><br>
-    	<button type="submit">확인</button><span class='err_msg'><%=err_db%></span><br>
+    <form id="user_edit" action="/users/<%=session.id%>?_method=put" method="post" enctype="multipart/form-data">
+      <div class="content">
+          <label>이메일</label><span class='err_msg'><%=err_id%></span><br>
+        <input type="text" class="email" name="email" value="<%=session.email%>" disabled><br>
+        <label>이름</label><span class='err_msg'><%=err_name%></span><br>
+        <input type="text" class="name" name="name" value="<%=session.name%>"><br>
+          <label>비밀번호 변경</label><span class='err_msg'><%=err_pw%></span><br>
+        <input type="text" class="password" name="password" value=""><br>
+        <label>비밀번호 확인</label><span class='err_msg'><%=err_pw_confirm%></span><br>
+        <input type="text" class="password_confirm" name="password_confirm" value=""><br>
+        <label>프로필사진 변경</label><br>
+        <input type="file" class="rgt upload-hidden" name="userPhoto"><br><br>
+          <button type="submit">확인</button><span class='err_msg'><%=err_db%></span><br>
+      </div>
     </form>
   </body>
 </html>

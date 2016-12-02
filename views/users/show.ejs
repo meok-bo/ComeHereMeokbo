@@ -1,16 +1,80 @@
 <html>
   <head>
     <% include ../header.ejs %>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/show.css">
   </head>
   <body>
     <% include ../body.ejs %>
-    <br><br><br><br><br><br><br><br>
+    <div class="header">
     <h1>회원정보</h1>
-  	<label>이메일</label><br>
-    <label><%=session.email%></label><br>
-    <label>이름</label><br>
-    <label><%=session.name%></label><br><br>
-    <a href="/users/<%=session.id%>/edit"><button>수정</button></a>
-    <a href="/logout"><button>로그아웃</button></a>
+    </div>
+    <div class="info_top">
+      <div class="inner">
+        <img src="/imgs/user/<%=session.img%>">
+        <label><%=session.name%></label>
+        <div class="btn_area">
+          <a href="/users/<%=session.id%>/edit"><button>수정</button></a>
+          <a href="/logout"><button>로그아웃</button></a>
+        </div>
+      </div>
+    </div>
+    <div class="info_content">
+      <div class="inner">
+        <h2>마이레시피</h2>
+        <ol class="main_recipe">
+          <li>
+            <a class="recipe tumb">
+              <img src="img/음식1.jpg">
+            </a>
+            <span class="difficulty">
+                      난이도
+                      <strong>3</strong>
+                    </span>
+            <span class="flavor">
+                      맛
+                      <strong>3</strong>
+                    </span>
+            <span class="author">
+                      <a herf="">
+                        <img src="img/회원1.jpg">
+                      </a>
+                      <strong>
+                        <a>아이디</a>
+                      </strong>
+                    </span>
+            <p>
+              <a class="call_recipe"> 레시피 제목 </a>
+            </p>
+          </li>
+          <li>
+            <a class="recipe tumb">
+              <img src="img/음식2.jpg">
+            </a>
+            <span class="difficulty">
+                      난이도
+                      <strong>3</strong>
+                    </span>
+            <span class="flavor">
+                      맛
+                      <strong>3</strong>
+                    </span>
+            <span class="author">
+                      <a herf="">
+                        <img src="img/회원2.jpg">
+                      </a>
+                      <strong>
+                        <a>아이디</a>
+                      </strong>
+                    </span>
+            <p>
+              <a class="call_recipe"> 레시피 제목 </a>
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+
+
   </body>
 </html>

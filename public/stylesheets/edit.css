@@ -1,0 +1,44 @@
+label{
+    color: #848484;
+    display: inline-block;
+}
+
+h1{
+    font-size: 40px;
+    text-align :center;
+}
+
+#user_edit{
+    display: block;
+    margin: auto;
+    background: #fafafa;
+    width: 400px;
+    text-align: center;
+}
+
+#user_edit input{
+    margin: auto;
+    width: 267px;
+    height: 52px;
+    border: 1px solid #e1e1e1;
+    color: #777;
+    font-size: 16px;
+    text-indent: 18px;
+    margin:auto;
+    font-family: 'NSL';
+}
+
+#user_edit .content{
+    display: inline-block;
+    text-align: left;
+}
+
+#user_edit button{
+    display:block;
+    margin: auto;
+    height: 40px;
+    width: 200px;
+    border: 1px solid #F7D358;
+    background: #FFBF00;
+    color: white;
+}
