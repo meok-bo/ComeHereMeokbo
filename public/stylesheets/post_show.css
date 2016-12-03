@@ -1,5 +1,6 @@
 .post_show_header{
     padding-top: 100px;
+    margin-bottom: 30px;
 }
 
 .post_show_header h1{
@@ -8,10 +9,54 @@
 }
 
 .post_show_header i{
-    font-size: 20px;
+    font-size: 30px;
     margin: 0 10px 20px 10px;
 }
 
 .post_show_header .ingredient-area label{
+    display: inline-block;
+    font-size: 30px;
+}
+
+.post_show_header .ingredient-area .item{
+    display: inline-block;
+    border-radius: 10px;
+    background: #474747;
+    padding: 5px;
+    border: 2px solid gray;
+}
+
+.post_show_header .ingredient-area .item .ingredient{
+    color : #e1e1e1;
+}
+
+.post_show_header .ingredient-area .item .ingredient-amount{
+    padding-left: 10px;
+    color : #ffffff;
+}
+
+.post_show_recipe{
     display: block;
+    width : 600px;
+    height: auto;
+    margin: auto;
+
+}
+.post_show_recipe img{
+    width: 600px;
+    height: 600px;
+    padding-top: 50px;
+    margin-bottom: 20px;
+
+}
+
+.post_show_recipe span{
+    font-size: 20px;
+    padding: 20px;
+}
+
+.title{
+    font-size: 30px;
+    padding: 30px;
+    border-top: 1px solid #cbcbcb;
 }
