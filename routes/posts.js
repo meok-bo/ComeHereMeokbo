@@ -12,6 +12,11 @@ router.get('/',function(req,res){
 		res.send(posts);
 	});
 });
+router.get('/del',function(req,res){
+	Post.remove({},function(err,output){
+		res.redirect('/');
+	});
+});
 
 router.get('/show',function(req,res){
 	var data={session:null}
@@ -56,8 +61,8 @@ router.get('/new',function(req,res){
 
 router.post('/new',function(req,res){
 	var form=new multiparty.Form();
-	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,session:null};
-	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[];
+	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,err_taste:null,err_diff:null,session:null,taste:null,diff:null};
+	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[],_taste,_diff;
 	var temp_cnt=0;
 	var name_cnt=0;
 	var amount_cnt=0;
@@ -87,6 +92,14 @@ router.post('/new',function(req,res){
 				_cookAmount=value;
 				data.cookAmount=_cookAmount;
 			}
+			else if(name=="taste"){
+				_taste=value;
+				data.taste=_taste;
+			}
+			else if(name=="diff"){
+				_diff=value;
+				data.diff=_diff;
+			}
 			else if(name=="name"){
 				if(value){
 					if(_ingredient[name_cnt]){
@@ -109,7 +122,7 @@ router.post('/new',function(req,res){
 					amount_cnt++;
 				}
 			}
-			else if(name="comment"){
+			else if(name=="comment"){
 				if(_recipe[comment_cnt]){
 					_recipe[j].comment=value;
 				}
@@ -134,20 +147,22 @@ router.post('/new',function(req,res){
 				writeStream.filename = fileName;
 				part.pipe(writeStream);
 
+				if(_recipe[temp_cnt]){
+					_recipe[temp_cnt].img=fileName;
+				}
+				else{
+					_recipe[temp_cnt]={comment:null,img:fileName};
+				}
+                temp_cnt++;
+
 				part.on('end',function(){
-					if(_recipe[temp_cnt]){
-						_recipe[temp_cnt].img=fileName;
-					}
-					else{
-						_recipe[temp_cnt]={comment:null,img:fileName};
-					}
-	                temp_cnt++;
 	                writeStream.end();
 	           });
 			}
 		});
 
 		form.on('close',function(){
+			var num_taste=Number()
 			if(!_title){
 				data.err_title="요리제목을 입력해주세요";
 				res.render('posts/new',data);
@@ -158,6 +173,14 @@ router.post('/new',function(req,res){
 			}
 			else if(!_recipe[0]){
 				data.err_recipe="레시피정보를 입력해주세요";
+				res.render('posts/new',data);
+			}
+			else if(!_taste){
+				data.err_taste="맛을 평가해주세요";
+				res.render('posts/new',data);
+			}
+			else if(!_diff){
+				data.err_diff="난이도를 평가해주세요";
 				res.render('posts/new',data);
 			}
 			else{
@@ -174,6 +197,8 @@ router.post('/new',function(req,res){
 						_Post.author=_author;
 						_Post.ingredient=_ingredient;
 						_Post.recipe=_recipe;
+						_Post.taste=_taste;
+						_Post.diff=_diff;
 
 						_Post.save(function(err){
 							if(err){
@@ -214,6 +239,75 @@ router.post('/new',function(req,res){
 });
 
 //검색 route
+router.get('/search/taste',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{taste:-1}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+});
+
+router.get('/search/diff',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{diff:1}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+});
 
 router.get('/search/title',function(req,res){
 	if(req.query.search_opt=="author"){

@@ -42,28 +42,6 @@
 			});
 		}
 
-		/*
-		$('#meeting_form').submit(function(event){
-			event.preventDefault();
-			var data={
-				title:$('#title').val(),
-				name:$('#text').val(),
-				date:$('#date').val(),
-				time:$('#time').val(),
-				address:$('#search_address').val(),
-				latlng:marker.getPosition()
-			};
-			//console.log(data.latlng);
-			$.ajax({
-				url:'/meetings/new',
-				type:'post',
-				data:data,
-				success:function(result){
-					//$('#latlng').attr("value",result.latlng);
-				}
-			});
-		});*/
-
     </script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8bk04KxVxc0fnprYkxr-NqfVGDY3SxgI&callback=initMap">
@@ -84,6 +62,6 @@
 		<input type="hidden" id="latlng" name="latlng">
 		<input type="submit" value="완료">
 	</form>
-<% include ./footer.ejs %>
+<% include ../footer.ejs %>
 </body>
 </html>

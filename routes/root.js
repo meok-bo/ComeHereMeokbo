@@ -1,9 +1,10 @@
 var express=require('express');
 var router=express.Router();
 var User=require('../models/User');
+var Post=require('../models/Post');
 
 router.get('/',function(req,res){
-	var data={session:null};
+	var data={session:null,taste:null,diff:null};
 	if(req.session.email) {
 		data.session={
 			email:req.session.email,
@@ -12,7 +13,13 @@ router.get('/',function(req,res){
 			img:req.session.img
 		};
 	};
-    res.render('index',data);
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{taste:-1}}],function(err,posts){
+		data.taste=posts;
+		Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{diff:1}}],function(err,posts){
+			data.diff=posts;
+			res.render('index',data);
+		});
+	});
 });
 
 router.get('/login',function(req,res){

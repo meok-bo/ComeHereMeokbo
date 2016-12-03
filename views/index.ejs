@@ -26,107 +26,40 @@
               <strong>"맛으로 먹보"</strong>
             </h3>
             <div calss="btn_area">
-              <a class="btn_more"> 더보기 </a>
+              <a class="btn_more" href="/posts/search/taste"> 더보기 </a>
             </div>
             </dt>
             <dd>
               <ol class="main_recipe">
+                <% for(i=0;i<taste.length;i++){ %>
                 <li>
-                  <a class="recipe tumb">
-                    <img src="imgs/user/음식1.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/회원1.jpg">
+                      <a class="recipe tumb" href="/posts/show/<%=taste[i]._id %>">
+                          <img src="/imgs/user/<%=taste[i].recipe[0].img %>">
                       </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
-                <li>
-                  <a class="recipe tumb">
-                    <img src="imgs/user/음식2.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/회원2.jpg">
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
-                <li>
-                  <a class="recipe tumb">
-                    <img src="imgs/user/음식3.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/회원3.jpg">
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
-                <li>
-                  <a class="recipe tumb">
-                    <img src="imgs/user/음식4.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/회원4.jpg">
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
+                      <span class="difficulty">
+                난이도
+                <strong><%=taste[i].diff %></strong>
+              </span>
+                      <span class="flavor">
+                맛
+                <strong><%=taste[i].taste %></strong>
+              </span>
+                      <span class="author">
+                <a herf="">
+                  <img src="/imgs/user/<%=taste[i].user[0].img %>">
+                </a>
+                <strong>
+                  <a><%=taste[i].user[0].name %></a>
+                </strong>
+              </span>
+                      <p>
+                          <a class="call_recipe"> <%=taste[i].title %> </a>
+                      </p>
+                  </li>
+                <% if(i==3) break; %>
+                <% } %>
+
+              </ol>
             </dd>
           </dl>
         </div>
@@ -138,107 +71,41 @@
               <strong>"따라해 먹보"</strong>
             </h3>
             <div calss="btn_area">
-              <a class="btn_more"> 더보기 </a>
+              <a class="btn_more" href="/posts/search/diff"> 더보기 </a>
             </div>
             </dt>
             <dd>
               <ol class="main_recipe">
+
+                <% for(i=0;i<diff.length;i++){ %>
                 <li>
-                  <a class="recipe tumb">
-                    <img src="imgs/user/음식3.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/회원3.jpg">
+                      <a class="recipe tumb" href="/posts/show/<%=diff[i]._id %>">
+                          <img src="/imgs/user/<%=diff[i].recipe[0].img %>">
                       </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
-                <li>
-                  <a class="recipe tumb">
-                    <img src="imgs/user/음식2.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/회원2.jpg">
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
-                <li>
-                  <a class="recipe tumb">
-                    <img>
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img>
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
-                <li>
-                  <a class="recipe tumb">
-                    <img src="img/음식3.jpg">
-                  </a>
-                  <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-                  <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-                  <span class="author">
-                      <a herf="">
-                        <img>
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-                  <p>
-                    <a class="call_recipe"> 레시피 제목 </a>
-                  </p>
-                </li>
+                      <span class="difficulty">
+                난이도
+                <strong><%=diff[i].diff %></strong>
+              </span>
+                      <span class="flavor">
+                맛
+                <strong><%=diff[i].taste %></strong>
+              </span>
+                      <span class="author">
+                <a herf="">
+                  <img src="/imgs/user/<%=diff[i].user[0].img %>">
+                </a>
+                <strong>
+                  <a><%=diff[i].user[0].name %></a>
+                </strong>
+              </span>
+                      <p>
+                          <a class="call_recipe"> <%=diff[i].title %> </a>
+                      </p>
+                  </li>
+                <% if(i==3) break; %>
+                <% } %>
+
+              </ol>
             </dd>
           </dl>
         </div>
