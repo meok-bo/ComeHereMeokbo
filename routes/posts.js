@@ -13,6 +13,11 @@ router.get('/',function(req,res){
 	});
 });
 
+router.get('/show',function(req,res){
+	var data={session:null}
+	res.render('posts/show', data);
+});
+
 router.get('/new',function(req,res){
 	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,session:null};
 
