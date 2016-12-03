@@ -56,8 +56,8 @@ router.get('/new',function(req,res){
 
 router.post('/new',function(req,res){
 	var form=new multiparty.Form();
-	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,session:null};
-	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[];
+	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,err_taste:null,err_diff:null,session:null,taste:null,diff:null};
+	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[],_taste,_diff;
 	var temp_cnt=0;
 	var name_cnt=0;
 	var amount_cnt=0;
@@ -87,6 +87,14 @@ router.post('/new',function(req,res){
 				_cookAmount=value;
 				data.cookAmount=_cookAmount;
 			}
+			else if(name=="taste"){
+				_taste=value;
+				data.taste=_taste;
+			}
+			else if(name=="diff"){
+				_diff=value;
+				data.diff=_diff;
+			}
 			else if(name=="name"){
 				if(value){
 					if(_ingredient[name_cnt]){
@@ -109,7 +117,7 @@ router.post('/new',function(req,res){
 					amount_cnt++;
 				}
 			}
-			else if(name="comment"){
+			else if(name=="comment"){
 				if(_recipe[comment_cnt]){
 					_recipe[j].comment=value;
 				}
@@ -154,6 +162,14 @@ router.post('/new',function(req,res){
 			}
 			else if(!_cookTime){
 				data.err_cookTime="조리시간을 입력해주세요";
+				res.render('posts/new',data);
+			}
+			else if(!_taste){
+				data.err_taste="맛을 평가해주세요";
+				res.render('posts/new',data);
+			}
+			else if(!_diff){
+				data.err_diff="난이도를 평가해주세요";
 				res.render('posts/new',data);
 			}
 			else if(!_recipe[0]){

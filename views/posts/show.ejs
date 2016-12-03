@@ -8,32 +8,38 @@
 <div id="container">
     <div class="inner">
         <section class="post_show_header">
-            <h1>레시피제목</h1>
+            <h1><%=post[0].title %></h1>
             <div class="time-area">
                 <label><i class="fa fa-clock-o" aria-hidden="true"></i>조리시간</label>
-                <span class="time">min</span>
+                <span class="time"><%=post[0].cookTime %>min</span>
             </div>
             <div class="ingredient-area">
                 <label><i class="fa fa-check-square-o" aria-hidden="true"></i>재료리스트</label>
-                <span class="amount">2인분 기준</span>
+                <% if(post[0].cookAmount){ %>
+                <span class="amount"><%=post[0].cookAmount %>인분 기준</span>
+                <% } %>
                 <br>
+                <% if(post[0].ingredient) { %>
+                <% for(i=0;i<post[0].ingredient.length;i++) {%>
                <div class="item">
-                   <span class="ingredient">삼겹살</span>
-                   <strong class="ingredient-amount">2근</strong>
+                   <span class="ingredient"><%=post[0].ingredient[i].name %></span>
+                   <strong class="ingredient-amount"><%=post[0].ingredient[i].amount %></strong>
                </div>
-                <div class="item">
-                    <span class="ingredient">치킨</span>
-                    <strong class="ingredient-amount">1마리</strong>
-                </div>
+               <% }}%>
+
             </div>
         </section>
         <h1 class="title">조리 방법</h1>
+        <% if(post[0].recipe){ %>
         <section class="post_show_recipe">
+            <% for(i=0;i<post[0].recipe.length;i++){ %>
             <div class="recipe-item">
-                <img class="recipe_img" src="/imgs/user/음식1.jpg">
-                <span class="recipe_text">1. 후라이팬에 전부 넣고 볶습니다.</span>
+                <img class="recipe_img" src="/imgs/user/<%=post[0].recipe[i].img %>">
+                <span class="recipe_text"><%=i+1 %>. <%=post[0].recipe[i].comment %></span>
             </div>
+            <% } %>
         </section>
+        <% } %>
     </div>
 </div>
 </body>

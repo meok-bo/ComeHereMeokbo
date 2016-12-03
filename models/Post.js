@@ -6,7 +6,9 @@ var postSchema=mongoose.Schema({
 	cookAmount:{type:String},
 	ingredient:{type:mongoose.Schema.Types.Mixed},
 	recipe:{type:mongoose.Schema.Types.Mixed},
-	author:{type:String, ref:'user',required:true}
+	author:{type:String, ref:'user',required:true},
+	taste:{type:String,required:true},
+	diff:{type:String,required:true}
 });
 
 // model & export
