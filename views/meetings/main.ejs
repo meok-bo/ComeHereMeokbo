@@ -16,24 +16,6 @@
 	          zoom: 9
         });
 
-	    
-        var contentStr="<img src='./abc.gif' width='50' height='50'>탕슈육";
-        var infowindow=new google.maps.InfoWindow({
-          content:contentStr
-        });
-        var maker1=new google.maps.Marker({
-          position:{lat: 37.56641923090, lng: 126.9778741551},
-          map:map,
-          animation: google.maps.Animation.DROP
-        });
-        maker1.addListener('click',function(){
-          infowindow.open(map,maker1);
-        })
-
-        $('#temp').text("<%=location.length%>");
-
-      
-
 
 		var temp_content;
 		var _lat,_lng;
@@ -74,7 +56,6 @@
         <div id="map"></div>
     </div>
 </div>
-	<a href="/meetings/new"><button id='create_meeting_btn'>모임 만들기</button></a>
 	<div id="temp"></div>
 <div class="meeting_content">
     <div class="inner">

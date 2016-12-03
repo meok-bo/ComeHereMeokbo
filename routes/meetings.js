@@ -11,6 +11,11 @@ router.get('/all',function(req,res){
 		res.send(meetings);
 	});
 })
+router.get('/del',function(req,res){
+	Meeting.remove({},function(err,output){
+		res.redirect('/');
+	});
+});
 
 router.get('/',function(req,res){
 	data={session:null,location:null};

@@ -14,7 +14,6 @@
         <label><%=session.name%></label>
         <div class="btn_area">
           <a href="/users/<%=session.id%>/edit"><button>수정</button></a>
-          <a href="/logout"><button>로그아웃</button></a>
         </div>
       </div>
     </div>
@@ -22,106 +21,82 @@
       <div class="inner">
         <h2>마이레시피</h2>
           <div calss="btn_area">
+              <% if(post){ if(post.length>4){ %>
               <a class="btn_more" href="/posts/search/taste"> 더보기 </a>
+              <% }} %>
           </div>
         <ol class="main_recipe">
-          <li>
-            <a class="recipe tumb">
-              <img src="img/음식1.jpg">
-            </a>
-            <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-            <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-            <span class="author">
-                      <a herf="">
-                        <img src="img/회원1.jpg">
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-            <p>
-              <a class="call_recipe"> 레시피 제목 </a>
-            </p>
-          </li>
-          <li>
-            <a class="recipe tumb">
-              <img src="img/음식2.jpg">
-            </a>
-            <span class="difficulty">
-                      난이도
-                      <strong>3</strong>
-                    </span>
-            <span class="flavor">
-                      맛
-                      <strong>3</strong>
-                    </span>
-            <span class="author">
-                      <a herf="">
-                        <img src="img/회원2.jpg">
-                      </a>
-                      <strong>
-                        <a>아이디</a>
-                      </strong>
-                    </span>
-            <p>
-              <a class="call_recipe"> 레시피 제목 </a>
-            </p>
-          </li>
+          
+          <% if(post){ %>
+          <% for(var i in post) { %>
+            <li>
+                <a class="recipe tumb" href="/posts/show/<%=post[i]._id %>">
+                    <img src="/imgs/user/<%=post[i].recipe[0].img %>">
+                </a>
+                <span class="difficulty">
+          난이도
+          <strong><%=post[i].diff %></strong>
+        </span>
+                <span class="flavor">
+          맛
+          <strong><%=post[i].taste %></strong>
+        </span>
+                <span class="author">
+          <a herf="">
+            <img src="/imgs/user/<%=post[i].user[0].img %>">
+          </a>
+          <strong>
+            <a><%=post[i].user[0].name %></a>
+          </strong>
+        </span>
+                <p>
+                    <a class="call_recipe"> <%=post[i].title %> </a>
+                </p>
+            </li>
+          <%if(i==3){break;}%>
+          <% } %>
+          <% } %>
+
         </ol>
           </div>
         <div class="my_meeting">
             <div class="inner">
               <h2>내가 등록한 모임</h2>
               <div calss="btn_area">
+                  <% if(meeting){ if(meeting.length>4){ %>
                   <a class="btn_more" href="/posts/search/taste"> 더보기 </a>
+                  <% }} %>
               </div>
               <ol class="main_recipe">
+                  
+                <% if(meeting){ %>
+                <% for(var i in meeting) { %>
                   <li>
-                      <a class="recipe tumb">
-                          <img src="img/음식1.jpg">
+                    <a class="recipe tumb">
+                        <img src="imgs/user/<%=meeting[i].img%>">
+                    </a>
+                    <span class="author">
+                      <a herf="">
+                        <img src="imgs/user/<%=meeting[i].user[0].img%>">
                       </a>
-                      <span class="author">
-                          <a herf="">
-                            <img src="img/회원1.jpg">
-                          </a>
-                          <strong>
-                            <a>아이디</a>
-                          </strong>
-                        </span>
-                      <p>
-                          <a class="call_recipe"> 레시피 제목 </a>
-                      </p>
-                  </li>
-                  <li>
-                      <a class="recipe tumb">
-                          <img src="img/음식2.jpg">
-                      </a>
-                      <span class="difficulty">
-                          난이도
-                          <strong>3</strong>
-                        </span>
-                      <span class="flavor">
-                          맛
-                          <strong>3</strong>
-                        </span>
-                      <span class="author">
-                          <a herf="">
-                            <img src="img/회원2.jpg">
-                          </a>
-                          <strong>
-                            <a>아이디</a>
-                          </strong>
-                        </span>
-                      <p>
-                          <a class="call_recipe"> 레시피 제목 </a>
-                      </p>
-                  </li>
+                      <strong>
+                        <a><%=meeting[i].user[0].name%></a>
+                      </strong>
+                    </span>
+                    <p>
+                        <a class="call_recipe"> <%=meeting[i].title%> </a>
+                    </p>
+                    <span class="date"><%=meeting[i].date%></span>
+                    <% if(meeting[i].address.length>5){ %>
+                    <span class="spot"><%=meeting[i].address.substr(0,5)+"..." %></span>
+                    <% } else{ %>
+                    <span class="spot"><%=meeting[i].address%></span>
+                    <% } %>
+                </li>
+                <%if(i==3){break;}%>
+                <% } %>
+                <% } %>
+
               </ol>
                 </div>
           </div>

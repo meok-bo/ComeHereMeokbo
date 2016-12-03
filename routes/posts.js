@@ -241,13 +241,14 @@ router.post('/new',function(req,res){
 //검색 route
 router.get('/search/taste',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{taste:-1}}],function(err,posts){
-		var data={now_page:0,total_page:0,list:null,session:null};
+		var data={now_page:0,total_page:0,list:null,session:null,type:"taste",key:null};
 		var page;
 		if(req.session.email) {
 			data.session={
 				email:req.session.email,
 				name:req.session.name,
-				id:req.session.id
+				id:req.session.id,
+				img:req.session.img
 			};
 		};
 
@@ -261,11 +262,11 @@ router.get('/search/taste',function(req,res){
 		}else {
 			if((posts.length%12)==0){
 				data.now_page=page;
-				data.total_page=posts.length/12;
+				data.total_page=Math.floor((posts.length/12)-1);
 				data.list=posts;
 			}else{
 				data.now_page=page;
-				data.total_page=(posts.length/12)+1;
+				data.total_page=Math.floor(posts.length/12);
 				data.list=posts;
 			}
 		}
@@ -276,13 +277,14 @@ router.get('/search/taste',function(req,res){
 
 router.get('/search/diff',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{diff:1}}],function(err,posts){
-		var data={now_page:0,total_page:0,list:null,session:null};
+		var data={now_page:0,total_page:0,list:null,session:null,type:"diff",key:null};
 		var page;
 		if(req.session.email) {
 			data.session={
 				email:req.session.email,
 				name:req.session.name,
-				id:req.session.id
+				id:req.session.id,
+				img:req.session.img
 			};
 		};
 
@@ -296,11 +298,11 @@ router.get('/search/diff',function(req,res){
 		}else {
 			if((posts.length%12)==0){
 				data.now_page=page;
-				data.total_page=posts.length/12;
+				data.total_page=Math.floor((posts.length/12)-1);
 				data.list=posts;
 			}else{
 				data.now_page=page;
-				data.total_page=(posts.length/12)+1;
+				data.total_page=Math.floor(posts.length/12);
 				data.list=posts;
 			}
 		}
@@ -316,13 +318,14 @@ router.get('/search/title',function(req,res){
 		res.redirect('/posts/search/ingredient?value='+req.query.value);
 	}else{
 		Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:{$regex:req.query.value}}}],function(err,posts){
-			var data={now_page:0,total_page:0,list:null,session:null};
+			var data={now_page:0,total_page:0,list:null,session:null,type:"title",key:req.query.value};
 			var page;
 			if(req.session.email) {
 				data.session={
 					email:req.session.email,
 					name:req.session.name,
-					id:req.session.id
+					id:req.session.id,
+					img:req.session.img
 				};
 			};
 
@@ -336,11 +339,11 @@ router.get('/search/title',function(req,res){
 			}else {
 				if((posts.length%12)==0){
 					data.now_page=page;
-					data.total_page=posts.length/12;
+					data.total_page=Math.floor((posts.length/12)-1);
 					data.list=posts;
 				}else{
 					data.now_page=page;
-					data.total_page=(posts.length/12)+1;
+					data.total_page=Math.floor(posts.length/12);
 					data.list=posts;
 				}
 			}
@@ -352,13 +355,14 @@ router.get('/search/title',function(req,res){
 
 router.get('/search/author',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,posts){
-		var data={now_page:0,total_page:0,list:null,session:null};
+		var data={now_page:0,total_page:0,list:null,session:null,type:"author",key:req.query.value};
 		var page;
 		if(req.session.email) {
 			data.session={
 				email:req.session.email,
 				name:req.session.name,
-				id:req.session.id
+				id:req.session.id,
+				img:req.session.img
 			};
 		};
 
@@ -372,11 +376,11 @@ router.get('/search/author',function(req,res){
 		}else {
 			if((posts.length%12)==0){
 				data.now_page=page;
-				data.total_page=posts.length/12;
+				data.total_page=Math.floor((posts.length/12)-1);
 				data.list=posts;
 			}else{
 				data.now_page=page;
-				data.total_page=(posts.length/12)+1;
+				data.total_page=Math.floor(posts.length/12);
 				data.list=posts;
 			}
 		}
@@ -388,13 +392,14 @@ router.get('/search/author',function(req,res){
 
 router.get('/search/author/:id',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:req.params.id}}}}],function(err,posts){
-		var data={now_page:0,total_page:0,list:null,session:null};
+		var data={now_page:0,total_page:0,list:null,session:null,type:"author",key:req.query.value};
 		var page;
 		if(req.session.email) {
 			data.session={
 				email:req.session.email,
 				name:req.session.name,
-				id:req.session.id
+				id:req.session.id,
+				img:req.session.img
 			};
 		};
 
@@ -408,11 +413,11 @@ router.get('/search/author/:id',function(req,res){
 		}else {
 			if((posts.length%12)==0){
 				data.now_page=page;
-				data.total_page=posts.length/12;
+				data.total_page=Math.floor((posts.length/12)-1);
 				data.list=posts;
 			}else{
 				data.now_page=page;
-				data.total_page=(posts.length/12)+1;
+				data.total_page=Math.floor(posts.length/12);
 				data.list=posts;
 			}
 		}
@@ -424,13 +429,14 @@ router.get('/search/author/:id',function(req,res){
 
 router.get('/search/ingredient',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{ingredient:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,posts){
-		var data={now_page:0,total_page:0,list:null,session:null};
+		var data={now_page:0,total_page:0,list:null,session:null,type:"ingredient",key:req.query.value};
 		var page;
 		if(req.session.email) {
 			data.session={
 				email:req.session.email,
 				name:req.session.name,
-				id:req.session.id
+				id:req.session.id,
+				img:req.session.img
 			};
 		};
 
@@ -444,11 +450,11 @@ router.get('/search/ingredient',function(req,res){
 		}else {
 			if((posts.length%12)==0){
 				data.now_page=page;
-				data.total_page=posts.length/12;
+				data.total_page=Math.floor((posts.length/12)-1);
 				data.list=posts;
 			}else{
 				data.now_page=page;
-				data.total_page=(posts.length/12)+1;
+				data.total_page=Math.floor(posts.length/12);
 				data.list=posts;
 			}
 		}

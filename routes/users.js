@@ -4,10 +4,18 @@ var User=require('../models/User');
 var multiparty=require('multiparty');
 var fs=require('fs');
 var mongoose=require('mongoose');
+var Post=require('../models/Post');
+var Meeting=require('../models/Meeting');
 
 router.get('/',function(req,res){
 	User.find({},function(err,users){
 		res.send(users);
+	});
+});
+
+router.get('/del',function(req,res){
+	User.remove({},function(err,output){
+		res.redirect('/');
 	});
 });
 
@@ -82,7 +90,7 @@ router.post('/new',function(req,res){
 });
 
 router.get('/:id',function(req,res){
-	var data={session:null};
+	var data={session:null,post:null,meeting:null};
 	if(!req.session.email) res.redirect('/');
 	else{
 		if(req.params.id!=req.session.id) res.redirect('/');
@@ -93,7 +101,13 @@ router.get('/:id',function(req,res){
 				id:req.session.id,
 				img:req.session.img
 			};
-			res.render('users/show',data);
+			Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{email:req.session.email}}}}],function(err,post){
+				data.post=post;
+				Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{email:req.session.email}}}}],function(err,meeting){
+					data.meeting=meeting;
+					res.render('users/show',data);
+				});
+			});
 		}
 	}
 });
@@ -212,42 +226,6 @@ router.put('/:id',function(req,res){
 		});
 
 		form.parse(req);
-		/*
-		if(_pw && !_pw_confirm){
-			data.err_pw_confirm="비밀번호를 한번 더 입력해주세요";
-			res.render('users/edit',data);
-		}
-		if(_pw && _pw!=_pw_confirm){
-			data.err_pw="비밀번호가 다릅니다";
-			res.render('users/edit',data);
-		}
-		if(_name!=req.session.name){
-			User.findOne({name:_name},function(err,user){
-				if(user){
-					data.err_name="중복된 이름입니다"
-					res.render('users/edit',data);
-				}
-				else{
-					User.findOne({name:req.session.name},function(err,user){
-						user.name=_name;
-						if(_pw){
-							user.password=_pw;
-							user.save(function(err){
-								req.session.name=_name;
-								res.redirect(path);
-							});
-						}
-						else{
-							user.save(function(err){
-								req.session.name=_name;
-								res.redirect(path);
-							});
-						}
-					});
-					
-				}
-			});
-		}*/
 	}
 });
 
