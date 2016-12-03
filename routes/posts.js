@@ -142,14 +142,15 @@ router.post('/new',function(req,res){
 				writeStream.filename = fileName;
 				part.pipe(writeStream);
 
+				if(_recipe[temp_cnt]){
+					_recipe[temp_cnt].img=fileName;
+				}
+				else{
+					_recipe[temp_cnt]={comment:null,img:fileName};
+				}
+                temp_cnt++;
+
 				part.on('end',function(){
-					if(_recipe[temp_cnt]){
-						_recipe[temp_cnt].img=fileName;
-					}
-					else{
-						_recipe[temp_cnt]={comment:null,img:fileName};
-					}
-	                temp_cnt++;
 	                writeStream.end();
 	           });
 			}
@@ -164,16 +165,16 @@ router.post('/new',function(req,res){
 				data.err_cookTime="조리시간을 입력해주세요";
 				res.render('posts/new',data);
 			}
+			else if(!_recipe[0]){
+				data.err_recipe="레시피정보를 입력해주세요";
+				res.render('posts/new',data);
+			}
 			else if(!_taste){
 				data.err_taste="맛을 평가해주세요";
 				res.render('posts/new',data);
 			}
 			else if(!_diff){
 				data.err_diff="난이도를 평가해주세요";
-				res.render('posts/new',data);
-			}
-			else if(!_recipe[0]){
-				data.err_recipe="레시피정보를 입력해주세요";
 				res.render('posts/new',data);
 			}
 			else{
@@ -190,6 +191,8 @@ router.post('/new',function(req,res){
 						_Post.author=_author;
 						_Post.ingredient=_ingredient;
 						_Post.recipe=_recipe;
+						_Post.taste=_taste;
+						_Post.diff=_diff;
 
 						_Post.save(function(err){
 							if(err){
