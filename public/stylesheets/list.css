@@ -24,6 +24,10 @@
     line-height: 44px\0;
 }
 
+.paging a .fa{
+    margin: 10px;
+}
+
 .list_search{
     margin: 20px;
     display: block;
