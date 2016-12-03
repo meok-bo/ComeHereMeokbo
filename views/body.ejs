@@ -15,19 +15,24 @@
 	      <ul>
 	        <li>
 	          <% if(session) { %>
-	          <a href="/users/<%=session.id%>">
-	            <em class="ico_user"></em>
-	            <span class="user">
-	              "로그인"
-	              ::after
-	            </span>
-	          </a>
+				<div class="btn_profile">
+					<div class="user_area">
+					  <img class="user_tumb" src="/imgs/user/<%=session.img%>">
+					  <strong><%=session.name%></strong>
+					  <span class="user_login">
+						  <ul>
+							  <li><a href="/users/<%=session.id%>">마이페이지</a></li>
+							  <li><a href="/users/<%=session.id%>/edit">프로필수정</a></li>
+							  <li><a href="/logout">로그아웃</a></li>
+						  </ul>
+					  </span>
+					</div>
+				</div>
 	          <% } else { %>
 	          <a href="/login">
 	            <em class="ico_user"></em>
 	            <span class="user">
-	              "로그인"
-	              ::after
+	              로그인
 	            </span>
 	          </a>
 	          <% } %>
@@ -37,16 +42,14 @@
 	          <a href="/posts/new" class="btn_add_recipe">
 	            <em class="ico_plus"></em>
 	            <span class="plus">
-	              "내 레시피 등록하기"
-	              ::after
+	              내 레시피 등록하기
 	            </span>
 	          </a>
 	          <% } else { %>
 	          <a href="/login" class="btn_add_recipe">
 	            <em class="ico_plus"></em>
 	            <span class="plus">
-	              "내 레시피 등록하기"
-	              ::after
+	              내 레시피 등록하기
 	            </span>
 	          </a>
 	          <% } %>
@@ -55,8 +58,7 @@
 	          <a calss="btn_add_meeting" href="/meetings/new">
 	            <em class="ico_map"></em>
 	            <span class="map">
-	              "모임 등록하기"
-	              ::after == $0
+	              모임 등록하기
 	            </span>
 	          </a>
 	        </li>
@@ -73,16 +75,13 @@
 	    <div class="line_map">
 	      <ul class="menu_btn">
 	        <li>
-	          <a href="/posts/search/taste"><strong>맛</strong></a>
+	          <a href="/posts/search/taste"><i class="fa fa-cutlery" aria-hidden="true"></i><strong>맛</strong></a>
 	        </li>
 	        <li>
-	          <a href="/posts/search/diff"><strong>쉽게</strong></a>
+	          <a href="/posts/search/diff"><i class="fa fa-etsy" aria-hidden="true"></i><strong>쉽게</strong></a>
 	        </li>
 	        <li>
-	          <a href=""><strong>검색</strong></a>
-	        </li>
-	        <li>
-	          <a href="/meetings"><strong>모임</strong></a>
+	          <a href="/meetings"><i class="fa fa-map-marker" aria-hidden="true"></i><strong>모임</strong></a>
 	        </li>
 	      </ul>
 	    </div>

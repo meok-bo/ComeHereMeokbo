@@ -74,16 +74,28 @@ legend{
   display: none;
 }
 
+.account_area .btn_profile .user_area{
+  outline: none;
+  text-decoration: none;
+  color: #444;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  float: right;
+  margin-top: 0px;
+}
+
 .account_area li a{
   display: block;
   float: right;
   margin-top: 0px;
 }
 
-
 #header .logo a{
+  position: relative;
   width: 140px;
   height: 53px;
+  z-index: 10;
   background: url("../imgs/page/title.png") 0 0;
   background-repeat: no-repeat;
   float: left;
@@ -119,6 +131,14 @@ legend{
   background-size: contain;
 }
 
+.account_area li a:hover span {
+  visibility: visible;
+}
+
+.account_area li .user_area:hover span {
+  visibility: visible;
+}
+
 .account_area li span {
   display: block;
   position: relative;
@@ -131,8 +151,78 @@ legend{
   white-space: nowrap;
   visibility: hidden;
   text-align: center;
-  font-size: 12px;
-  padding: 1px 0;
+  font-size: 10px;
+  padding: 3px 0;
+  z-index: 2;
+}
+
+.account_area li img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.account_area .btn_profile{
+  position: relative;
+  width: auto;
+}
+
+.account_area .btn_profile>strong {
+  display: inline-block;
+  font-size: 13px;
+  white-space: nowrap;
+  color: #fff;
+  font-family: 'NSL';
+  line-height: 30px;
+  margin: 2px 4px 0;
+  position: relative;
+  margin-top: 4px\0;
+}
+
+.account_area li span:after {
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  top: -3px;
+  left: 42%;
+  content: '';
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 4px 3px 4px;
+  border-color: transparent transparent #586508 transparent;
+  border-width: 0 5px 5px 5px;
+}
+
+.account_area li .map{
+  position: relative;
+  left: 30px;
+
+}
+
+.account_area li .plus {
+  margin-left: -50px;
+  width: 107px;
+  position: relative;
+  left: 30px;
+}
+
+.account_area li .user {
+  margin-left: -5px;
+  width: 44px;
+}
+
+.account_area li .user_login {
+  margin-left: -5px;
+  width: 70px;
+}
+
+.account_area li .user_login a{
+  float: none;
+  display: inline-block;
+  width: 70px;
+  color: #fff;
+  text-align: center;
 }
 
 .bar_gnb {
@@ -166,11 +256,23 @@ legend{
 }
 
 .line_map li a{
-  width: 180px;
+  width: 240px;
   border-left: 1px solid gray;
   display: inline-block;
   padding: 10px 0  10px 0 ;
   margin-top: 5px;
-  font-size: ;
   font-family: 'NST;
+}
+
+.line_map li:last-child{
+  border-right: 1px solid gray;
+}
+
+.line_map li i{
+  font-size: 20px;
+}
+
+
+.line_map li strong{
+  padding-left : 10px;
 }

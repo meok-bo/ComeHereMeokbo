@@ -105,7 +105,8 @@ router.get('/:id/edit',function(req,res){
 	data.session={
 		email:req.session.email,
 		name:req.session.name,
-		id:req.session.id
+		id:req.session.id,
+		img:req.session.img
 	};
 	res.render('users/edit',data);
 });

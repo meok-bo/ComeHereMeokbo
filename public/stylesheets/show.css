@@ -48,3 +48,26 @@ h1{
 h2{
     color:#A4A4A4;
 }
+
+.btn_area{
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+}
+
+.btn_more{
+    display: block;
+    float: right;
+    color: #b0a69f;
+    font-size: 14px;
+    background: url(http://d1hk7gw6lgygff.cloudfront.net/assets/_img/main/btn_more-42c3e45b11a55c0314b0e04b64217261.png) right center no-repeat;
+    box-sizing: border-box;
+    font-family: 'NS';
+    padding: 1px 20px 0 0;
+}
+
+.my_meeting{
+    background: #E0F8E0;
+    padding-top: 10px;
+    width: 100%;
+}
