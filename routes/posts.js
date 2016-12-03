@@ -12,6 +12,11 @@ router.get('/',function(req,res){
 		res.send(posts);
 	});
 });
+router.get('/del',function(req,res){
+	Post.remove({},function(err,output){
+		res.redirect('/');
+	});
+});
 
 router.get('/show',function(req,res){
 	var data={session:null}
@@ -157,6 +162,7 @@ router.post('/new',function(req,res){
 		});
 
 		form.on('close',function(){
+			var num_taste=Number()
 			if(!_title){
 				data.err_title="요리제목을 입력해주세요";
 				res.render('posts/new',data);
@@ -233,6 +239,75 @@ router.post('/new',function(req,res){
 });
 
 //검색 route
+router.get('/search/taste',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{taste:-1}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+});
+
+router.get('/search/diff',function(req,res){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$sort:{diff:1}}],function(err,posts){
+		var data={now_page:0,total_page:0,list:null,session:null};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		else page=1;
+
+		if(posts==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((posts.length%12)==0){
+				data.now_page=page;
+				data.total_page=posts.length/12;
+				data.list=posts;
+			}else{
+				data.now_page=page;
+				data.total_page=(posts.length/12)+1;
+				data.list=posts;
+			}
+		}
+		//res.send(data);
+		res.render('posts/list',data);
+	});
+});
 
 router.get('/search/title',function(req,res){
 	if(req.query.search_opt=="author"){
