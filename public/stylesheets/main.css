@@ -40,10 +40,10 @@ dd{
 }
 
 .sec_main_recipe .orange{
-  background-color: orange;
+  background-color: #F5ECCE;
   width: 100%;
-  height: 500px;
-  border: 1px solid black;
+  height: 600px;
+  border: 1px solid #ddd;
 }
 
 
