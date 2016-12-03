@@ -18,6 +18,26 @@ router.get('/show',function(req,res){
 	res.render('posts/show', data);
 });
 
+router.get('/show/:id',function(req,res){
+	var data={session:null,post:null};
+	if(req.session.email){
+		data.session={
+			email:req.session.email,
+			name:req.session.name,
+			id:req.session.id,
+			img:req.session.img
+		};
+	}
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,post){
+		if(post){
+			data.post=post;
+			res.render('posts/show',data);
+		}else{
+			res.redirect('/');
+		}
+	});
+});
+
 router.get('/new',function(req,res){
 	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,session:null};
 
@@ -343,106 +363,3 @@ router.get('/search/ingredient',function(req,res){
 });
 
 module.exports=router;
-/*
-router.get('/search/author',function(req,res){
-	var data={now_page:0,total_page:0,list:null,session:null};
-	var page;
-	if(req.session.email) {
-		data.session={
-			email:req.session.email,
-			name:req.session.name,
-			id:req.session.id
-		};
-	};
-
-	if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
-	else page=1;
-
-	User.find({name:{$regex:req.query.value}},function(err,users){
-		if(users==null){
-			data.now_page=0;
-			data.total_page=0;
-			data.list=null;
-			res.render('posts/list',data)
-		}else if(users.length==1){
-			Post.find({author:users[0].email},function(err,posts){
-				if(posts==null){
-					data.now_page=0;
-					data.total_page=0;
-					data.list=null;
-				}else {
-					if((posts.length%12)==0){
-						data.now_page=page;
-						data.total_page=posts.length/12;
-						data.list=posts;
-					}else{
-						data.now_page=page;
-						data.total_page=(posts.length/12)+1;
-						data.list=posts;
-					}
-				}
-				res.render('posts/list',data);
-			});
-		}else{
-			var condition=[];
-			for(i in users){
-				condition[i]={author:users[i].email};
-			}
-			Post.find({$or:condition},function(err,posts){
-				if(posts==null){
-					data.now_page=0;
-					data.total_page=0;
-					data.list=null;
-				}else {
-					if((posts.length%12)==0){
-						data.now_page=page;
-						data.total_page=posts.length/12;
-						data.list=posts;
-					}else{
-						data.now_page=page;
-						data.total_page=(posts.length/12)+1;
-						data.list=posts;
-					}
-				}
-				res.render('posts/list',data);
-			});
-		}
-	});
-	
-});
-*/
-/*
-router.get('/search/ingredient',function(req,res){
-	Post.find({ingredient:{$elemMatch:{name:{$regex:req.query.value}}}},function(err,posts){
-		var data={now_page:0,total_page:0,list:null,session:null};
-		var page;
-		if(req.session.email) {
-			data.session={
-				email:req.session.email,
-				name:req.session.name,
-				id:req.session.id
-			};
-		};
-
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
-		else page=1;
-
-		if(posts==null){
-			data.now_page=0;
-			data.total_page=0;
-			data.list=null;
-		}else {
-			if((posts.length%12)==0){
-				data.now_page=page;
-				data.total_page=posts.length/12;
-				data.list=posts;
-			}else{
-				data.now_page=page;
-				data.total_page=(posts.length/12)+1;
-				data.list=posts;
-			}
-		}
-		res.render('posts/list',data);
-	});
-});
-*/
