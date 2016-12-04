@@ -23,7 +23,9 @@
                 <% for(i=0;i<post[0].ingredient.length;i++) {%>
                <div class="item">
                    <span class="ingredient"><%=post[0].ingredient[i].name %></span>
+                   <% if(post[0].ingredient[i].amount!="") { %>
                    <strong class="ingredient-amount"><%=post[0].ingredient[i].amount %></strong>
+                   <% } %>
                </div>
                <% }}%>
 
