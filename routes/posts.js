@@ -101,26 +101,22 @@ router.post('/new',function(req,res){
 				data.diff=_diff;
 			}
 			else if(name=="name"){
-				if(value){
-					if(_ingredient[name_cnt]){
-						_ingredient[name_cnt].name=value;
-					}
-					else{
-						_ingredient[name_cnt]={name:value,amount:null};
-					}
-					name_cnt++;
+				if(_ingredient[name_cnt]){
+					_ingredient[name_cnt].name=value;
 				}
+				else{
+					_ingredient[name_cnt]={name:value,amount:null};
+				}
+				name_cnt++;
 			}
 			else if(name=="amount"){
-				if(value){
-					if(_ingredient[amount_cnt]){
-						_ingredient[amount_cnt].amount=value;
-					}
-					else{
-						_ingredient[amount_cnt]={name:null,amount:value};
-					}
-					amount_cnt++;
+				if(_ingredient[amount_cnt]){
+					_ingredient[amount_cnt].amount=value;
 				}
+				else{
+					_ingredient[amount_cnt]={name:null,amount:value};
+				}
+				amount_cnt++;
 			}
 			else if(name=="comment"){
 				if(_recipe[comment_cnt]){
@@ -190,6 +186,13 @@ router.post('/new',function(req,res){
 						res.render('posts/new',data);
 					}
 					else{
+						for(i=0;i<_ingredient.length;i++){
+							if(_ingredient[i].name==""){
+								_ingredient.splice(i,1);
+								i--;
+							}
+						}
+
 						var _Post=new Post();
 						_Post.title=_title;
 						_Post.cookTime=_cookTime;
@@ -217,7 +220,6 @@ router.post('/new',function(req,res){
 										var fileName3=post._id+'_'+j+'.'+temp_ext2;
 										fs.rename(fileName1,fileName2);
 										temp_recipe[j]={comment:post.recipe[j].comment,img:fileName3};
-										console.log(temp_recipe[j]);
 									}
 									post.recipe=temp_recipe;
 									post.save(function(err){

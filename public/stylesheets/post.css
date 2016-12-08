@@ -80,3 +80,88 @@ color: #505050;
   text-align: left;
 }
 
+#del_ingredient {
+  cursor: default;
+  color:#313131;
+  width: 790px;
+  height: 45px;
+  border: 1px solid #e1e1e1;
+  background-color: #f5f5f5;
+  text-indent: 20px;
+  font-family: 'NST';
+  font-size: 16px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
+
+#del_recipe {
+  cursor: default;
+  color:#313131;
+  width: 790px;
+  height: 45px;
+  border: 1px solid #e1e1e1;
+  background-color: #f5f5f5;
+  text-indent: 20px;
+  font-family: 'NST';
+  font-size: 16px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  position: relative;
+  bottom:11px;
+}
+
+.btn_add {
+  cursor: default;
+  color:#313131;
+  width: 790px;
+  height: 45px;
+  border: 1px solid #e1e1e1;
+  background-color: #f5f5f5;
+  text-indent: 20px;
+  font-family: 'NST';
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.ex_filename {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
+}
+
+#upload_btn {
+  display: inline-block;
+  padding: .5em .75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: .25em;
+  position: relative;
+  bottom:15px;
+}
+
+#upload_img{
+  width:130px;
+  height:130px;
+}
+
+.sec_add_recipe textarea{
+  height: 130px;
+  resize:none;
+  color:#313131;
+  border: 1px solid #e1e1e1;
+  background-color: #f5f5f5;
+  font-family: 'NST';
+  font-size: 16px;
+  padding: 20px 20px 20px 20px;
+}

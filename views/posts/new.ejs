@@ -2,35 +2,34 @@
 <head>
     <% include ../header.ejs %>
     <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-    <script
-            src="https://code.jquery.com/jquery-3.1.1.js"
-            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-            crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
+        var cnt=0;
         $(document).ready(function(){
-            var fileTarget = $('.lst_mate .upload-hidden');
 
-            fileTarget.on('change', function(){  // 값이 변경되면
-                if(window.FileReader){  // modern browser
-                    var filename = $(this)[0].files[0].name;
-                }
-                else {  // old IE
-                    var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
-                }
-
-                // 추출한 파일명 삽입
-                $(this).siblings('.upload-name').val(filename);
+            $('#ingredients').delegate('span','click',function(){
+                $(this).parent().remove();
             });
 
-            /*
-            $("#btn_add").click(function () {
-                var i = <li class="ui-sortable-handle">;
-                i+=<input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">;
-                i+=<input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">;
-                i+=<button type="botton" class="btn_del" onclick="delete_infredient(this)">삭제</button>;
-                i+=</li>;
-                $("#ingredients").append(i);
-            });*/
+            $('#recipe').delegate('span','click',function(){
+                $(this).parent().remove();
+            });
+
+            $('#recipe').delegate('.ex_filename','change',function(){
+                var imgnode = $(this).closest('li').children('img');
+                imgnode.attr('src','/imgs/user/noimg.png');
+                    
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    var src = e.target.result;
+                    imgnode.attr('src',src);
+                }
+                reader.readAsDataURL($(this)[0].files[0]);
+            });
+
+
         });
 
         function addIngredient(){
@@ -38,17 +37,20 @@
             liTag.setAttribute('class','ui-sortable-handle');
             liTag.innerHTML="<input type='text' class='lft input-infred' name='name' placeholder='재료명 (예. 묵은김치)'>";
             liTag.innerHTML+="<input type='text' class='rgt input-amount ui-autocomplete-input' name='amount' placeholder='분량'>";
+            liTag.innerHTML+="<span id='del_ingredient' style='cursor:default'>삭제</span>";
             document.getElementById('ingredients').appendChild(liTag);
         }
         function addRecipe(){
             var liTag=document.createElement('li');
             liTag.setAttribute('class','recipe-info');
-            liTag.innerHTML="<input type='text' class='lft' name='comment' placeholder='조리과정을 순서대로 입력해 주세요'>";
-            liTag.innerHTML+="<input type='file' class='rgt upload-hidden' name='userPhoto'>";
-            liTag.innerHTML+="<input class='rgt upload-name' value='파일선택' disabled='disabled'>";
+            liTag.innerHTML="<img src='/imgs/user/noimg.png' id='upload_img'>";
+            liTag.innerHTML+="<textarea class='lft' name='comment' placeholder='조리과정을 순서대로 입력해 주세요'></textarea>";
+            liTag.innerHTML+="<label for='ex_filename"+cnt+"' id='upload_btn'>업로드</label> ";
+            liTag.innerHTML+="<input type='file' class='rgt upload-hidden ex_filename' name='userPhoto' id='ex_filename"+cnt+"'>";
+            liTag.innerHTML+="<span id='del_recipe' style='cursor:default'>삭제</span>";
             document.getElementById('recipe').appendChild(liTag);
+            cnt++;
         }
-
 
     </script>
 </head>
@@ -113,10 +115,11 @@
                                 <dd>
                                     <div class="dd-chunk">
                                         <ul class="lst_mate" id="recipe">
-                                            <li class="recipe-info">
-                                                <input type="text" class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요">
-                                                <input type="file" class="rgt upload-hidden" name="userPhoto">
-                                                <input class="rgt upload-name" value="파일선택" disabled="disabled">
+                                            <li class="recipe-info" id="upload_li">
+                                                <img src="/imgs/user/noimg.png" id="upload_img">
+                                                <textarea class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요"></textarea>
+                                                <label for="ex_filename" id="upload_btn">업로드</label> 
+                                                <input type="file" class="rgt upload-hidden ex_filename" name="userPhoto" id="ex_filename">
                                             </li>
                                         </ul>
                                     </div>

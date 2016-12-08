@@ -73,7 +73,7 @@ router.post('/new',function(req,res){
 						_User.email=_email;
 						_User.name=_name;
 						_User.password=_pw;
-						_User.img=null;
+						_User.img="default.png";
 
 						_User.save(function(err){
 							if(err){
