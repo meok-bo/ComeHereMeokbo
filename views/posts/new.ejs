@@ -35,16 +35,16 @@
         function addIngredient(){
             var liTag=document.createElement('li');
             liTag.setAttribute('class','ui-sortable-handle');
-            liTag.innerHTML="<input type='text' class='lft input-infred' name='name' placeholder='재료명 (예. 묵은김치)'>";
-            liTag.innerHTML+="<input type='text' class='rgt input-amount ui-autocomplete-input' name='amount' placeholder='분량'>";
+            liTag.innerHTML="<input type='text' class='lft input-infred' name='name' placeholder='재료명 (예. 묵은김치)'> ";
+            liTag.innerHTML+="<input type='text' class='rgt input-amount ui-autocomplete-input' name='amount' placeholder='분량'> ";
             liTag.innerHTML+="<span id='del_ingredient' style='cursor:default'>삭제</span>";
             document.getElementById('ingredients').appendChild(liTag);
         }
         function addRecipe(){
             var liTag=document.createElement('li');
             liTag.setAttribute('class','recipe-info');
-            liTag.innerHTML="<img src='/imgs/user/noimg.png' id='upload_img'>";
-            liTag.innerHTML+="<textarea class='lft' name='comment' placeholder='조리과정을 순서대로 입력해 주세요'></textarea>";
+            liTag.innerHTML="<img src='/imgs/user/noimg.png' id='upload_img'> ";
+            liTag.innerHTML+="<textarea class='lft' name='comment' placeholder='조리과정을 순서대로 입력해 주세요'></textarea> ";
             liTag.innerHTML+="<label for='ex_filename"+cnt+"' id='upload_btn'>업로드</label> ";
             liTag.innerHTML+="<input type='file' class='rgt upload-hidden ex_filename' name='userPhoto' id='ex_filename"+cnt+"'>";
             liTag.innerHTML+="<span id='del_recipe' style='cursor:default'>삭제</span>";
@@ -118,7 +118,7 @@
                                             <li class="recipe-info" id="upload_li">
                                                 <img src="/imgs/user/noimg.png" id="upload_img">
                                                 <textarea class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요"></textarea>
-                                                <label for="ex_filename" id="upload_btn">업로드</label> 
+                                                <label for="ex_filename" id="upload_btn">업로드</label>
                                                 <input type="file" class="rgt upload-hidden ex_filename" name="userPhoto" id="ex_filename">
                                             </li>
                                         </ul>
