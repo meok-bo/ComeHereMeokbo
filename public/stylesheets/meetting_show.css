@@ -1,7 +1,24 @@
-#map {
-    width:900px; height: 300px;
-    margin: auto;
+.meeting_show_header {
+    padding-top: 100px;
+    margin-bottom: 30px;
 }
+
+.meeting_show_header h1 {
+    font-size: 50px;
+    padding-bottom: 20px;
+}
+
+.meeting_show_header i {
+    font-size: 30px;
+    margin: 0 10px 20px 10px;
+}
+
+.meeting_show_header label {
+    font-size: 24px;
+    font-family: 'NST';
+    margin: 0 10px 20px 10px;
+}
+
 
 .date{
     display: inline-block;
@@ -16,4 +33,65 @@
     height: 20px;
     padding-right: 10px;
     overflow: hidden;
+}
+
+.img-map-area{
+    text-align: center;
+}
+
+.img-map-area img{
+    display: inline-block;
+    width: 400px;
+    height: 400px;
+    margin: 10px;
+}
+
+#map {
+    width:400px; height: 400px;
+    display: inline-block;
+    margin: 10px;
+}
+
+.meeting_show_content{
+    position: relative;
+    display: block;
+    border-top: 1px solid #ddd;
+}
+
+.author-area{
+    position: relative;
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.author-area .user-tumb{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-area .user-ID{
+    position: absolute;
+    display: inline-block;
+    font-size: 20px;
+    top:20px;
+}
+
+.text_content{
+    width: 800px;
+    border-radius: 10px;
+    color: #313131;
+    height: 200px;
+    border: 1px solid #e1e1e1;
+    background-color: #f5f5f5;
+    text-indent: 20px;
+    font-family: 'NST';
+    font-size: 16px;
+    margin-left: 120px;
+}
+
+.fa.fa-map-marker{
+    margin-right: 22px;
 }

@@ -17,6 +17,11 @@ router.get('/del',function(req,res){
 	});
 });
 
+router.get('/show',function(req,res){
+	var data={session:null}
+	res.render('meetings/show', data);
+});
+
 router.get('/',function(req,res){
 	data={session:null,location:null};
 	if(!req.session.email) res.redirect('/login');

@@ -30,34 +30,6 @@
                 infowindow.open(map,maker1);
             })
 
-            $('#temp').text("<%=location.length%>");
-
-
-
-
-            var temp_content;
-            var _lat,_lng;
-            var location= <%-JSON.stringify(location)%>;
-            for(i=0;i<location.length ;i++){
-                temp_content="<img src='/imgs/user/"+ location[i].user[0].img +"' width='50' height='50'>"+location[i].user[0].name;
-                infowindows[i]=new google.maps.InfoWindow({
-                    content:temp_content
-                });
-
-                _lat=Number(String(location[i].latlng).split(",")[0].split("(")[1].trim());
-                _lng=Number(String(location[i].latlng).split(",")[1].split(")")[0].trim());
-
-                markers[i]=new google.maps.Marker({
-                    position:{lat: _lat, lng: _lng},
-                    map:map,
-                    animation: google.maps.Animation.DROP
-                });
-                google.maps.event.addListener(markers[i], 'click', (function(marker, i) {
-                    return function() {
-                        infowindows[i].open(map, markers[i]);
-                    }
-                })(markers[i], i));
-            }
         }
 
     </script>
@@ -68,44 +40,40 @@
 </head>
 <body>
 <% include ../body.ejs %>
-<br><br><br><br><br><br>
 <div class="meeting_header">
     <div class="inner">
-        <div id="map"></div>
+        <section class="meeting_show_header">
+            <h1>모임 제목</h1>
+            <div class="author-area">
+                <img class="user-tumb" src="/imgs/page/투모로우에세이음식스토리3.jpg">
+                <strong class="user-ID">유저아이디</strong>
+            </div>
+            <div class="time-area">
+                <label><i class="fa fa-calendar-check-o" aria-hidden="true"></i>모임날짜</label>
+                <span class="time">날짜</span>
+                <label><i class="fa fa-clock-o" aria-hidden="true"></i>모임시간</label>
+                <span class="time">시간</span>
+            </div>
+            <div class=spot-area">
+                <label><i class="fa fa-map-marker" aria-hidden="true"></i>모임장소</label>
+                <span class="amount">장소</span>
+            </div>
+            <div class="img-map-area">
+                <img src="/imgs/page/투모로우에세이음식스토리3.jpg">
+                <div id="map"></div>
+            </div>
+        </section>
     </div>
 </div>
-<a href="/meetings/new"><button id='create_meeting_btn'>모임 만들기</button></a>
 <div id="temp"></div>
 <div class="meeting_content">
     <div class="inner">
-        <div class="item">
-            <ol class="main_recipe">
-                <% for(i=0;i<location.length;i++){ %>
-                <li>
-                    <a class="recipe tumb">
-                        <img src="imgs/user/<%=location[i].img%>">
-                    </a>
-                    <span class="author">
-                      <a herf="">
-                        <img src="imgs/user/<%=location[i].user[0].img%>">
-                      </a>
-                      <strong>
-                        <a><%=location[i].user[0].name%></a>
-                      </strong>
-                    </span>
-                    <p>
-                        <a class="call_recipe"> <%=location[i].title%> </a>
-                    </p>
-                    <span class="date"><%=location[i].date%></span>
-                    <% if(location[i].address.length>5){ %>
-                    <span class="spot"><%=location[i].address.substr(0,5)+"..." %></span>
-                    <% } else{ %>
-                    <span class="spot"><%=location[i].address%></span>
-                    <% } %>
-                </li>
-                <% } %>
-            </ol>
-        </div>
+        <seciont class="meeting_show_content">
+            <div class="text">
+                <h2>모임 내용</h2>
+                <textarea class="text_content">내용</textarea>
+            </div>
+        </seciont>
     </div>
 </div>
 <% include ../footer.ejs %>

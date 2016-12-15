@@ -1,9 +1,7 @@
 <html>
 <head>
 	<% include ../header.ejs %>
-	<style type="text/css">
-      #map { width:500px; height: 300px; }
-    </style>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/meetting.css">
     <script src="//code.jquery.com/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -42,6 +40,22 @@
 			});
 		}
 
+		$(document).ready(function(){
+
+			$('#recipe').delegate('.ex_filename','change',function(){
+				var imgnode = $(this).closest('li').children('img');
+				imgnode.attr('src','/imgs/user/noimg.png');
+
+				var reader = new FileReader();
+				reader.onload = function(e){
+					var src = e.target.result;
+					imgnode.attr('src',src);
+				}
+				reader.readAsDataURL($(this)[0].files[0]);
+			});
+
+
+		});
     </script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8bk04KxVxc0fnprYkxr-NqfVGDY3SxgI&callback=initMap">
@@ -49,20 +63,40 @@
 </head>
 <body>
 <% include ../body.ejs %>
-	<div =ca
-	<br><br><br><br>
-	<h1>모임 만들기</h1>
-	<form id="meeting_form" action="/meetings/new" method="post" enctype="multipart/form-data">
-		<label>모임 제목</label><span id="err_msg"><%=err_title%></span><input type="text" name="title" id="title"><br>
-		<label>모임 내용</label><input type="textarea" name="text" id="text"><br>
-		<label>모임 날짜</label><input type="date" name="date" id="date" value="<%=date%>"><br>
-		<label>모임 시간</label><input type="time" name="time" id="time" value="<%=time%>"><br>
-		<label>모임 장소</label><span id="err_msg"><%=err_address%></span><input type="text" name="address" id="address"><input type="button" id="search_address" value="검색"><br>
-		<label>사진 첨부</label><span id="err_msg"><%=err_img%></span><input type="file" name="userPhoto">
-		<div id="map"></div><br>
-		<input type="hidden" id="latlng" name="latlng">
-		<input type="submit" value="완료">
-	</form>
+	<section class="sec_add_meetting">
+		<h1>모임 만들기</h1>
+		<form id="meeting_form" action="/meetings/new" method="post" enctype="multipart/form-data">
+			<dt><h2>모임 제목</h2></dt>
+			<dd><input type="text" name="title" id="title"><div id="err_msg"><%=err_title%></div></dd>
+			<dt><h2>모임 내용</h2></dt>
+			<dd><textarea  name="text" id="text"></textarea></dd>
+			<dt><h2>모임 날짜</h2></dt>
+			<dd><input type="date" name="date" id="date" value="<%=date%>"></dd>
+			<dt><h2>모임 시간</h2></dt>
+			<dd><input type="time" name="time" id="time" value="<%=time%>"></dd>
+			<dt><h2>모임 장소</h2></dt>
+			<dd>
+				<input type="text" name="address" id="address"><input type="button" id="search_address" value="검색">
+				<div id="err_msg"><%=err_address%></div>
+				<div id="map"></div>
+			</dd>
+			<dt><h2>사진 첨부</h2></dt>
+			<dd>
+				<ul class="lst_mate" id="recipe">
+					<li class="recipe-info" id="upload_li">
+						<img src="/imgs/user/noimg.png" id="upload_img">
+						<label for="ex_filename" id="upload_btn">업로드</label>
+						<input type="file" class="rgt upload-hidden ex_filename" name="userPhoto" id="ex_filename">
+						<div id="err_msg"><%=err_img%></div>
+					</li>
+				</ul>
+			</dd>
+			<input type="hidden" id="latlng" name="latlng">
+			<div class="btn_area">
+				<input type="submit" id="submit_btn" value="완료">
+			</div>
+		</form>
+	</section>
 <% include ../footer.ejs %>
 </body>
 </html>
