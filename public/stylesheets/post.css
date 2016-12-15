@@ -1,3 +1,7 @@
+.simple_form_new_recipe  dd{
+  height: auto;
+}
+
 legend{
   display: none;
 }

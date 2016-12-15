@@ -83,6 +83,7 @@ legend{
   display: block;
   float: right;
   margin-top: 0px;
+  z-index: 2;
 }
 
 .account_area li a{
@@ -234,6 +235,7 @@ legend{
     top: 46px;
     height: 60px;
     left : 0px;
+    z-index: 1;
 }
 
 .bar_gnb .inner{
