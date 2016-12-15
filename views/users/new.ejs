@@ -1,6 +1,68 @@
+<!doctype html>
 <html>
   <head>
     <% include ../header.ejs %>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('.new_user_join').submit(function(event){
+
+          var email=$('.email').val();
+          var name=$('.name').val();
+          var ps=$('.password').val();
+          var ps_confirm=$('.password_confirm').val();
+
+          $('#err_id').text("");
+          $('#err_name').text("");
+          $('#err_pw').text("");
+          $('#err_pw_confirm').text("");
+
+          event.preventDefault();
+
+          if(!email){
+            $('#err_id').text("이메일을 입력해주세요");
+          }
+          else if(!name){
+            $('#err_name').text("이름을 입력해주세요");
+          }
+          else if(!ps){
+            $('#err_pw').text("비밀번호를 입력해주세요");
+          }
+          else if(!ps_confirm){
+            $('#err_pw_confirm').text("비밀번호를 한번 더 입력해주세요");
+          }
+          else if(ps!=ps_confirm){
+            $('#err_pw').text("비밀번호가 일치하지 않습니다");
+            $('.password').val(null);
+            $('.password_confirm').val(null);
+          }
+          else{
+            $.ajax({
+              url:'/users/new',
+              dataType:'json',
+              type:'POST',
+              data:{
+                'email':email,
+                'name':name,
+                'password':ps,
+                'password_confirm':ps_confirm
+              },
+              success:function(result){
+                if(result['err']==0){
+                  location.href='/login';
+                }
+                else if(result['err']==1){
+                  $('#err_id').text("중복된 아이디입니다");
+                }
+                else if(result['err']==2){
+                  $('#err_name').text("중복된 이름입니다");
+                }
+              }
+            });
+          }
+        });
+      });
+    </script>
   </head>
   <body>
     <% include ../body.ejs %>
@@ -8,36 +70,35 @@
       <form class="new_user_join" action="/users/new" method="post">
         <fieldset>
           <dl>
-            <dt>회원가입</dt>
+            <dt id='test'>회원가입</dt>
             <dd>
-              <input placeholder="이메일주소" type="email" class="email" name="email" value="<%=email%>">
+              <input placeholder="이메일주소" type="email" class="email" name="email">
             </dd>
-            <dd><span class='err_msg'><%=err_id%></span></dd>
+            <dd><span class='err_msg' id='err_id'></span></dd>
             <dd class="text-danger email"></dd>
             <dd>
-              <input placeholder="이름" type="text" class="name" name="name" value="<%=name%>">
+              <input placeholder="이름" type="text" class="name" name="name">
             </dd>
-            <dd><span class='err_msg'><%=err_name%></span></dd>
+            <dd><span class='err_msg' id='err_name'></span></dd>
             <dd>
               <input placeholder="비밀번호" type="password" class="password" name="password">
             </dd>
-            <dd><span class='err_msg'><%=err_pw%></span></dd>
+            <dd><span class='err_msg' id='err_pw'></span></dd>
             <dd>
               <input placeholder="비밀번호 확인" type="password" class="password_confirm" name="password_confirm">
             </dd>
-            </dd>
-            <dd><span class='err_msg'><%=err_pw_confirm%></span></dd>
+            <dd><span class='err_msg' id='err_pw_confirm'></span></dd>
             <dd>
             </dd>
-            <dd><span class='err_msg'><%=err_db%></span></dd>
+            <dd><span class='err_msg'></span></dd>
             <dd>
-            <dd>
-              <input type="submit" name="join_commit" value="회원가입">
+              <input type="submit" name="join_commit" id="submit_btn" value="회원가입">
               <a href="/login">로그인</a>
             </dd>
           </dl>
         </fieldset>
-      </div>
+      </form>
+    </div>
     <% include ../footer.ejs %>
   </body>
 </html>
