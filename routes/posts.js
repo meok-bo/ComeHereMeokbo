@@ -158,80 +158,57 @@ router.post('/new',function(req,res){
 		});
 
 		form.on('close',function(){
-			var num_taste=Number()
-			if(!_title){
-				data.err_title="요리제목을 입력해주세요";
-				res.render('posts/new',data);
-			}
-			else if(!_cookTime){
-				data.err_cookTime="조리시간을 입력해주세요";
-				res.render('posts/new',data);
-			}
-			else if(!_recipe[0]){
-				data.err_recipe="레시피정보를 입력해주세요";
-				res.render('posts/new',data);
-			}
-			else if(!_taste){
-				data.err_taste="맛을 평가해주세요";
-				res.render('posts/new',data);
-			}
-			else if(!_diff){
-				data.err_diff="난이도를 평가해주세요";
-				res.render('posts/new',data);
-			}
-			else{
-				Post.findOne({title:_title},function(err,post){
-					if(post && post.title==_title){
-						data.err_title="중복된 요리제목입니다.";
-						res.render('posts/new',data);
-					}
-					else{
-						for(i=0;i<_ingredient.length;i++){
-							if(_ingredient[i].name==""){
-								_ingredient.splice(i,1);
-								i--;
-							}
+
+			Post.findOne({title:_title},function(err,post){
+				if(post && post.title==_title){
+					res.send({"err":1,"msg":"중복된 요리제목입니다"});
+				}
+				else{
+					for(i=0;i<_ingredient.length;i++){
+						if(_ingredient[i].name==""){
+							_ingredient.splice(i,1);
+							i--;
 						}
-
-						var _Post=new Post();
-						_Post.title=_title;
-						_Post.cookTime=_cookTime;
-						_Post.cookAmount=_cookAmount;
-						_Post.author=_author;
-						_Post.ingredient=_ingredient;
-						_Post.recipe=_recipe;
-						_Post.taste=_taste;
-						_Post.diff=_diff;
-
-						_Post.save(function(err){
-							if(err){
-								data.err_title=err;
-								res.render('posts/new',data);
-							}
-							else{
-								Post.findOne({title:_title},function(err,post){
-									var temp_path='./public/imgs/user/';
-									var temp_recipe=[];
-									for(j=0;j<post.recipe.length;j++){
-										var temp_ext1=post.recipe[j].img.split('.');
-										var temp_ext2=temp_ext1[temp_ext1.length-1];
-										var fileName1=temp_path+post.recipe[j].img;
-										var fileName2=temp_path+post._id+'_'+j+'.'+temp_ext2;
-										var fileName3=post._id+'_'+j+'.'+temp_ext2;
-										fs.rename(fileName1,fileName2);
-										temp_recipe[j]={comment:post.recipe[j].comment,img:fileName3};
-									}
-									post.recipe=temp_recipe;
-									post.save(function(err){
-										if(err) res.send(err);
-										else res.redirect('/');
-									});
-								});
-							}
-						})
 					}
-				});
-			}
+
+					var _Post=new Post();
+					_Post.title=_title;
+					_Post.cookTime=_cookTime;
+					_Post.cookAmount=_cookAmount;
+					_Post.author=_author;
+					_Post.ingredient=_ingredient;
+					_Post.recipe=_recipe;
+					_Post.taste=_taste;
+					_Post.diff=_diff;
+
+					_Post.save(function(err){
+						if(err){
+							res.send({"err":1,"msg":err})
+						}
+						else{
+							Post.findOne({title:_title},function(err,post){
+								var temp_path='./public/imgs/user/';
+								var temp_recipe=[];
+								for(j=0;j<post.recipe.length;j++){
+									var temp_ext1=post.recipe[j].img.split('.');
+									var temp_ext2=temp_ext1[temp_ext1.length-1];
+									var fileName1=temp_path+post.recipe[j].img;
+									var fileName2=temp_path+post._id+'_'+j+'.'+temp_ext2;
+									var fileName3=post._id+'_'+j+'.'+temp_ext2;
+									fs.rename(fileName1,fileName2);
+									temp_recipe[j]={comment:post.recipe[j].comment,img:fileName3};
+								}
+								post.recipe=temp_recipe;
+								post.save(function(err){
+									if(err) res.send({"err":1,"msg":err});
+									else res.send({"err":0});
+								});
+							});
+						}
+					})
+				}
+			});
+			
 		});
 
 		form.parse(req);

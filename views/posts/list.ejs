@@ -18,7 +18,7 @@
                     <ol class="main_recipe">
 
                     <% if(list) { %>
-                    <% for(var i in list) { %>
+                    <% for(i=(now_page-1)*12 ;i<list.length;i++) { %>
 
 
                         <li>
@@ -66,7 +66,11 @@
                         <a href=""><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                         <% } %>
                         <% for(i=start_point;i<total_page+1;i++){ %>
+                        <% if(i+1==now_page){ %>
+                        <a href="/posts/search/<%=type%>?value=<%=key%>&page=<%=i+1%>" style="color:red;"><%=i+1%></a>
+                        <% }else{ %>
                         <a href="/posts/search/<%=type%>?value=<%=key%>&page=<%=i+1%>"><%=i+1%></a>
+                        <% } %>
                         <% if(i==start_point+4) break; %>
                         <% } %>
                         <% if(total_page>4) { %>
