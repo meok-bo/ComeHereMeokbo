@@ -44,7 +44,11 @@
             <% for(i=0;i<post[0].recipe.length;i++){ %>
             <div class="recipe-item">
                 <img class="recipe_img" src="/imgs/user/<%=post[0].recipe[i].img %>">
-                <span class="recipe_text"><%=i+1 %>. <%=post[0].recipe[i].comment %></span>
+                <span class="recipe_text"><%=i+1 %>. 
+                <%if(post[0].recipe[i].comment){ %>
+                <%-post[0].recipe[i].comment.replace(/\n/g,"<br>") %>
+                <% } %>
+                </span>
             </div>
             <% } %>
         </section>

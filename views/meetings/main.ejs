@@ -63,11 +63,11 @@
             <ol class="main_recipe">
               <% for(i=0;i<location.length;i++){ %>
                 <li>
-                    <a class="recipe tumb">
+                    <a class="recipe tumb" href="/meetings/show/<%=location[i]._id %>">
                         <img src="imgs/user/<%=location[i].img%>">
                     </a>
                     <span class="author">
-                      <a herf="">
+                      <a href="">
                         <img src="imgs/user/<%=location[i].user[0].img%>">
                       </a>
                       <strong>

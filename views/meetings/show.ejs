@@ -8,27 +8,20 @@
     <script type="text/javascript">
 
         var map;
-        var markers=[];
-        var infowindows=[];
         function initMap() {
+            var location= <%-JSON.stringify(location)%>;
+            _lat=Number(String(location[0].latlng).split(",")[0].split("(")[1].trim());
+            _lng=Number(String(location[0].latlng).split(",")[1].split(")")[0].trim());
             map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 37.56641923090, lng: 126.9778741551},
-                zoom: 9
+                center: {lat: _lat, lng: _lng},
+                zoom: 15
             });
 
-
-            var contentStr="<img src='./abc.gif' width='50' height='50'>탕슈육";
-            var infowindow=new google.maps.InfoWindow({
-                content:contentStr
-            });
             var maker1=new google.maps.Marker({
-                position:{lat: 37.56641923090, lng: 126.9778741551},
+                position:{lat: _lat, lng: _lng},
                 map:map,
                 animation: google.maps.Animation.DROP
             });
-            maker1.addListener('click',function(){
-                infowindow.open(map,maker1);
-            })
 
         }
 
@@ -43,23 +36,23 @@
 <div class="meeting_header">
     <div class="inner">
         <section class="meeting_show_header">
-            <h1>모임 제목</h1>
+            <h1><%=location[0].title%></h1>
             <div class="author-area">
-                <img class="user-tumb" src="/imgs/page/투모로우에세이음식스토리3.jpg">
-                <strong class="user-ID">유저아이디</strong>
+                <img class="user-tumb" src="/imgs/user/<%=location[0].user[0].img%>">
+                <strong class="user-ID"><%=location[0].user[0].name%></strong>
             </div>
             <div class="time-area">
                 <label><i class="fa fa-calendar-check-o" aria-hidden="true"></i>모임날짜</label>
-                <span class="time">날짜</span>
+                <span class="time"><%=location[0].date%></span>
                 <label><i class="fa fa-clock-o" aria-hidden="true"></i>모임시간</label>
-                <span class="time">시간</span>
+                <span class="time"><%=location[0].time%></span>
             </div>
             <div class=spot-area">
                 <label><i class="fa fa-map-marker" aria-hidden="true"></i>모임장소</label>
-                <span class="amount">장소</span>
+                <span class="amount"><%=location[0].address%></span>
             </div>
             <div class="img-map-area">
-                <img src="/imgs/page/투모로우에세이음식스토리3.jpg">
+                <img src="/imgs/user/<%=location[0].img%>">
                 <div id="map"></div>
             </div>
         </section>
@@ -71,7 +64,7 @@
         <seciont class="meeting_show_content">
             <div class="text">
                 <h2>모임 내용</h2>
-                <textarea class="text_content">내용</textarea>
+                <textarea class="text_content"><%=location[0].text%></textarea>
             </div>
         </seciont>
     </div>

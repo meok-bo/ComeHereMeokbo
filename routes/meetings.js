@@ -17,10 +17,6 @@ router.get('/del',function(req,res){
 	});
 });
 
-router.get('/show',function(req,res){
-	var data={session:null}
-	res.render('meetings/show', data);
-});
 
 router.get('/',function(req,res){
 	data={session:null,location:null};
@@ -125,65 +121,68 @@ router.post('/new',function(req,res){
 		});
 
 		form.on('close',function(){
-			if(!_title){
-				data.err_title="모임제목을 입력해주세요";
-				res.render('meetings/new',data);
-			}
-			else if(!_address){
-				data.err_cookTime="주소를 입력해주세요";
-				res.render('meetings/new',data);
-			}
-			else if(!_img){
-				data.err_recipe="사진을 넣어주세요";
-				res.render('meetings/new',data);
-			}
-			else{
-				Meeting.findOne({title:_title},function(err,meeting){
-					if(meeting && meeting.title==_title){
-						data.err_title="중복된 모임제목입니다.";
-						res.render('meetings/new',data);
-					}
-					else{
-						var _Meeting=new Meeting();
-						_Meeting.title=_title;
-						_Meeting.author=req.session.email;
-						_Meeting.text=_text;
-						_Meeting.latlng=_latlng;
-						_Meeting.address=_address;
-						_Meeting.date=_date;
-						_Meeting.time=_time;
-						_Meeting.img=_img
 
-						_Meeting.save(function(err){
-							if(err){
-								data.err_title=err;
-								res.render('meetings/new',data);
-							}
-							else{
-								Meeting.findOne({title:_title},function(err,meeting){
-									var temp_path='./public/imgs/user/';
-									var temp_ext1=meeting.img.split('.');
-									var temp_ext2=temp_ext1[temp_ext1.length-1];
-									var fileName1=temp_path+meeting.img;
-									var fileName2=temp_path+meeting._id+'.'+temp_ext2;
-									var fileName3=meeting._id+'.'+temp_ext2;
-									fs.rename(fileName1,fileName2);
-									meeting.img=fileName3;
-									meeting.save(function(err){
-										if(err) res.send(err);
-										else res.redirect('/meetings');
-									});
+			Meeting.findOne({title:_title},function(err,meeting){
+				if(meeting && meeting.title==_title){
+					res.send({"err":1,"msg":"중복된 모임제목입니다"});
+				}
+				else{
+					var _Meeting=new Meeting();
+					_Meeting.title=_title;
+					_Meeting.author=req.session.email;
+					_Meeting.text=_text;
+					_Meeting.latlng=_latlng;
+					_Meeting.address=_address;
+					_Meeting.date=_date;
+					_Meeting.time=_time;
+					_Meeting.img=_img
+
+					_Meeting.save(function(err){
+						if(err){
+							res.send({"err":1,"msg":err});
+						}
+						else{
+							Meeting.findOne({title:_title},function(err,meeting){
+								var temp_path='./public/imgs/user/';
+								var temp_ext1=meeting.img.split('.');
+								var temp_ext2=temp_ext1[temp_ext1.length-1];
+								var fileName1=temp_path+meeting.img;
+								var fileName2=temp_path+meeting._id+'.'+temp_ext2;
+								var fileName3=meeting._id+'.'+temp_ext2;
+								fs.rename(fileName1,fileName2);
+								meeting.img=fileName3;
+								meeting.save(function(err){
+									if(err) res.send({"err":1,"msg":err});
+									else res.send({"err":0});
 								});
-							}
-						})
-					}
-				});
-			}
+							});
+						}
+					})
+				}
+			});
+
 		});
 
 		form.parse(req);
 	}
 
+});
+
+router.get('/show/:id',function(req,res){
+	data={session:null,location:null};
+	if(!req.session.email) res.redirect('/login');
+	else{
+		data.session={
+			email:req.session.email,
+			name:req.session.name,
+			id:req.session.id,
+			img:req.session.img
+		};
+		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,meeting){
+			data.location=meeting;
+			res.render('meetings/show',data);
+		});
+	}
 });
 
 module.exports=router;

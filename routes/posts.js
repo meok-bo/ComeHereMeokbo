@@ -17,6 +17,13 @@ router.get('/del',function(req,res){
 		res.redirect('/');
 	});
 });
+router.get('/del/:id',function(req,res){
+	Post.remove({_id:mongoose.Types.ObjectId(req.params.id)},function(err,output){
+		res.redirect('/');
+	});
+});
+
+
 
 router.get('/show',function(req,res){
 	var data={session:null}
@@ -120,7 +127,7 @@ router.post('/new',function(req,res){
 			}
 			else if(name=="comment"){
 				if(_recipe[comment_cnt]){
-					_recipe[j].comment=value;
+					_recipe[comment_cnt].comment=value;
 				}
 				else{
 					_recipe[comment_cnt]={comment:value,img:null};
