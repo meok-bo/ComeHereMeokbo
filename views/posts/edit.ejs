@@ -111,6 +111,10 @@
                 reader.readAsDataURL($(this)[0].files[0]);
             });
 
+            $('input:text').keydown(function(event){
+                if(event.keyCode==13) return false;
+            });
+
             //ajax통신
             $('#new_recipe').ajaxForm({
               dataType:'json',

@@ -20,6 +20,9 @@
 		        draggable:true,
 		        map:map
 			});
+
+			$('input#latlng').val(marker.getPosition());
+			
 			marker.addListener('dragend',function(){
 				$('#latlng').attr("value",marker.getPosition());
 			})
@@ -36,6 +39,7 @@
 			      	resultsMap.setCenter(results[0].geometry.location);
 			      	resultsMap.setZoom(17);
 			      	marker.setPosition(results[0].geometry.location);
+			      	$('input#latlng').val(marker.getPosition());
 			    } else {
 			    	alert('주소 확인 후 다시 입력해주세요');
 			    }

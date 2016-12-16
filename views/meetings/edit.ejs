@@ -11,12 +11,16 @@
     	//구글맵 초기화
     	var marker;
     	function initMap() {
+    		var meeting=<%-JSON.stringify(meeting)%>;
+    		var _lat=Number(String(meeting[0].latlng).split(",")[0].split("(")[1].trim());
+    		var _lng=Number(String(meeting[0].latlng).split(",")[1].split(")")[0].trim());
+
 	        var map = new google.maps.Map(document.getElementById('map'), {
-		        center: {lat: 37.56641923090, lng: 126.9778741551},
-		        zoom: 13
+		        center: {lat: _lat, lng: _lng},
+		        zoom: 17
 	        });
 	        marker = new google.maps.Marker({
-		        position: {lat: 37.56641923090, lng: 126.9778741551},
+		        position: {lat: _lat, lng: _lng},
 		        draggable:true,
 		        map:map
 			});
@@ -36,6 +40,7 @@
 			      	resultsMap.setCenter(results[0].geometry.location);
 			      	resultsMap.setZoom(17);
 			      	marker.setPosition(results[0].geometry.location);
+			      	$('input#latlng').val(marker.getPosition());
 			    } else {
 			    	alert('주소 확인 후 다시 입력해주세요');
 			    }
@@ -44,9 +49,11 @@
 
 		$(document).ready(function(){
 
+			var meeting=<%-JSON.stringify(meeting)%>;
+
 			$('#recipe').delegate('.ex_filename','change',function(){
 				var imgnode = $(this).closest('li').children('img');
-				imgnode.attr('src','/imgs/user/noimg.png');
+				imgnode.attr('src','/imgs/user/'+meeting[0].img);
 
 				var reader = new FileReader();
 				reader.onload = function(e){
@@ -66,32 +73,21 @@
               beforeSubmit:function(){
                 var title=$('#title').val();
                 var address=$('#address').val();
-                var file=$('#ex_filename')[0].files[0];
 
                 $('#err_title').text("");
                 $('#err_address').text("");
                 $('#err_img').text("");
 
-                if(!title){
-                	$('#err_title').text("모임제목을 입력해주세요");
-                	location.href="#bookmark_title";
-                	return false;
-                }
-                else if(!address){
+                if(!address){
                 	$('#err_address').text("주소를 입력해주세요");
                 	location.href="#bookmark_address";
-                	return false;
-                }
-            	else if(!file){
-                	$('#err_img').text("사진을 넣어주세요");
-                	location.href="#bookmark_img";
                 	return false;
                 }
                 else return true;
               },
               success:function(result){
                 if(result['err']==0){
-                  location.href='/meetings';
+                  location.href='/meetings/show/'+meeting[0]._id;
                 }
                 else if(result['err']==1){
                   $('#err_title').text(result['msg']);
@@ -109,19 +105,19 @@
 <body>
 <% include ../body.ejs %>
 	<section class="sec_add_meetting">
-		<h1>모임 만들기</h1>
-		<form id="meeting_form" action="/meetings/new" method="post" enctype="multipart/form-data">
+		<h1>모임 수정하기</h1>
+		<form id="meeting_form" action="/meetings/edit?_method=put" method="post" enctype="multipart/form-data">
 			<dt><h2 id="bookmark_title">모임 제목</h2></dt>
-			<dd><input type="text" name="title" id="title"><br><span id="err_title" class="err_msg"></span></dd>
+			<dd><input type="text" name="title" id="title" readonly="readonly" value="<%=meeting[0].title%>"><br><span id="err_title" class="err_msg"></span></dd>
 			<dt><h2>모임 내용</h2></dt>
-			<dd><textarea  name="text" id="text"></textarea></dd>
+			<dd><textarea  name="text" id="text"><%=meeting[0].text%></textarea></dd>
 			<dt><h2>모임 날짜</h2></dt>
-			<dd><input type="date" name="date" id="date" value="<%=date%>"></dd>
+			<dd><input type="date" name="date" id="date" value="<%=meeting[0].date%>"></dd>
 			<dt><h2>모임 시간</h2></dt>
-			<dd><input type="time" name="time" id="time" value="<%=time%>"></dd>
+			<dd><input type="time" name="time" id="time" value="<%=meeting[0].time%>"></dd>
 			<dt><h2 id="bookmark_address">모임 장소</h2></dt>
 			<dd>
-				<input type="text" name="address" id="address"><input type="button" id="search_address" value="검색">
+				<input type="text" name="address" id="address" value="<%=meeting[0].address%>"><input type="button" id="search_address" value="검색">
 				<br><span id="err_address" class="err_msg"></span>
 				<div id="map"></div>
 			</dd>
@@ -129,14 +125,14 @@
 			<dd>
 				<ul class="lst_mate" id="recipe">
 					<li class="recipe-info" id="upload_li">
-						<img src="/imgs/user/noimg.png" id="upload_img">
+						<img src="/imgs/user/<%=meeting[0].img%>" id="upload_img">
 						<label for="ex_filename" id="upload_btn">업로드</label>
 						<input type="file" class="rgt upload-hidden ex_filename" name="userPhoto" id="ex_filename" accept="image/*">
 						<br><span id="err_img" class="err_msg"></span>
 					</li>
 				</ul>
 			</dd>
-			<input type="hidden" id="latlng" name="latlng">
+			<input type="hidden" id="latlng" name="latlng" value="<%=meeting[0].latlng%>">
 			<div class="btn_area">
 				<input type="submit" id="submit_btn" value="완료">
 			</div>
