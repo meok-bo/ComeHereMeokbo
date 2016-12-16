@@ -68,7 +68,7 @@ router.get('/new',function(req,res){
 
 router.post('/new',function(req,res){
 	var form=new multiparty.Form();
-	var data={title:null,cookTime:null,cookAmount:null,ingredient:null,recipe:null,err_title:null,err_cookTime:null,err_recipe:null,err_taste:null,err_diff:null,session:null,taste:null,diff:null};
+	var data={session:null};
 	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[],_taste,_diff;
 	var temp_cnt=0;
 	var name_cnt=0;
@@ -89,23 +89,18 @@ router.post('/new',function(req,res){
 		form.on('field',function(name,value){
 			if(name=="title"){
 				_title=value;
-				data.title=_title;
 			}
 			else if(name=="cookTime"){
 				_cookTime=value;
-				data.cookTime=_cookTime;
 			}
 			else if(name=="cookAmount"){
 				_cookAmount=value;
-				data.cookAmount=_cookAmount;
 			}
 			else if(name=="taste"){
 				_taste=value;
-				data.taste=_taste;
 			}
 			else if(name=="diff"){
 				_diff=value;
-				data.diff=_diff;
 			}
 			else if(name=="name"){
 				if(_ingredient[name_cnt]){
@@ -446,6 +441,187 @@ router.get('/search/ingredient',function(req,res){
 		}
 		res.render('posts/list',data);
 	});
+});
+
+router.get('/edit/:id',function(req,res){
+	var data={post:null,session:null};
+	if(!req.session.email) res.redirect('/');
+	else{
+
+		data.session={
+			email:req.session.email,
+			name:req.session.name,
+			id:req.session.id,
+			img:req.session.img
+		};
+
+		Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,post){
+			if(post){
+				if(req.session.email!=post[0].user[0].email){
+					res.redirect('/');
+				}
+				else{
+					data.post=post;
+					res.render('posts/edit',data);
+				}
+			}else{
+				res.redirect('/');
+			}
+		});
+	}
+})
+
+router.put('/edit',function(req,res){
+	var form=new multiparty.Form();
+	var _title,_cookTime,_cookAmount,_ingredient=[],_recipe=[],_taste,_diff;
+	var _file=[];
+	var _order=[],_changed=[];
+	var temp_cnt=0;
+	var name_cnt=0;
+	var amount_cnt=0;
+	var comment_cnt=0;
+	var order_cnt=0;
+	var changed_cnt=0;
+
+	if(!req.session.email) res.redirect('/');
+	else{
+
+		form.on('field',function(name,value){
+			if(name=="title"){
+				_title=value;
+			}
+			else if(name=="cookTime"){
+				_cookTime=value;
+			}
+			else if(name=="cookAmount"){
+				_cookAmount=value;
+			}
+			else if(name=="taste"){
+				_taste=value;
+			}
+			else if(name=="diff"){
+				_diff=value;
+			}
+			else if(name=="name"){
+				if(_ingredient[name_cnt]){
+					_ingredient[name_cnt].name=value;
+				}
+				else{
+					_ingredient[name_cnt]={name:value,amount:null};
+				}
+				name_cnt++;
+			}
+			else if(name=="amount"){
+				if(_ingredient[amount_cnt]){
+					_ingredient[amount_cnt].amount=value;
+				}
+				else{
+					_ingredient[amount_cnt]={name:null,amount:value};
+				}
+				amount_cnt++;
+			}
+			else if(name=="comment"){
+				_recipe[comment_cnt]={comment:value,img:null};
+				comment_cnt++;
+			}
+			else if(name=="order"){
+				_order[order_cnt]=value;
+				order_cnt++;
+			}
+			else if(name=="changed"){
+				_changed[changed_cnt]=value;
+				changed_cnt++;
+			}
+		});
+
+		form.on('part',function(part){
+			if(!part.filename){
+				part.resume();
+			}
+			else{
+				var ext1=part.filename.split('.');
+				var ext2=ext1[ext1.length-1];
+				var filePath = './public/imgs/user/';
+				var fileName=req.session.email+'_'+temp_cnt+'.'+ext2;
+				
+				var writeStream = fs.createWriteStream(filePath+fileName);
+				writeStream.filename = fileName;
+				part.pipe(writeStream);
+
+				_file[temp_cnt]=fileName;
+                temp_cnt++;
+
+				part.on('end',function(){
+	                writeStream.end();
+	           });
+			}
+		});
+
+		form.on('close',function(){
+
+			Post.findOne({title:_title},function(err,post){
+
+				for(i=0;i<_ingredient.length;i++){
+					if(_ingredient[i].name==""){
+						_ingredient.splice(i,1);
+						i--;
+					}
+				}
+
+				var temp_path='./public/imgs/user/';
+				var file_cnt=0;
+				for(i=0;i<_recipe.length;i++){
+
+					if(_changed[i]=='0'){
+						if(i!=Number(_order[i])){
+							var temp_ext1=post.recipe[Number(_order[i])].img.split('.');
+							var temp_ext2=temp_ext1[temp_ext1.length-1];
+							var fileName=post._id+'_'+i+'.'+temp_ext2;
+
+							fs.rename(post.recipe[Number(_order[i])].img,fileName);
+							_recipe[i].img=fileName;
+						}
+						else{
+							_recipe[i].img=post.recipe[i].img;
+						}
+					}
+					else{
+						var temp_ext1=_file[file_cnt].split('.');
+						var temp_ext2=temp_ext1[temp_ext1.length-1];
+						var fileName1=temp_path+_file[file_cnt];
+						var fileName2=temp_path+post._id+'_'+i+'.'+temp_ext2;
+						var fileName3=post._id+'_'+i+'.'+temp_ext2;
+
+						fs.rename(fileName1,fileName2);
+						_recipe[i].img=fileName3;
+						file_cnt++;
+					}
+				}
+
+
+
+				post.cookTime=_cookTime;
+				post.cookAmount=_cookAmount;
+				post.ingredient=_ingredient;
+				post.recipe=_recipe;
+				post.taste=_taste;
+				post.diff=_diff;
+
+				post.save(function(err){
+					if(err){
+						res.send({"err":1,"msg":err})
+					}
+					else{
+						res.send({"err":0});
+					}
+				})
+
+			});
+			
+		});
+
+		form.parse(req);
+	}
 });
 
 module.exports=router;

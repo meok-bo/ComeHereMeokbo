@@ -7,6 +7,7 @@
     <script>
         var cnt=2;
         var cnt_recipe=1;
+        var post;
 
         function addIngredient(){
             var liTag=document.createElement('li');
@@ -26,9 +27,11 @@
             liTag.innerHTML="<img src='/imgs/user/noimg.png' id='upload_img'> ";
             liTag.innerHTML+="<textarea class='lft' name='comment' placeholder='조리과정을 순서대로 입력해 주세요'></textarea> ";
             liTag.innerHTML+="<label for='ex_filename"+cnt+"' id='upload_btn'>업로드</label> ";
-            liTag.innerHTML+="<input type='file' class='rgt upload-hidden ex_filename' name='userPhoto' id='ex_filename"+cnt+"' accept='image/*'>";
+            liTag.innerHTML+="<input type='file' class='rgt upload-hidden ex_filename' name='userPhoto' id='ex_filename"+cnt+"'>";
             liTag.innerHTML+="<span id='inset_recipe'><i class='fa fa-plus' aria-hidden='true'></i></span>"
             liTag.innerHTML+="<span id='del_recipe'><i class='fa fa-minus' aria-hidden='true'></i></span>";
+            liTag.innerHTML+="<input type='hidden' name='order' id='order' value=''>";
+            liTag.innerHTML+="<input type='hidden' name='changed' id='changed' value='0'>";
             document.getElementById('recipe').appendChild(liTag);
             $('#err_title').text("");
             $('#err_cookTime').text("");
@@ -37,10 +40,14 @@
             cnt++;
             cnt_recipe++;
         }
-        
+
         $(document).ready(function(){
 
-            //재료 삭제버튼 눌렀을 때 이벤트
+            var post=<%-JSON.stringify(post)%>;
+            cnt=post[0].recipe.length+1;
+            cnt_recipe=post[0].recipe.length;
+
+            //재료 삭제버튼 눌렀을때 이벤트
             $('#ingredients').delegate('span#del_ingredient','click',function(){
                 $(this).parent().remove();
                 $('#err_title').text("");
@@ -49,7 +56,7 @@
                 $('#err_recipe').text("");
             });
 
-            //레시피 삭제버튼 눌렀을 때 이벤트
+            //레시피 삭제버튼 눌렀을때 이벤트
             $('#recipe').delegate('span#del_recipe','click',function(){
                 $(this).parent().remove();
                 $('#err_title').text("");
@@ -68,6 +75,8 @@
                 str+="<input type='file' class='rgt upload-hidden ex_filename' name='userPhoto' id='ex_filename"+cnt+"' accept='image/*'>";
                 str+="<span id='inset_recipe'><i class='fa fa-plus' aria-hidden='true'></i></span>"
                 str+="<span id='del_recipe'><i class='fa fa-minus' aria-hidden='true'></i></span>";
+                str+="<input type='hidden' name='order' id='order' value=''>";
+                str+="<input type='hidden' name='changed' id='changed' value='0'>";
                 clone.html(str);
 
                 $(this).parent().before(clone);
@@ -80,16 +89,24 @@
                 cnt_recipe++;
             });
 
-
             //레시피 사진 썸네일 보여주는 이벤트
             $('#recipe').delegate('.ex_filename','change',function(){
                 var imgnode = $(this).closest('li').children('img');
-                imgnode.attr('src','/imgs/user/noimg.png');
+                var order=$(this).closest('li').children('input#order').val();
+                var changed=$(this).closest('li').children('input#changed');
+                if(order!=''){
+                    imgnode.attr('src','/imgs/user/'+post[0].recipe[Number(order)].img);
+                }
+                else{
+                    imgnode.attr('src','/imgs/user/noimg.png');
+                }
+                changed.val('0');
                     
                 var reader = new FileReader();
                 reader.onload = function(e){
                     var src = e.target.result;
                     imgnode.attr('src',src);
+                    changed.val('1');
                 }
                 reader.readAsDataURL($(this)[0].files[0]);
             });
@@ -98,13 +115,14 @@
             $('#new_recipe').ajaxForm({
               dataType:'json',
               beforeSubmit:function(){
-                var title=$('#title').val();
                 var cookTime=$('#cookTime').val();
                 var file=[];
                 var taste=$('#taste_test').val();
                 var diff=$('#diff_test').val();
+                
+                var info_list=$('#recipe').children('li');
 
-                for(i=0;i<cnt_recipe;i++){
+                for(i=0;i<info_list.length;i++){
                     file[i]=$('.ex_filename')[i].files[0];
                 }
 
@@ -113,12 +131,7 @@
                 $('#err_test').text("");
                 $('#err_recipe').text("");
 
-                if(!title){
-                    $('#err_title').text("요리제목을 입력해주세요");
-                    location.href='#bookmark_title';
-                    return false;
-                }
-                else if(!cookTime){
+                if(!cookTime){
                     $('#err_cookTime').text("조리시간을 입력해주세요");
                     location.href='#bookmark_cookTime'
                     return false;
@@ -134,8 +147,9 @@
                     return false;
                 }
                 else{
-                    for(i=0;i<cnt_recipe;i++){
-                        if(!file[i]){
+                    for(i=0;i<info_list.length;i++){
+                        var order_value=info_list.eq(i).children('input#order').eq(0).val();
+                        if(order_value=='' && !file[i]){
                             $('#err_recipe').text("사진을 빠짐없이 채워주세요");
                             location.href='#bookmark_recipe'
                             return false;
@@ -146,10 +160,11 @@
               },
               success:function(result){
                 if(result['err']==0){
-                  location.href='/';
+                  location.href='/posts/show/'+post[0]._id;
                 }
                 else if(result['err']==1){
                   $('#err_title').text(result['msg']);
+                  location.href='#bookmark_title';
                 }
               }
             });
@@ -164,20 +179,20 @@
     <div id="container">
         <div id="content">
             <section class="sec_add_recipe">
-                <h1>레시피 등록하기</h1>
+                <h1>레시피 수정하기</h1>
                 <div>
-                    <form class="simple_form_new_recipe" id="new_recipe" accept-charset="UTF-8" method="post" action="/posts/new" enctype="multipart/form-data">
+                    <form class="simple_form_new_recipe" id="new_recipe" accept-charset="UTF-8" method="post" action="/posts/edit?_method=put" enctype="multipart/form-data">
                         <fieldset>
                             <dl>
                                 <dt>
-                                <h2 id="bookmark_title">제목 입력하기</h2>
+                                <h2 id="bookmark_title">제목</h2>
                                 </dt>
                                 <dd>
                                     <div class="dd-chunk">
-                                        <input placeholder="레시피의 제목을 입력해주세요" type="text" name="title" id="title">
+                                        <input placeholder="레시피의 제목을 입력해주세요" type="text" name="title" id="title" value="<%=post[0].title%>" readonly="readonly" >
                                         <div class="input-error"></div>
                                     </div>
-                                    <span class="err_msg" id="err_title"></span>
+                                    <br><span class="err_msg" id="err_title"></span>
                                 </dd>
                                 <dt class="mate">
                                 <h2 id="bookmark_cookTime">음식정보</h2>
@@ -186,7 +201,7 @@
                                     <div class="dd-chunk">
                                         <ul class="lst_mate">
                                             <li class="food-info">
-                                                <input class="rgt" placeholder="조리분량" type="text" name="cookAmount">인분
+                                                <input class="rgt" placeholder="조리분량" type="text" name="cookAmount" value="<%=post[0].cookAmount%>">인분
                                             </li>
                                         </ul>
                                     </div>
@@ -195,7 +210,7 @@
                                             <li class="food-info">
                             <span class="time">
                               조리시간 총
-                            <input class="rgt" placeholder="조리시간" type="text" name="cookTime" id="cookTime">분 소요
+                            <input class="rgt" placeholder="조리시간" type="text" name="cookTime" id="cookTime" value="<%=post[0].cookTime%>">분 소요
                             <span class="err_msg" id="err_cookTime"></span>
                           </span>
                                             </li>
@@ -204,15 +219,31 @@
                                     <div class="dd-chunk">
                                         <h3>재료정보</h3>
                                         <ul class="lst_mate ui-sortable" id="ingredients">
+
+                                            <% if(!post[0].ingredient){ %>
                                             <li class="ui-sortable-handle">
                                                 <input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)">
                                                 <input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량">
                                             </li>
+                                            <% } else { %>
+                                            <li class="ui-sortable-handle">
+                                                <input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)" value="<%=post[0].ingredient[0].name%>">
+                                                <input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량" value="<%=post[0].ingredient[0].amount%>">
+                                            </li>
+                                            <% for(i=1;i<post[0].ingredient.length;i++){ %>
+                                            <li class="ui-sortable-handle">
+                                                <input type="text" class="lft input-infred" name="name" placeholder="재료명 (예. 묵은김치)" value="<%=post[0].ingredient[i].name%>">
+                                                <input type="text" class="rgt input-amount ui-autocomplete-input" name="amount" placeholder="분량" value="<%=post[0].ingredient[i].amount%>">
+                                                <span id='del_ingredient' style='cursor:default'>삭제</span>
+                                            </li> 
+                                            <% } %>
+                                            <% } %>
+
                                         </ul>
 
                                     </div>
 
-                                    <span class="btn_add" id="ingredient_add" onclick="addIngredient()">추가하기</span>
+                                    <span class="btn_add" onclick="addIngredient()">추가하기</span>
                                 </dd>
                                 <dt>
                                 <h2 id="bookmark_recipe">레시피 정보</h2>
@@ -220,18 +251,34 @@
                                 <dd>
                                     <div class="dd-chunk">
                                         <ul class="lst_mate" id="recipe">
+
                                             <li class="recipe-info" id="upload_li">
-                                                <img src="/imgs/user/noimg.png" id="upload_img">
-                                                <textarea class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요"></textarea>
+                                                <img src="/imgs/user/<%=post[0].recipe[0].img%>" id="upload_img">
+                                                <textarea class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요"><%=post[0].recipe[0].comment%></textarea>
 
                                                 <label for="ex_filename1" id="upload_btn">업로드</label> 
                                                 <input type="file" class="rgt upload-hidden ex_filename" name="userPhoto" id="ex_filename1" accept="image/*">
+                                                <input type="hidden" name="order" id="order" value="0">
+                                                <input type="hidden" name="changed" id="changed" value="0">
 
                                             </li>
+                                            <% for(i=1;i<post[0].recipe.length;i++){ %>
+                                            <li class="recipe-info" id="upload_li">
+                                                <img src="/imgs/user/<%=post[0].recipe[i].img%>" id="upload_img">
+                                                <textarea class="lft" name="comment" placeholder="조리과정을 순서대로 입력해 주세요"><%=post[0].recipe[i].comment%></textarea>
+
+                                                <label for="ex_filename<%=i+1%>" id="upload_btn">업로드</label> 
+                                                <input type="file" class="rgt upload-hidden ex_filename" name="userPhoto" id="ex_filename<%=i+1%>" accept="image/*"><span id='inset_recipe'><i class='fa fa-plus' aria-hidden='true'></i></span><span id='del_recipe'><i class='fa fa-minus' aria-hidden='true'></i></span>
+                                                <input type="hidden" name="order" id="order" value="<%=i%>">
+                                                <input type="hidden" name="changed" id="changed" value="0">
+
+                                            </li>
+                                            <% } %>
+
                                         </ul>
                                     </div>
-                                    <span class="btn_add" id="recipe_add" onclick="addRecipe()">추가하기</span>
-                                    <span class="err_msg" id="err_recipe"></span>
+                                    <span class="btn_add" onclick="addRecipe()">추가하기</span>
+                                    <br><span class="err_msg" id="err_recipe"></span>
                                 </dd>
 
                                 <dt>
@@ -242,17 +289,17 @@
                                         <h3>맛 평가</h3>
                                         <ul class="lst_mate" id="taste">
                                             <li class="recipe-info">
-                                                <input type="number" step="0.1" min="1" max="5" class="lft" id="taste_test" name="taste" placeholder="1.0~5.0 사이의 숫자를 입력해주세요">
+                                                <input type="number" step="0.1" min="1" max="5" class="lft" id="taste_test" name="taste" placeholder="1.0~5.0 사이의 숫자를 입력해주세요" value="<%=post[0].taste%>">
                                             </li>
                                         </ul>
                                         <h3>난이도 평가</h3>
                                         <ul class="lst_mate" id="diff">
                                             <li class="recipe-info">
-                                                <input type="number" step="0.1" min="1" max="5" class="lft" id="diff_test" name="diff" placeholder="1.0~5.0 사이의 숫자를 입력해주세요">
+                                                <input type="number" step="0.1" min="1" max="5" class="lft" id="diff_test" name="diff" placeholder="1.0~5.0 사이의 숫자를 입력해주세요" value="<%=post[0].diff%>">
                                             </li>
                                         </ul>
                                     </div>
-                                    <span class="err_msg" id="err_test"></span>
+                                    <br><span class="err_msg" id="err_test"></span>
                                 </dd>
 
                                 <dd>

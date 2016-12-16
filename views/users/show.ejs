@@ -72,7 +72,7 @@
                 <% if(meeting){ %>
                 <% for(var i in meeting) { %>
                   <li>
-                    <a class="recipe tumb">
+                    <a class="recipe tumb" href="/meetings/show/<%=meeting[i]._id %>">
                         <img src="/imgs/user/<%=meeting[i].img%>">
                     </a>
                     <span class="author">
