@@ -21,8 +21,8 @@
       <div class="inner">
         <h2>마이레시피</h2>
           <div calss="btn_area">
-              <% if(post){ if(post.length>4){ %>
-              <a class="btn_more" href="/posts/search/taste"> 더보기 </a>
+              <% if(post){ if(post.length>3){ %>
+              <a class="btn_more" href="/posts/search/author/<%=post[0].user[0]._id%>"> 더보기 </a>
               <% }} %>
           </div>
         <ol class="main_recipe">
@@ -63,7 +63,7 @@
             <div class="inner">
               <h2>내가 등록한 모임</h2>
               <div calss="btn_area">
-                  <% if(meeting){ if(meeting.length>4){ %>
+                  <% if(meeting){ if(meeting.length>3){ %>
                   <a class="btn_more" href="/posts/search/taste"> 더보기 </a>
                   <% }} %>
               </div>
@@ -73,11 +73,11 @@
                 <% for(var i in meeting) { %>
                   <li>
                     <a class="recipe tumb">
-                        <img src="imgs/user/<%=meeting[i].img%>">
+                        <img src="/imgs/user/<%=meeting[i].img%>">
                     </a>
                     <span class="author">
                       <a herf="">
-                        <img src="imgs/user/<%=meeting[i].user[0].img%>">
+                        <img src="/imgs/user/<%=meeting[i].user[0].img%>">
                       </a>
                       <strong>
                         <a><%=meeting[i].user[0].name%></a>

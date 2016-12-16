@@ -377,7 +377,7 @@ router.get('/search/author',function(req,res){
 });
 
 router.get('/search/author/:id',function(req,res){
-	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:req.params.id}}}}],function(err,posts){
+	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{_id:mongoose.Types.ObjectId(req.params.id)}}}}],function(err,posts){
 		var data={now_page:0,total_page:0,list:null,session:null,type:"author",key:req.query.value};
 		var page;
 		if(req.session.email) {

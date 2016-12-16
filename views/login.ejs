@@ -1,6 +1,47 @@
 <html>
   <head>
     <% include ./header.ejs %>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('.new_user').submit(function(event){
+          var email=$('#email').val();
+          var pw=$('.password').val();
+
+          $('.err_msg').text("");
+          event.preventDefault();
+
+          if(!email){
+            $('.err_msg').text("이메일을 입력해주세요");
+          }
+          else if(!pw){
+            $('.err_msg').text("비밀번호를 입력해주세요");
+          }
+          else{
+            $.ajax({
+              url:'/login',
+              dataType:'json',
+              type:'POST',
+              data:{
+                'email':email,
+                'password':pw
+              },
+              success:function(result){
+                if(result['err']==0){
+                  location.href='/';
+                }
+                else if(result['err']==1){
+                  $('.err_msg').text(result['msg']);
+                }
+                else if(result['err']==2){
+                  $('.err_msg').text(result['msg']);
+                }
+              }
+            });
+          }
+        });
+      });
+    </script>
   </head>
   <body>
     <% include ./body.ejs %>
@@ -10,14 +51,14 @@
         <dl>
           <dt>로그인</dt>
           <dd>
-            <input placeholder="이메일주소" type="text" class="email" name="email" value="<%=email%>">
+            <input placeholder="이메일주소" type="text" class="email" name="email" id="email">
           </dd>
           <dd class="text-danger email"></dd>
           <dd>
             <input placeholder="비밀번호" type="password" class="password" name="password">
           </dd>
           <dd>
-            <span class='err_msg'><%=err%></span><br>
+            <span class='err_msg'></span><br>
           </dd>
           <dd>
             <input type="submit" name="commit" value="로그인">
@@ -29,5 +70,6 @@
       </fieldset>
     </form>
     </div>
+    <% include ./footer.ejs %>
   </body>
 </html>
