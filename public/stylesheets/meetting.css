@@ -252,3 +252,11 @@ input[type=time]::-webkit-inner-spin-button{
 .paging a .fa{
     margin: 10px;
 }
+
+h1{
+    font-size: 40px;
+}
+
+h1 i{
+    margin: 10px;
+}
