@@ -201,3 +201,9 @@ dd{
   display: block;
   margin: 0 auto 5px;
 }
+
+.text_shadow{
+  text-shadow:  -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+  -moz-text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+  -webkit-text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}
