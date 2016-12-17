@@ -50,3 +50,9 @@
     width: 50px;
     border: 1px solid #e6e6e6;
 }
+
+.text_shadow{
+    text-shadow:  -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+    -moz-text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+    -webkit-text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+}

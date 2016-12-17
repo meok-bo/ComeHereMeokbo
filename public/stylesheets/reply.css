@@ -1,0 +1,86 @@
+
+.reply{
+    display: inline-block;
+    position: relative;
+    margin-left: 120px;
+}
+
+.reply .box_write {
+    background-color: #f7f7f7;
+    height: 98px;
+    box-sizing: border-box;
+    padding: 13px 18px;
+    border: 1px solid #e6e6e6;
+}
+
+.reply .box_write textarea {
+    width: 600px;
+    height: 71px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    resize: none;
+    float: left;
+    color: #c7c7c7;
+    font-size: 16px;
+    font-family: 'NSL';
+    text-align: center;
+    padding-top: 20px;
+    margin-right: 20px;
+    color: #313131;
+    overflow: auto;
+}
+
+.reply .box_write button {
+    display: block;
+    width: 123px;
+    height: 71px;
+    background-color: #ff6d00;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    font-family: 'NSL';
+    float: right;
+    line-height: 80px\0;
+}
+
+.reply .lst_comment>li {
+    position: relative;
+    border-bottom: 1px solid #e6e6e6;
+    padding: 20px 0 20px 84px;
+    clear: left;
+    min-height: 64px;
+    text-align: left;
+}
+
+.reply .lst_comment li strong {
+    color: #839705;
+    font-family: 'NSL';
+    font-size: 15px;
+    overflow: hidden;
+    margin-right: 13px;
+    clear: left;
+}
+
+.reply .lst_comment li time {
+    color: #c1c1c1;
+    font-size: 13px;
+    font-family: 'NSL';
+}
+
+.reply .lst_comment li p {
+    color: #6d6e71;
+    font-size: 13px;
+    font-family: "NS";
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+.reply .lst_comment li img {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+}
