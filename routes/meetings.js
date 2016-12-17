@@ -24,6 +24,33 @@ router.get('/del/:id',function(req,res){
 	});
 });
 
+router.delete('/del/:id',function(req,res){
+	if(!req.session.email){
+		res.send({"err":1});
+	}
+	else{
+		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,meeting){
+			if(req.session.email!=meeting[0].user[0].email){
+				res.send({"err":1});
+			}
+			else{
+				var fileName=meeting[0].img;
+				fs.exists('./public/imgs/user/'+fileName,function(exist){
+					if(exist){
+						fs.unlink('./public/imgs/user/'+fileName);
+					}
+				});
+				Reple.remove({title:meeting[0].title},function(err){
+					Meeting.remove({_id:mongoose.Types.ObjectId(req.params.id)},function(err,output){
+						res.send({"err":0});
+					});
+				});
+			}
+		});
+	}
+});
+
+
 
 router.get('/',function(req,res){
 	data={session:null,location:null};
@@ -35,10 +62,7 @@ router.get('/',function(req,res){
 			id:req.session.id,
 			img:req.session.img
 		};
-		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}}],function(err,meetings){
-			data.location=meetings;
-			res.render('meetings/main',data);
-		});
+		res.redirect('/meetings/search/title?value=')
 	}
 });
 
@@ -57,7 +81,7 @@ router.get('/new',function(req,res){
 
 		data.date=now_date.getFullYear()+"-";
 		if(now_date.getMonth()<10) data.date+="0";
-		data.date+=now_date.getMonth()+"-";
+		data.date+=(Number(now_date.getMonth())+1)+"-";
 		if(now_date.getDate()<10) data.date+="0";
 		data.date+=now_date.getDate();
 
@@ -300,13 +324,19 @@ router.put('/edit',function(req,res){
 	}
 });
 
-router.get('/main/title',function(req,res){
+router.get('/search/title',function(req,res){
 	if(req.query.search_opt=="author"){
-		res.redirect('/meetings/main/author?value='+req.query.value);
+		res.redirect('/meetings/search/author?value='+req.query.value);
 	}else if(req.query.search_opt=="address"){
-		res.redirect('/meetings/main/address?value='+req.query.value);
+		res.redirect('/meetings/search/address?value='+req.query.value);
 	}else{
-		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:{$regex:req.query.value}}}],function(err,meetings){
+		var condition;
+		if(req.query.value==""){
+			condition=[{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}}];
+		}else{
+			condition=[{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:{$regex:req.query.value}}}];
+		}
+		Meeting.aggregate(condition,function(err,meetings){
 			var data={now_page:0,total_page:0,list:null,session:null,type:"title",key:req.query.value};
 			var page;
 			if(req.session.email) {
@@ -337,14 +367,19 @@ router.get('/main/title',function(req,res){
 				}
 			}
 			data.location=meetings;
-			//res.send(data);
 			res.render('meetings/main',data);
 		});
 	}
 });
 
-router.get('/main/author',function(req,res){
-	Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,meetings){
+router.get('/search/author',function(req,res){
+	var condition;
+	if(req.query.value==""){
+		condition=[{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}}];
+	}else{
+		condition=[{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:{$regex:req.query.value}}}}}];
+	}
+	Meeting.aggregate(condition,function(err,meetings){
 		var data={now_page:0,total_page:0,list:null,session:null,type:"author",key:req.query.value};
 		var page;
 		if(req.session.email) {
@@ -375,7 +410,6 @@ router.get('/main/author',function(req,res){
 			}
 		}
 		data.location=meetings;
-		//res.send(data);
 		res.render('meetings/main',data);
 	});
 
@@ -413,13 +447,18 @@ router.get('/search/author/:id',function(req,res){
 			}
 		}
 		data.location=meetings;
-		//res.send(data);
 		res.render('meetings/main',data);
 	});
 
 });
 
-router.get('/main/address',function(req,res){
+router.get('/search/address',function(req,res){
+	var condition;
+	if(req.query.value==""){
+		condition=[{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}}];
+	}else{
+		condition=[{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{address:{$regex:req.query.value}}}];
+	}
 	Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{address:{$regex:req.query.value}}}],function(err,meetings){
 		var data={now_page:0,total_page:0,list:null,session:null,type:"address",key:req.query.value};
 		var page;

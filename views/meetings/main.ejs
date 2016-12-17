@@ -72,7 +72,8 @@
     <div class="inner">
         <div class="item">
             <ol class="main_recipe">
-              <% for(i=0;i<location.length;i++){ %>
+              <% if(location) { %>
+              <% for(i=(now_page-1)*12;i<location.length;i++){ %>
                 <li>
                     <a class="recipe tumb" href="/meetings/show/<%=location[i]._id %>">
                         <img src="/imgs/user/<%=location[i].img%>">
@@ -95,11 +96,37 @@
                     <span class="spot"><%=location[i].address%></span>
                     <% } %>
                 </li>
-              <% } %>
+                <%if(i==11){break;}%>
+              <% }} %>
             </ol>
+            <% var start_point=Math.floor(now_page/5)*5; %>
+            <% var last_point=Math.floor(total_page/5)*5+1; %>
+            <% var before_point=Math.floor(now_page/5)*5-4; %>
+            <% var after_point=Math.floor(now_page/5)*5+6; %>
+            
+            <div class="paging">
+                <% if(total_page>4) { %>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=1"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=<%=before_point%>"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=<%=i+1%>"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+                <a href=""><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                <% } %>
+                <% for(i=start_point;i<total_page+1;i++){ %>
+                <% if(i+1==now_page){ %>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=<%=i+1%>" style="color:red;"><%=i+1%></a>
+                <% }else{ %>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=<%=i+1%>"><%=i+1%></a>
+                <% } %>
+                <% if(i==start_point+4) break; %>
+                <% } %>
+                <% if(total_page>4) { %>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=<%=after_point%>"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                <a href="/meetings/search/<%=type%>?value=<%=key%>&page=<%=last_point%>"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                <% } %>
+            </div>
         </div>
         <section class="meetting-bottom">
-            <form class="meetting_search" accept-charset="UTF-8" method="get" action="/meetings/main/title">
+            <form class="meetting_search" accept-charset="UTF-8" method="get" action="/meetings/search/title">
                 <input name="utf8" type="hidden" value="✓">
                 <fieldset>
                     <legend>레시피 검색</legend>

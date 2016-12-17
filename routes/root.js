@@ -65,8 +65,8 @@ router.post('/reple/new',function(req,res){
 	var now_date=new Date();
 
 	_date=now_date.getFullYear()+"-";
-	if(now_date.getMonth()<10) _date+="0";
-	_date+=now_date.getMonth()+"-";
+	if(now_date.getMonth()<9) _date+="0";
+	_date+=(Number(now_date.getMonth())+1)+"-";
 	if(now_date.getDate()<10) _date+="0";
 	_date+=now_date.getDate();
 

@@ -1,7 +1,6 @@
 var express=require('express');
 var router=express.Router();
 var Post=require('../models/Post');
-var multer=require('multer');
 var multiparty=require('multiparty');
 var mongoose=require('mongoose');
 var fs=require('fs');
@@ -13,15 +12,33 @@ router.get('/',function(req,res){
 		res.send(posts);
 	});
 });
-router.get('/del',function(req,res){
-	Post.remove({},function(err,output){
-		res.redirect('/');
-	});
-});
-router.get('/del/:id',function(req,res){
-	Post.remove({_id:mongoose.Types.ObjectId(req.params.id)},function(err,output){
-		res.redirect('/');
-	});
+
+router.delete('/del/:id',function(req,res){
+	if(!req.session.email){
+		res.send({"err":1});
+	}
+	else{
+		Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,post){
+			if(req.session.email!=post[0].user[0].email){
+				res.send({"err":1});
+			}
+			else{
+				for(i=0;i<post[0].recipe.length;i++){
+					var fileName=post[0].recipe[i].img;
+					fs.exists('./public/imgs/user/'+fileName,function(exist){
+						if(exist){
+							fs.unlink('./public/imgs/user/'+fileName);
+						}
+					});
+				}
+				Reple.remove({title:post[0].title},function(err){
+					Post.remove({_id:mongoose.Types.ObjectId(req.params.id)},function(err,output){
+						res.send({"err":0});
+					});
+				});
+			}
+		});
+	}
 });
 
 

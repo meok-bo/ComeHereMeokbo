@@ -1,8 +1,10 @@
 <script>
 	$(document).ready(function(){
+		var session=<%-JSON.stringify(session)%>;
+		var post=<%-JSON.stringify(post)%>;
+		var meeting=<%-JSON.stringify(meeting)%>;
 		$('#new_comment').submit(function(event){
 			event.preventDefault();
-			session=<%-JSON.stringify(session)%>
 			if(!session){
 				alert('로그인이 필요합니다');
 			}
@@ -40,7 +42,15 @@
 	        });
 	      }
 			}
-      
+    });
+
+    $('input#delete_post').click(function(event){
+    	if(!session){
+    		location.href="/";
+    	}
+    	else{
+
+    	}
     });
 	});
 </script>

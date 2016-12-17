@@ -5,7 +5,72 @@
     <script src="//code.jquery.com/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <% include ../reple_head.ejs %>
+    <script>
+        $(document).ready(function(){
+            var session=<%-JSON.stringify(session)%>;
+            var meeting=<%-JSON.stringify(meeting)%>;
+            $('#new_comment').submit(function(event){
+                event.preventDefault();
+                if(!session){
+                    alert('로그인이 필요합니다');
+                }
+                else{
+                    var title=meeting[0].title;
+                    var email=session.email;
+              var comment=$('textarea#comment_comment').first().val();
+
+              if(comment==""){
+                alert('내용을 입력해주세요');
+              }
+              else{
+                $.ajax({
+                  url:'/reple/new',
+                  dataType:'json',
+                  type:'POST',
+                  data:{
+                    'title':title,
+                    'email':email,
+                    'comment':comment
+                  },
+                  success:function(result){
+                    if(result['err']==0){
+                      var new_reple=$('<li></li>').addClass("");
+                      new_reple.append($('<div></div>').addClass("img-cover"));
+                      new_reple.children('div').first().append($('<img />').addClass("img_user").attr('src','/imgs/user/'+session.img).attr('alt','Img user blank'));
+                      new_reple.append($('<strong></strong>').text(session.name));
+                      new_reple.append($('<time></time>').text(result['date']));
+                      new_reple.append($('<p></p>').text(result['comment']));
+
+                      $('ul.lst_comment').append(new_reple);
+                      $('textarea#comment_comment').first().val("");
+                    }
+                  }
+                });
+              }
+                }
+        });
+
+        $('input#delete_post').click(function(event){
+            event.preventDefault();
+            if(!session){
+                location.href="/";
+            }
+            else{
+                $.ajax({
+                    url:'/meetings/del/'+meeting[0]._id,
+                    dataType:'json',
+                    type:'DELETE',
+                    success:function(result){
+                        if(result['err']==0){
+                            alert("삭제되었습니다");
+                            location.href='/meetings';
+                        }
+                    }
+                });
+            }
+        });
+        });
+    </script>
     <script type="text/javascript">
 
         var map;
@@ -48,7 +113,8 @@
                     <div class="user-link">
                         <a href="/posts/search/author/<%=meeting[0].user[0]._id%>">
                         <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input></a>
-                        <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
+                        <a href="/meetings/search/author/<%=meeting[0].user[0]._id%>">
+                        <input class="link-btn" type="button" value="작성자의 다른 모임 보러가기"></input></a>
                     </div>
                     <% if(session){ %>
                     <% if(meeting[0].user[0].email==session.email){ %>
@@ -56,7 +122,7 @@
                         <a href="/meetings/edit/<%=meeting[0]._id%>">
                         <input class="link-btn" type="button" value="수정"></input></a>
                         <a href="">
-                        <input class="link-btn" type="button" value="삭제"></input></a>
+                        <input class="link-btn" type="button" id="delete_post" value="삭제"></input></a>
                     </div>
                     <% }} %>
                 </div>

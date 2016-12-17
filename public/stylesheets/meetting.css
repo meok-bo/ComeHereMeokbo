@@ -222,3 +222,33 @@ input[type=time]::-webkit-inner-spin-button{
     width: 50px;
     border: 1px solid #e6e6e6;
 }
+
+.paging{
+    maring: 20px 0 30px 0;
+    text-align: center;
+}
+
+.paging .current{
+    color: #839705;
+    border-color: #839705;
+}
+
+.paging a{
+    display: block;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #e6e6e6;
+    font-size: 20px;
+    font-family: 'NSB';
+    color: #cbcbcb;
+    overflow: hidden;
+    line-height: 38px;
+    line-height: 44px\0;
+}
+
+.paging a .fa{
+    margin: 10px;
+}
