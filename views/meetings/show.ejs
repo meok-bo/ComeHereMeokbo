@@ -33,40 +33,48 @@
 </head>
 <body>
 <% include ../body.ejs %>
-<div class="meeting_header">
-    <div class="inner">
-        <section class="meeting_show_header">
-            <h1><%=location[0].title%></h1>
-            <div class="author-area">
-                <img class="user-tumb" src="/imgs/user/<%=location[0].user[0].img%>">
-                <strong class="user-ID"><%=location[0].user[0].name%></strong>
-            </div>
-            <div class="time-area">
-                <label><i class="fa fa-calendar-check-o" aria-hidden="true"></i>모임날짜</label>
-                <span class="time"><%=location[0].date%></span>
-                <label><i class="fa fa-clock-o" aria-hidden="true"></i>모임시간</label>
-                <span class="time"><%=location[0].time%></span>
-            </div>
-            <div class=spot-area">
-                <label><i class="fa fa-map-marker" aria-hidden="true"></i>모임장소</label>
-                <span class="amount"><%=location[0].address%></span>
-            </div>
-            <div class="img-map-area">
-                <img src="/imgs/user/<%=location[0].img%>">
-                <div id="map"></div>
-            </div>
-        </section>
-    </div>
-</div>
-<div id="temp"></div>
-<div class="meeting_content">
-    <div class="inner">
-        <seciont class="meeting_show_content">
-            <div class="text">
-                <h2>모임 내용</h2>
-                <textarea class="text_content" disabled ><%=location[0].text%></textarea>
-            </div>
-        </seciont>
+
+<div class="container">
+    <div class="meeting_header">
+        <div class="inner main_inner">
+            <section class="meeting_show_header">
+                <h1><%=location[0].title%></h1>
+                <div class="author-area">
+                    <div class="user-area">
+                        <img class="user-tumb" src="/imgs/user/<%=location[0].user[0].img%>">
+                        <strong class="user-ID"><%=location[0].user[0].name%></strong>
+                    </div>
+                    <div class="user-link">
+                        <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
+                        <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
+                    </div>
+                    <div class="btn-area">
+                        <input class="link-btn" type="button" value="수정"></input>
+                        <input class="link-btn" type="button" value="삭제"></input>
+                    </div>
+                </div>
+                <div class="time-area">
+                    <label><i class="fa fa-calendar-check-o" aria-hidden="true"></i>모임날짜</label>
+                    <span class="time"><%=location[0].date%></span>
+                    <label><i class="fa fa-clock-o" aria-hidden="true"></i>모임시간</label>
+                    <span class="time"><%=location[0].time%></span>
+                </div>
+                <div class=spot-area">
+                    <label><i class="fa fa-map-marker" aria-hidden="true"></i>모임장소</label>
+                    <span class="amount"><%=location[0].address%></span>
+                </div>
+                <div class="img-map-area">
+                    <img src="/imgs/user/<%=location[0].img%>">
+                    <div id="map"></div>
+                </div>
+            </section>
+            <seciont class="meeting_show_content">
+                <div class="text">
+                    <h2>모임 내용</h2>
+                    <textarea class="text_content" disabled ><%=location[0].text%></textarea>
+                </div>
+            </seciont>
+        </div>
     </div>
 </div>
 <% include ../footer.ejs %>

@@ -1,11 +1,16 @@
+body{
+    background: #474747;
+}
+
 .meeting_show_header {
-    padding-top: 100px;
     margin-bottom: 30px;
 }
 
 .meeting_show_header h1 {
     font-size: 50px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .meeting_show_header i {
@@ -61,8 +66,15 @@
 .author-area{
     position: relative;
     display: block;
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
+    margin-bottom: 10px;
+    padding: 10px;
+    padding-left: 100px;
+    height: 60px;
+    border: 2px solid #e6e6e6;
+    border-radius: 30px;
+    background: #e1e1e1;
 }
 
 .author-area .user-tumb{
@@ -70,13 +82,14 @@
     height: 60px;
     border-radius: 50%;
     margin-right: 10px;
+    display: inline-block;
 }
 
 .author-area .user-ID{
-    position: absolute;
+    position: relative;
     display: inline-block;
     font-size: 20px;
-    top:20px;
+    top: -20;
 }
 
 .text_content{
@@ -95,4 +108,52 @@
 
 .fa.fa-map-marker{
     margin-right: 22px;
+}
+
+.main_inner{
+    margin-top: 100px;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 50px;
+    background: #ffffff;
+}
+
+.user-area{
+    display: inline-block;
+    position: relative;
+    float: left;
+    width: 300px;
+    height: auto;
+    border-right: 2px solid #cbcbcb;
+}
+
+.link-btn{
+    display: inline-block;
+    float: left;
+    height: 63px;
+    border: 2px solid #dddddd;
+    border-radius: 20px;
+    margin-left: 10px;
+    background: #777777;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.user-link{
+    display: inline-block;
+
+}
+
+.btn-area{
+    display: inline-block;
+    border-left: 2px solid #cbcbcb ;
+    float: right;
+    height: 63px;
+    top: 20px;
+}
+.btn-area .link-btn{
+    height: 30px;
+    margin-left: 5px;
+    margin-top: 15px;
+    border-radius: 10px;
 }
