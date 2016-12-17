@@ -5,6 +5,7 @@ var mongoose=require('mongoose');
 var User=require('../models/User');
 var multiparty=require('multiparty');
 var fs=require('fs');
+var Reple=require('../models/Reple');
 
 router.get('/all',function(req,res){
 	Meeting.find({},function(err,meetings){
@@ -175,7 +176,7 @@ router.post('/new',function(req,res){
 });
 
 router.get('/show/:id',function(req,res){
-	data={session:null,location:null};
+	data={session:null,meeting:null,reple:null};
 	if(!req.session.email) res.redirect('/login');
 	else{
 		data.session={
@@ -185,8 +186,11 @@ router.get('/show/:id',function(req,res){
 			img:req.session.img
 		};
 		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,meeting){
-			data.location=meeting;
-			res.render('meetings/show',data);
+			data.meeting=meeting;
+			Reple.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:meeting[0].title}}],function(err,reple){
+				data.reple=reple;
+				res.render('meetings/show',data);
+			});
 		});
 	}
 });

@@ -6,6 +6,7 @@ var multiparty=require('multiparty');
 var mongoose=require('mongoose');
 var fs=require('fs');
 var User=require('../models/User');
+var Reple=require('../models/Reple');
 
 router.get('/',function(req,res){
 	Post.find({},function(err,posts){
@@ -31,7 +32,7 @@ router.get('/show',function(req,res){
 });
 
 router.get('/show/:id',function(req,res){
-	var data={session:null,post:null};
+	var data={session:null,post:null,reple:null};
 	if(req.session.email){
 		data.session={
 			email:req.session.email,
@@ -43,7 +44,10 @@ router.get('/show/:id',function(req,res){
 	Post.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{_id:mongoose.Types.ObjectId(req.params.id)}}],function(err,post){
 		if(post){
 			data.post=post;
-			res.render('posts/show',data);
+			Reple.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:post[0].title}}],function(err,reple){
+				data.reple=reple;
+				res.render('posts/show',data);
+			});
 		}else{
 			res.redirect('/');
 		}
