@@ -5,13 +5,14 @@
     <script src="//code.jquery.com/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <% include ../reple_head.ejs %>
     <script type="text/javascript">
 
         var map;
         function initMap() {
-            var location= <%-JSON.stringify(location)%>;
-            _lat=Number(String(location[0].latlng).split(",")[0].split("(")[1].trim());
-            _lng=Number(String(location[0].latlng).split(",")[1].split(")")[0].trim());
+            var meeting= <%-JSON.stringify(meeting)%>;
+            _lat=Number(String(meeting[0].latlng).split(",")[0].split("(")[1].trim());
+            _lng=Number(String(meeting[0].latlng).split(",")[1].split(")")[0].trim());
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: _lat, lng: _lng},
                 zoom: 15
@@ -38,40 +39,46 @@
     <div class="meeting_header">
         <div class="inner main_inner">
             <section class="meeting_show_header">
-                <h1><%=location[0].title%></h1>
+                <h1 id="title"><%=meeting[0].title%></h1>
                 <div class="author-area">
                     <div class="user-area">
-                        <img class="user-tumb" src="/imgs/user/<%=location[0].user[0].img%>">
-                        <strong class="user-ID"><%=location[0].user[0].name%></strong>
+                        <img class="user-tumb" src="/imgs/user/<%=meeting[0].user[0].img%>">
+                        <strong class="user-ID"><%=meeting[0].user[0].name%></strong>
                     </div>
                     <div class="user-link">
-                        <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
+                        <a href="/posts/search/author/<%=meeting[0].user[0]._id%>">
+                        <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input></a>
                         <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
                     </div>
+                    <% if(session){ %>
+                    <% if(meeting[0].user[0].email==session.email){ %>
                     <div class="btn-area">
-                        <input class="link-btn" type="button" value="수정"></input>
-                        <input class="link-btn" type="button" value="삭제"></input>
+                        <a href="/meetings/edit/<%=meeting[0]._id%>">
+                        <input class="link-btn" type="button" value="수정"></input></a>
+                        <a href="">
+                        <input class="link-btn" type="button" value="삭제"></input></a>
                     </div>
+                    <% }} %>
                 </div>
                 <div class="time-area">
                     <label><i class="fa fa-calendar-check-o" aria-hidden="true"></i>모임날짜</label>
-                    <span class="time"><%=location[0].date%></span>
+                    <span class="time"><%=meeting[0].date%></span>
                     <label><i class="fa fa-clock-o" aria-hidden="true"></i>모임시간</label>
-                    <span class="time"><%=location[0].time%></span>
+                    <span class="time"><%=meeting[0].time%></span>
                 </div>
                 <div class=spot-area">
                     <label><i class="fa fa-map-marker" aria-hidden="true"></i>모임장소</label>
-                    <span class="amount"><%=location[0].address%></span>
+                    <span class="amount"><%=meeting[0].address%></span>
                 </div>
                 <div class="img-map-area">
-                    <img src="/imgs/user/<%=location[0].img%>">
+                    <img src="/imgs/user/<%=meeting[0].img%>">
                     <div id="map"></div>
                 </div>
             </section>
             <seciont class="meeting_show_content">
                 <div class="text">
                     <h2>모임 내용</h2>
-                    <textarea class="text_content" disabled ><%=location[0].text%></textarea>
+                    <textarea class="text_content" disabled ><%=meeting[0].text%></textarea>
                 </div>
             </seciont>
             <% include ../reply.ejs%>

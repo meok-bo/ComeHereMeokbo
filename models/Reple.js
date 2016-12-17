@@ -1,9 +1,10 @@
 var mongoose=require('mongoose');
 
-var ripleSchema=mongoose.Schema({
-	post:{type:String,required:true},
-	author:{type:String, ref:'user',required:true},
-	content:{type:String,required:true}
+var repleSchema=mongoose.Schema({
+	title:{type:String,required:true},
+	author:{ type: String, ref: 'user' },
+	comment:{type:String,required:true},
+	date:{type:String,required:true}
 });
 
 // model & export

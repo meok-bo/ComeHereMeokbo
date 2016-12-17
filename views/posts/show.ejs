@@ -4,31 +4,32 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/post_show.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
-    <script>
-        $(document).ready(function(){
-
-        });
-    </script>
+    <% include ../reple_head.ejs %>
 </head>
 <body>
 <% include ../body.ejs %>
 <div id="container">
     <div class="inner main_inner">
         <section class="post_show_header">
-            <h1><%=post[0].title %></h1>
+            <h1 id="title"><%=post[0].title %></h1>
             <div class="author-area">
                 <div class="user-area">
                     <img class="user-tumb" src="/imgs/user/<%=post[0].user[0].img%>">
                     <strong class="user-ID"><%=post[0].user[0].name%></strong>
                 </div>
                 <div class="user-link">
-                    <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
+                    <a href="/posts/search/author/<%=post[0].user[0]._id%>">
+                    <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input></a>
                     <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input>
                 </div>
+                <% if(session){ %>
+                <% if(post[0].user[0].email==session.email){ %>
                 <div class="btn-area">
-                    <input class="link-btn" type="button" value="수정"></input>
+                    <a href="/posts/edit/<%=post[0]._id%>">
+                    <input class="link-btn" type="button" value="수정"></input></a>
                     <input class="link-btn" type="button" value="삭제"></input>
                 </div>
+                <% }} %>
             </div>
             <div class="time-area">
                 <label><i class="fa fa-clock-o" aria-hidden="true"></i>조리시간</label>

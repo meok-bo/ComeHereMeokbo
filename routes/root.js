@@ -2,6 +2,7 @@ var express=require('express');
 var router=express.Router();
 var User=require('../models/User');
 var Post=require('../models/Post');
+var Reple=require('../models/Reple');
 
 router.get('/',function(req,res){
 	var data={session:null,taste:null,diff:null};
@@ -55,5 +56,41 @@ router.get('/logout',function(req,res){
 	req.session.destroy();
 	res.redirect('/login');
 });
+
+router.post('/reple/new',function(req,res){
+	var _title=req.body.title;
+	var _email=req.body.email;
+	var _comment=req.body.comment;
+	var _date;
+	var now_date=new Date();
+
+	_date=now_date.getFullYear()+"-";
+	if(now_date.getMonth()<10) _date+="0";
+	_date+=now_date.getMonth()+"-";
+	if(now_date.getDate()<10) _date+="0";
+	_date+=now_date.getDate();
+
+	var _Reple=new Reple();
+	_Reple.title=_title;
+	_Reple.comment=_comment;
+	_Reple.author=_email;
+	_Reple.date=_date;
+
+	_Reple.save(function(err){
+		res.send({"err":0,"date":_date,"comment":_comment});
+	});
+});
+
+router.get('/reple',function(req,res){
+	Reple.find({},function(err,reple){
+		res.send(reple);
+	})
+})
+
+router.get('/reple/del',function(req,res){
+	Reple.remove({},function(err){
+		res.redirect('/');
+	});
+})
 
 module.exports=router;
