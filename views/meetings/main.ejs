@@ -20,8 +20,19 @@
 		var temp_content;
 		var _lat,_lng;
 		var location= <%-JSON.stringify(location)%>;
-    	for(i=0;i<location.length ;i++){
-    		temp_content="<img src='/imgs/user/"+ location[i].user[0].img +"' width='50' height='50'>"+location[i].user[0].name;
+    	for(i=0;i<location.length ;i++) {
+            temp_content = "<div class='map_spot_container'><h3 class='title'>" +location[i].title+"</h3>"
+                    + "<div class='map_spot_info'>"
+                    + "<ul><li><label><i class='fa fa-calendar-check-o' aria-hidden='true'></i>모임날짜</label>"
+                    + "<span class='time'>" + location[i].date + "</span></li>"
+                    + "<li><label><i class='fa fa-clock-o' aria-hidden='true'></i>모임시간</label>"
+                    + "<span class='time'>" + location[i].time + "</span></li>"
+                    + "<li><img class='map_user_img' src='/imgs/user/" + location[i].user[0].img +"' width='30' height='30' >"+
+                    "<strong>" + location[i].user[0].name + "</strong>"
+                    + "</li>"
+                    + "<li><a class='map_spot_btn' href='/meetings/show/"+location[i]._id +"'>보러가기</a></li></ul></div>"
+                    + "<img class='map_spot_img' src='/imgs/user/" + location[i].img + "'  width='110' height='110' ></div>";
+
     		infowindows[i]=new google.maps.InfoWindow({
 	          content:temp_content
 	        });
@@ -64,11 +75,11 @@
               <% for(i=0;i<location.length;i++){ %>
                 <li>
                     <a class="recipe tumb" href="/meetings/show/<%=location[i]._id %>">
-                        <img src="imgs/user/<%=location[i].img%>">
+                        <img src="/imgs/user/<%=location[i].img%>">
                     </a>
                     <span class="author">
                       <a href="">
-                        <img src="imgs/user/<%=location[i].user[0].img%>">
+                        <img src="/imgs/user/<%=location[i].user[0].img%>">
                       </a>
                       <strong>
                         <a><%=location[i].user[0].name%></a>
@@ -87,6 +98,21 @@
               <% } %>
             </ol>
         </div>
+        <section class="meetting-bottom">
+            <form class="meetting_search" accept-charset="UTF-8" method="get" action="/meetings/main/title">
+                <input name="utf8" type="hidden" value="✓">
+                <fieldset>
+                    <legend>레시피 검색</legend>
+                    <select name="search_opt">
+                        <option value="title" selected="selected">제목</option>
+                        <option value="author">작성자</option>
+                        <option value="address">주소</option>
+                    </select>
+                    <input id="select_input" type="text" name="value" placeholder="검색해주세요." autocomplete="off">
+                    <button type="submit">검색</button>
+                </fieldset>
+            </form>
+        </section>
     </div>
 </div>
 <% include ../footer.ejs %>

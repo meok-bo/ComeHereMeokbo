@@ -296,4 +296,159 @@ router.put('/edit',function(req,res){
 	}
 });
 
+router.get('/main/title',function(req,res){
+	if(req.query.search_opt=="author"){
+		res.redirect('/meetings/main/author?value='+req.query.value);
+	}else if(req.query.search_opt=="address"){
+		res.redirect('/meetings/main/address?value='+req.query.value);
+	}else{
+		Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{title:{$regex:req.query.value}}}],function(err,meetings){
+			var data={now_page:0,total_page:0,list:null,session:null,type:"title",key:req.query.value};
+			var page;
+			if(req.session.email) {
+				data.session={
+					email:req.session.email,
+					name:req.session.name,
+					id:req.session.id,
+					img:req.session.img
+				};
+			};
+
+			if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+			else page=1;
+
+			if(meetings==null){
+				data.now_page=0;
+				data.total_page=0;
+				data.list=null;
+			}else {
+				if((meetings.length%12)==0){
+					data.now_page=page;
+					data.total_page=Math.floor((meetings.length/12)-1);
+					data.list=meetings;
+				}else{
+					data.now_page=page;
+					data.total_page=Math.floor(meetings.length/12);
+					data.list=meetings;
+				}
+			}
+			data.location=meetings;
+			//res.send(data);
+			res.render('meetings/main',data);
+		});
+	}
+});
+
+router.get('/main/author',function(req,res){
+	Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{name:{$regex:req.query.value}}}}}],function(err,meetings){
+		var data={now_page:0,total_page:0,list:null,session:null,type:"author",key:req.query.value};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id,
+				img:req.session.img
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		else page=1;
+
+		if(meetings==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((meetings.length%12)==0){
+				data.now_page=page;
+				data.total_page=Math.floor((meetings.length/12)-1);
+				data.list=meetings;
+			}else{
+				data.now_page=page;
+				data.total_page=Math.floor(meetings.length/12);
+				data.list=meetings;
+			}
+		}
+		data.location=meetings;
+		//res.send(data);
+		res.render('meetings/main',data);
+	});
+
+});
+
+router.get('/search/author/:id',function(req,res){
+	Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{user:{$elemMatch:{_id:mongoose.Types.ObjectId(req.params.id)}}}}],function(err,meetings){
+		var data={now_page:0,total_page:0,list:null,session:null,type:"author",key:req.query.value};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id,
+				img:req.session.img
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		else page=1;
+
+		if(meetings==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((meetings.length%12)==0){
+				data.now_page=page;
+				data.total_page=Math.floor((meetings.length/12)-1);
+				data.list=meetings;
+			}else{
+				data.now_page=page;
+				data.total_page=Math.floor(meetings.length/12);
+				data.list=meetings;
+			}
+		}
+		data.location=meetings;
+		//res.send(data);
+		res.render('meetings/main',data);
+	});
+
+});
+
+router.get('/main/address',function(req,res){
+	Meeting.aggregate([{$lookup:{from:"users",localField:"author",foreignField:"email",as:"user"}},{$match:{address:{$regex:req.query.value}}}],function(err,meetings){
+		var data={now_page:0,total_page:0,list:null,session:null,type:"address",key:req.query.value};
+		var page;
+		if(req.session.email) {
+			data.session={
+				email:req.session.email,
+				name:req.session.name,
+				id:req.session.id,
+				img:req.session.img
+			};
+		};
+
+		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		else page=1;
+
+		if(meetings==null){
+			data.now_page=0;
+			data.total_page=0;
+			data.list=null;
+		}else {
+			if((meetings.length%12)==0){
+				data.now_page=page;
+				data.total_page=Math.floor((meetings.length/12)-1);
+				data.list=meetings;
+			}else{
+				data.now_page=page;
+				data.total_page=Math.floor(meetings.length/12);
+				data.list=meetings;
+			}
+		}
+		data.location=meetings;
+		res.render('meetings/main',data);
+	});
+});
+
 module.exports=router;
