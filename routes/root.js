@@ -81,16 +81,4 @@ router.post('/reple/new',function(req,res){
 	});
 });
 
-router.get('/reple',function(req,res){
-	Reple.find({},function(err,reple){
-		res.send(reple);
-	})
-})
-
-router.get('/reple/del',function(req,res){
-	Reple.remove({},function(err){
-		res.redirect('/');
-	});
-})
-
 module.exports=router;

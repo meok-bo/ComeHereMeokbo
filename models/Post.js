@@ -5,7 +5,7 @@ var postSchema=mongoose.Schema({
 	cookTime:{type:String,required:true},
 	cookAmount:{type:String},
 	ingredient:{type:mongoose.Schema.Types.Mixed},
-	recipe:{type:mongoose.Schema.Types.Mixed},
+	recipe:{type:mongoose.Schema.Types.Mixed, required:true},
 	author:{type:String, ref:'user',required:true},
 	taste:{type:String,required:true},
 	diff:{type:String,required:true}

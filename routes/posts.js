@@ -7,12 +7,6 @@ var fs=require('fs');
 var User=require('../models/User');
 var Reple=require('../models/Reple');
 
-router.get('/',function(req,res){
-	Post.find({},function(err,posts){
-		res.send(posts);
-	});
-});
-
 router.delete('/del/:id',function(req,res){
 	if(!req.session.email){
 		res.send({"err":1});
@@ -41,12 +35,6 @@ router.delete('/del/:id',function(req,res){
 	}
 });
 
-
-
-router.get('/show',function(req,res){
-	var data={session:null}
-	res.render('posts/show', data);
-});
 
 router.get('/show/:id',function(req,res){
 	var data={session:null,post:null,reple:null};

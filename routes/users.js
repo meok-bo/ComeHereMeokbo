@@ -7,18 +7,6 @@ var mongoose=require('mongoose');
 var Post=require('../models/Post');
 var Meeting=require('../models/Meeting');
 
-router.get('/',function(req,res){
-	User.find({},function(err,users){
-		res.send(users);
-	});
-});
-
-router.get('/del',function(req,res){
-	User.remove({},function(err,output){
-		res.redirect('/');
-	});
-});
-
 router.get('/new',function(req,res){
 	var data={session:null};
 
@@ -58,7 +46,7 @@ router.post('/new',function(req,res){
 	});
 });
 
-router.get('/:id',function(req,res){
+router.get('/show/:id',function(req,res){
 	var data={session:null,post:null,meeting:null};
 	if(!req.session.email) res.redirect('/');
 	else{
@@ -81,7 +69,7 @@ router.get('/:id',function(req,res){
 	}
 });
 
-router.get('/:id/edit',function(req,res){
+router.get('/edit/:id',function(req,res){
 	var data={session:null};
 	if(!req.session.email) res.redirect('/');
 	else if(req.params.id!=req.session.id) res.redirect('/');
@@ -96,7 +84,7 @@ router.get('/:id/edit',function(req,res){
 	}
 });
 
-router.put('/:id',function(req,res){
+router.put('/edit/:id',function(req,res){
 	var form=new multiparty.Form();
 	var _name, _pw, _pw_confirm, _img;
 	var path='/users/'+req.session.id;

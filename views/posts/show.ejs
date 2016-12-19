@@ -8,6 +8,8 @@
         $(document).ready(function(){
             var session=<%-JSON.stringify(session)%>;
             var post=<%-JSON.stringify(post)%>;
+
+            //댓글을 추가하기 위한 ajax
             $('#new_comment').submit(function(event){
                 event.preventDefault();
                 if(!session){
@@ -49,6 +51,7 @@
                 }
         });
 
+        //레시피 삭제를 위한 ajax
         $('input#delete_post').click(function(event){
             event.preventDefault();
             if(!session){

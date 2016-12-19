@@ -8,6 +8,7 @@
         var cnt=2;
         var cnt_recipe=1;
 
+        //재료 입력칸을 추가하기 위한 함수
         function addIngredient(){
             var liTag=document.createElement('li');
             liTag.setAttribute('class','ui-sortable-handle');
@@ -20,6 +21,8 @@
             $('#err_test').text("");
             $('#err_recipe').text("");
         }
+
+        //레시피 입력칸을 추가하기 위한 함수
         function addRecipe(){
             var liTag=document.createElement('li');
             liTag.setAttribute('class','recipe-info');
@@ -59,7 +62,7 @@
                 cnt_recipe--;
             });
 
-            //레시피 중간에 추가하는 이벤트
+            //레시피 중간에 레시피 입력칸을 추가하는 이벤트
             $('#recipe').delegate('span#inset_recipe','click',function(){
                 var clone=$(this).parent().clone().empty();
                 var str="<img src='/imgs/user/noimg.png' id='upload_img'> ";
@@ -81,7 +84,7 @@
             });
 
 
-            //레시피 사진 썸네일 보여주는 이벤트
+            //이미지 파일을 업로드 했을 때 미리 보여주는 기능
             $('#recipe').delegate('.ex_filename','change',function(){
                 var imgnode = $(this).closest('li').children('img');
                 imgnode.attr('src','/imgs/user/noimg.png');
@@ -94,7 +97,13 @@
                 reader.readAsDataURL($(this)[0].files[0]);
             });
 
-            //ajax통신
+            //엔터 입력 시 submit 되는것 막기
+            $('input:text').keydown(function(event){
+                if(event.keyCode==13) return false;
+            });
+
+            //레시피를 추가하기 위한 ajax
+            //ajax form plugin 사용
             $('#new_recipe').ajaxForm({
               dataType:'json',
               beforeSubmit:function(){

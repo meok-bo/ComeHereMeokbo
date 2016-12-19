@@ -7,23 +7,6 @@ var multiparty=require('multiparty');
 var fs=require('fs');
 var Reple=require('../models/Reple');
 
-router.get('/all',function(req,res){
-	Meeting.find({},function(err,meetings){
-		res.send(meetings);
-	});
-})
-router.get('/del',function(req,res){
-	Meeting.remove({},function(err,output){
-		res.redirect('/');
-	});
-});
-
-router.get('/del/:id',function(req,res){
-	Meeting.remove({_id:mongoose.Types.ObjectId(req.params.id)},function(err,output){
-		res.redirect('/');
-	});
-});
-
 router.delete('/del/:id',function(req,res){
 	if(!req.session.email){
 		res.send({"err":1});
@@ -52,7 +35,7 @@ router.delete('/del/:id',function(req,res){
 
 
 
-router.get('/',function(req,res){
+router.get('/show',function(req,res){
 	data={session:null,location:null};
 	if(!req.session.email) res.redirect('/login');
 	else{

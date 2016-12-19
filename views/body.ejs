@@ -21,8 +21,8 @@
 					  <strong><%=session.name%></strong>
 					  <span class="user_login">
 						  <ul>
-							  <li><a href="/users/<%=session.id%>">마이페이지</a></li>
-							  <li><a href="/users/<%=session.id%>/edit">프로필수정</a></li>
+							  <li><a href="/users/show/<%=session.id%>">마이페이지</a></li>
+							  <li><a href="/users/edit/<%=session.id%>">프로필수정</a></li>
 							  <li><a href="/logout">로그아웃</a></li>
 						  </ul>
 					  </span>
@@ -81,7 +81,7 @@
 	          <a href="/posts/search/diff"><i class="fa fa-etsy" aria-hidden="true"></i><strong>쉽게</strong></a>
 	        </li>
 	        <li>
-	          <a href="/meetings"><i class="fa fa-map-marker" aria-hidden="true"></i><strong>모임</strong></a>
+	          <a href="/meetings/show"><i class="fa fa-map-marker" aria-hidden="true"></i><strong>모임</strong></a>
 	        </li>
 	      </ul>
 	    </div>
