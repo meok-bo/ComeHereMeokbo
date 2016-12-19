@@ -98,7 +98,7 @@
               },
               success:function(result){
                 if(result['err']==0){
-                  location.href='/meetings';
+                  location.href='/meetings/show';
                 }
                 else if(result['err']==1){
                   $('#err_title').text(result['msg']);

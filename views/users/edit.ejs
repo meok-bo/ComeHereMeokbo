@@ -59,7 +59,7 @@
     <% include ../body.ejs %>
     <br><br><br><br><br><br><br><br>
     <h1>회원정보수정</h1>
-    <form class="user_edit" id="user_edit" action="/users/show/<%=session.id%>?_method=put" method="post" enctype="multipart/form-data">
+    <form class="user_edit" id="user_edit" action="/users/edit/<%=session.id%>?_method=put" method="post" enctype="multipart/form-data">
       <div class="content">
           <label>이메일</label><span class='err_msg' id='err_id'></span><br>
         <input type="text" class="email" name="email" value="<%=session.email%>" disabled><br>

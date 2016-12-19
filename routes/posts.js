@@ -242,7 +242,7 @@ router.get('/search/taste',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -278,7 +278,7 @@ router.get('/search/diff',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -319,7 +319,7 @@ router.get('/search/title',function(req,res){
 				};
 			};
 
-			if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+			if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 			else page=1;
 
 			if(posts==null){
@@ -356,7 +356,7 @@ router.get('/search/author',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -393,7 +393,7 @@ router.get('/search/author/:id',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -430,7 +430,7 @@ router.get('/search/ingredient',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){

@@ -99,7 +99,7 @@
                     <span class="spot"><%=location[i].address%></span>
                     <% } %>
                 </li>
-                <%if(i==11){break;}%>
+                <%if(i==(now_page-1)*12+11){break;}%>
               <% }} %>
             </ol>
             <% var start_point=Math.floor(now_page/5)*5; %>

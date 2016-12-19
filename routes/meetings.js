@@ -331,7 +331,7 @@ router.get('/search/title',function(req,res){
 				};
 			};
 
-			if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+			if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 			else page=1;
 
 			if(meetings==null){
@@ -374,7 +374,7 @@ router.get('/search/author',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 		else page=1;
 
 		if(meetings==null){
@@ -411,7 +411,7 @@ router.get('/search/author/:id',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 		else page=1;
 
 		if(meetings==null){
@@ -454,7 +454,7 @@ router.get('/search/address',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 		else page=1;
 
 		if(meetings==null){

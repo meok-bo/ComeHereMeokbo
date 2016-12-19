@@ -87,7 +87,7 @@ router.get('/edit/:id',function(req,res){
 router.put('/edit/:id',function(req,res){
 	var form=new multiparty.Form();
 	var _name, _pw, _pw_confirm, _img;
-	var path='/users/'+req.session.id;
+	var path='/users/show/'+req.session.id;
 	if(!req.session.email) res.redirect('/');
 	else if(req.params.id!=req.session.id) res.redirect('/');
 	else{
