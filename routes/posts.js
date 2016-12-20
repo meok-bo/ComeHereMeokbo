@@ -7,12 +7,6 @@ var fs=require('fs');
 var User=require('../models/User');
 var Reple=require('../models/Reple');
 
-router.get('/',function(req,res){
-	Post.find({},function(err,posts){
-		res.send(posts);
-	});
-});
-
 router.delete('/del/:id',function(req,res){
 	if(!req.session.email){
 		res.send({"err":1});
@@ -41,12 +35,6 @@ router.delete('/del/:id',function(req,res){
 	}
 });
 
-
-
-router.get('/show',function(req,res){
-	var data={session:null}
-	res.render('posts/show', data);
-});
 
 router.get('/show/:id',function(req,res){
 	var data={session:null,post:null,reple:null};
@@ -254,7 +242,7 @@ router.get('/search/taste',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -290,7 +278,7 @@ router.get('/search/diff',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -331,7 +319,7 @@ router.get('/search/title',function(req,res){
 				};
 			};
 
-			if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+			if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 			else page=1;
 
 			if(posts==null){
@@ -368,7 +356,7 @@ router.get('/search/author',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -405,7 +393,7 @@ router.get('/search/author/:id',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){
@@ -442,7 +430,7 @@ router.get('/search/ingredient',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=posts.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=posts.length) page=req.query.page;
 		else page=1;
 
 		if(posts==null){

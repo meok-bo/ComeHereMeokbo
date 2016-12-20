@@ -8,6 +8,8 @@
         $(document).ready(function(){
             var session=<%-JSON.stringify(session)%>;
             var post=<%-JSON.stringify(post)%>;
+
+            //댓글을 추가하기 위한 ajax
             $('#new_comment').submit(function(event){
                 event.preventDefault();
                 if(!session){
@@ -49,6 +51,7 @@
                 }
         });
 
+        //레시피 삭제를 위한 ajax
         $('input#delete_post').click(function(event){
             event.preventDefault();
             if(!session){
@@ -85,7 +88,7 @@
                 <div class="user-link">
                     <a href="/posts/search/author/<%=post[0].user[0]._id%>">
                     <input class="link-btn" type="button" value="작성자의 다른 레시피 보러가기"></input></a>
-                    <a href="/meetings/search/author/<%=post[0].user[0]._id%>"
+                    <a href="/meetings/search/author/<%=post[0].user[0]._id%>">
                     <input class="link-btn" type="button" value="작성자의 다른 모임 보러가기"></input></a>
                 </div>
                 <% if(session){ %>

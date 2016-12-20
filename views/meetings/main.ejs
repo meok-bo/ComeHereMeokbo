@@ -7,6 +7,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
 
+    //구글맵 초기화
+    //받아온 모임 정보에 따라서 구글맵에 보여줄 마커도 같이 초기화
     var map;
    	var markers=[];
     var infowindows=[];
@@ -97,7 +99,7 @@
                     <span class="spot"><%=location[i].address%></span>
                     <% } %>
                 </li>
-                <%if(i==11){break;}%>
+                <%if(i==(now_page-1)*12+11){break;}%>
               <% }} %>
             </ol>
             <% var start_point=Math.floor(now_page/5)*5; %>

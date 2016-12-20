@@ -13,7 +13,7 @@
         <img src="/imgs/user/<%=session.img%>">
         <label><%=session.name%></label>
         <div class="btn_area">
-          <a href="/users/<%=session.id%>/edit"><button>수정</button></a>
+          <a href="/users/edit/<%=session.id%>"><button>수정</button></a>
         </div>
       </div>
     </div>
@@ -33,11 +33,11 @@
                 <a class="recipe tumb" href="/posts/show/<%=post[i]._id %>">
                     <img src="/imgs/user/<%=post[i].recipe[0].img %>">
                 </a>
-                <span class="difficulty">
+                <span class="difficulty text_shadow">
           난이도
           <strong><%=post[i].diff %></strong>
         </span>
-                <span class="flavor">
+                <span class="flavor text_shadow">
           맛
           <strong><%=post[i].taste %></strong>
         </span>

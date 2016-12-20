@@ -8,7 +8,7 @@ var meetingSchema=mongoose.Schema({
 	address:{type:String, required:true},
 	date:{type:String,required:true},
 	time:{type:String,required:true},
-	img:{type:String}
+	img:{type:String,required:true}
 });
 
 // model & export

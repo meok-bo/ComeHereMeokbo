@@ -51,6 +51,7 @@
 
 			var meeting=<%-JSON.stringify(meeting)%>;
 
+			//이미지 파일을 업로드 했을 때 미리 보여주는 기능
 			$('#recipe').delegate('.ex_filename','change',function(){
 				var imgnode = $(this).closest('li').children('img');
 				imgnode.attr('src','/imgs/user/'+meeting[0].img);
@@ -63,11 +64,13 @@
 				reader.readAsDataURL($(this)[0].files[0]);
 			});
 
+			//엔터 입력 시 submit 되는것 막기
 			$('input:text').keydown(function(event){
             	if(event.keyCode==13) return false;
             });
 
-            //ajax통신
+            //모임 정보 수정을 위한 ajax
+            //ajax form plugin 사용
             $('#meeting_form').ajaxForm({
               dataType:'json',
               beforeSubmit:function(){

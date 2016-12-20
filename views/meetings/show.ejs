@@ -9,6 +9,8 @@
         $(document).ready(function(){
             var session=<%-JSON.stringify(session)%>;
             var meeting=<%-JSON.stringify(meeting)%>;
+
+            //댓글을 추가하기 위한 ajax
             $('#new_comment').submit(function(event){
                 event.preventDefault();
                 if(!session){
@@ -50,6 +52,7 @@
                 }
         });
 
+        //모임 삭제를 위한 ajax
         $('input#delete_post').click(function(event){
             event.preventDefault();
             if(!session){
@@ -63,7 +66,7 @@
                     success:function(result){
                         if(result['err']==0){
                             alert("삭제되었습니다");
-                            location.href='/meetings';
+                            location.href='/meetings/show';
                         }
                     }
                 });
@@ -72,7 +75,7 @@
         });
     </script>
     <script type="text/javascript">
-
+        //구글맵 초기화
         var map;
         function initMap() {
             var meeting= <%-JSON.stringify(meeting)%>;

@@ -2,7 +2,7 @@ var mongoose=require('mongoose');
 
 var repleSchema=mongoose.Schema({
 	title:{type:String,required:true},
-	author:{ type: String, ref: 'user' },
+	author:{ type: String, ref: 'user' ,required:true},
 	comment:{type:String,required:true},
 	date:{type:String,required:true}
 });

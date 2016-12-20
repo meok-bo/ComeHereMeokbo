@@ -7,23 +7,6 @@ var multiparty=require('multiparty');
 var fs=require('fs');
 var Reple=require('../models/Reple');
 
-router.get('/all',function(req,res){
-	Meeting.find({},function(err,meetings){
-		res.send(meetings);
-	});
-})
-router.get('/del',function(req,res){
-	Meeting.remove({},function(err,output){
-		res.redirect('/');
-	});
-});
-
-router.get('/del/:id',function(req,res){
-	Meeting.remove({_id:mongoose.Types.ObjectId(req.params.id)},function(err,output){
-		res.redirect('/');
-	});
-});
-
 router.delete('/del/:id',function(req,res){
 	if(!req.session.email){
 		res.send({"err":1});
@@ -52,7 +35,7 @@ router.delete('/del/:id',function(req,res){
 
 
 
-router.get('/',function(req,res){
+router.get('/show',function(req,res){
 	data={session:null,location:null};
 	if(!req.session.email) res.redirect('/login');
 	else{
@@ -348,7 +331,7 @@ router.get('/search/title',function(req,res){
 				};
 			};
 
-			if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+			if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 			else page=1;
 
 			if(meetings==null){
@@ -391,7 +374,7 @@ router.get('/search/author',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 		else page=1;
 
 		if(meetings==null){
@@ -428,7 +411,7 @@ router.get('/search/author/:id',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 		else page=1;
 
 		if(meetings==null){
@@ -471,7 +454,7 @@ router.get('/search/address',function(req,res){
 			};
 		};
 
-		if(req.query.page && req.query.page*12>=meetings.length) page=req.query.page;
+		if(req.query.page && (req.query.page-1)*12+1<=meetings.length) page=req.query.page;
 		else page=1;
 
 		if(meetings==null){
